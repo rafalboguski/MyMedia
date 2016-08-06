@@ -1,0 +1,17 @@
+﻿<Controls:MetroWindow x:Class="Desktop.MainWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:local="clr-namespace:Desktop"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      Title="My Media"
+                      Width="925"
+                      Height="650"
+                      Loaded="Window_Loaded"
+                      WindowStartupLocation="CenterScreen"
+                      mc:Ignorable="d">
+    <Grid />
+</Controls:MetroWindow>
+
+
