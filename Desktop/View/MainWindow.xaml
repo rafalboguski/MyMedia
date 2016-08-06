@@ -8,9 +8,46 @@
                       Title="My Media"
                       Width="925"
                       Height="650"
+                      GlowBrush="{DynamicResource AccentColorBrush}"
                       Loaded="Window_Loaded"
+                      Style="{DynamicResource CleanWindowStyleKey}"
                       WindowStartupLocation="CenterScreen"
                       mc:Ignorable="d">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Icons.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Controls:MetroWindow.LeftWindowCommands>
+        <Controls:WindowCommands>
+            <Button>
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Height="20" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                        <Rectangle.OpacityMask>
+                            <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_page_multiple}" />
+                        </Rectangle.OpacityMask>
+                    </Rectangle>
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.LeftWindowCommands>
+
+    <Controls:MetroWindow.RightWindowCommands>
+        <Controls:WindowCommands>
+            <Button Content="" />
+            <Button>
+                <StackPanel Orientation="Horizontal">
+
+                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="settings" />
+                </StackPanel>
+            </Button>
+        </Controls:WindowCommands>
+    </Controls:MetroWindow.RightWindowCommands>
+
     <Grid />
 </Controls:MetroWindow>
 
