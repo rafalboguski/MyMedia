@@ -40,9 +40,22 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel Grid.Row="0"
+                        Grid.Column="0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                <TextBox Width="300" Text="{Binding NewNote.Title}" />
+                <Button Width="60" Click="AddButton_click">Add</Button>
+            </StackPanel>
 
             <!--  Notes Gallery  -->
             <ItemsControl x:Name="NotesGallery"
+                          Grid.Row="1"
                           Grid.Column="0"
                           Margin="10"
                           ItemTemplate="{StaticResource NoteTemplate}"

@@ -1,4 +1,7 @@
-﻿using System;
+﻿using PropertyChanged;
+using Storage;
+using Storage.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,20 +12,40 @@ using System.Threading.Tasks;
 
 namespace Desktop.ViewModel.Page
 {
-    class NotesPageViewModel : INotifyPropertyChanged
+    [ImplementPropertyChanged]
+    class NotesPageViewModel
     {
-
         public ObservableCollection<NoteViewModel> Notes { get; set; }
+        public NoteViewModel NewNote { get; set; }
 
         public NotesPageViewModel()
         {
             Notes = new ObservableCollection<NoteViewModel>();
+            NewNote = new NoteViewModel();
         }
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        internal void LoadNotes()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            using (var uow = new UnitOfWork())
+            {
+                Notes.Clear();
+                uow.NotesRepository.OrderBy(n => n.Position).ToList()
+                    .ForEach(note => Notes.Add((NoteViewModel)note));
+            }
+        }
+
+        internal void AddNote()
+        {
+            if (string.IsNullOrWhiteSpace(NewNote.Title))
+                return;
+
+            using (var uow = new UnitOfWork())
+            {
+                uow.NotesRepository.Add((Note)NewNote);
+                uow.Complete();
+            }
+            NewNote.Title = "";
+            LoadNotes();
         }
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Desktop.ViewModel;
 using Desktop.ViewModel.Page;
 using Storage;
+using Storage.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -29,20 +31,17 @@ namespace Desktop.View
             InitializeComponent();
             window = mainWindow;
 
-            model = new NotesPageViewModel();
+            DataContext = model = new NotesPageViewModel();
 
-            using (var uow = new UnitOfWork())
-            {
-                var notes = uow.NotesRepository.OrderBy(n => n.Position).ToList();
+            model.LoadNotes();
 
+        }
 
-                foreach (var note in notes)
-                {
-                    model.Notes.Add(new NoteViewModel() { Title = note.Title });
-                }
-            }
-
-            DataContext = model;
+        void AddButton_click(object sender, RoutedEventArgs e)
+        {
+            model.AddNote();
         }
     }
 }
+
+

@@ -6,20 +6,35 @@ using System.Threading.Tasks;
 using Storage.Models;
 using System.Runtime.CompilerServices;
 using System.ComponentModel;
+using PropertyChanged;
 
 namespace Desktop.ViewModel
 {
-    class NoteViewModel : INotifyPropertyChanged
+    [ImplementPropertyChanged]
+    class NoteViewModel
     {
         public int Id { get; set; }
         public int Position { get; set; }
         public string Title { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        public static explicit operator Note(NoteViewModel vm)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            var m = new Note()
+            {
+                Title = vm.Title,
+                Position = vm.Position
+            };
+            return m;
+        }
+
+        public static explicit operator NoteViewModel(Note m)
+        {
+            var vm = new NoteViewModel()
+            {
+                Title = m.Title,
+                Position = m.Position
+            };
+            return vm;
         }
     }
 }
