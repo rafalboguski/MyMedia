@@ -16,6 +16,7 @@ namespace Desktop.ViewModel
         public int Id { get; set; }
         public int Position { get; set; }
         public string Title { get; set; }
+        public byte[] FullImage { get; set; }
 
         public static explicit operator Note(NoteViewModel vm)
         {
@@ -23,7 +24,8 @@ namespace Desktop.ViewModel
             {
                 Id = vm.Id,
                 Title = vm.Title,
-                Position = vm.Position
+                Position = vm.Position,
+                Image = new Image() { FullImage = vm.FullImage}
             };
             return m;
         }
@@ -34,7 +36,8 @@ namespace Desktop.ViewModel
             {
                 Id = m.Id,
                 Title = m.Title,
-                Position = m.Position
+                Position = m.Position,
+                FullImage = m.Image.FullImage
             };
             return vm;
         }

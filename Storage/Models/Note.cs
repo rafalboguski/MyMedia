@@ -19,5 +19,11 @@ namespace Storage.Models
 
         [Timestamp]
         public byte[] Timestamp { get; set; }
+
+        public Note()
+        {
+            Image = new Image();
+            Lines = new List<Line>();
+        }
     }
 }

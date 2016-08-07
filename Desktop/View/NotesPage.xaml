@@ -14,6 +14,7 @@
         <Grid.Resources>
             <converters:IsStringNonemptyConverter x:Key="ToolTipVisibilityConveter" />
             <converters:MultiplyInt x:Key="MultiplyInt" />
+            <converters:ByteToImageConverter x:Key="ByteToImageConverter" />
 
             <ControlTemplate x:Key="NoteGalleryTemplate">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
@@ -60,6 +61,15 @@
                     </Grid.RowDefinitions>
                     <Label Grid.Row="0" Grid.Column="0" Content="{Binding Id}" />
 
+                    <Image x:Name="TestImage"
+                           Grid.Row="0"
+                           Grid.Column="0"
+                           MaxWidth="500"
+                           MaxHeight="500"
+                           Source="{Binding FullImage,
+                                                Converter={StaticResource ByteToImageConverter}}"
+                           Stretch="Uniform" />
+
                     <Grid Grid.Row="1" Grid.Column="0" Background="Black">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
@@ -69,6 +79,10 @@
                             <RowDefinition Height="auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+
+                    
+
+
                         <Label Grid.Row="1"
                                Grid.Column="0"
                                Grid.ColumnSpan="2"
@@ -106,6 +120,7 @@
                          Text="{Binding NewNote.Title,
                                         UpdateSourceTrigger=PropertyChanged}"
                          TextChanged="NewNoteTitle_changed" />
+                <Button Click="AddButton_click">Add</Button>
             </StackPanel>
 
 
