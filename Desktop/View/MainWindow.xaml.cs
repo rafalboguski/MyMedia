@@ -1,4 +1,5 @@
 ﻿using Desktop.View;
+using Desktop.ViewModel.Page;
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
@@ -20,14 +21,23 @@ namespace Desktop
     public partial class MainWindow : MetroWindow
     {
         NavigationService _navigator;
+        MainPageViewModel model;
 
         public MainWindow()
         {
+            DataContext = model = new MainPageViewModel();
+
+            model.Settings.NoteItemSize = 45;
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        void Window_Loaded(object sender, RoutedEventArgs e)
         {
             Content = new NotesPage(this);
+        }
+
+        void Settings_Click(object sender, MouseButtonEventArgs e)
+        {
+            SettingsFlyout.IsOpen = !SettingsFlyout.IsOpen;
         }
     }
 }

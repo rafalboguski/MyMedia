@@ -33,13 +33,14 @@ namespace Desktop.View
 
             DataContext = model = new NotesPageViewModel();
 
+            model.Settings =  (window.DataContext as MainPageViewModel).Settings;
             model.LoadNotes();
-
         }
 
         void AddButton_click(object sender, RoutedEventArgs e)
         {
             model.AddNote();
+
         }
     }
 }

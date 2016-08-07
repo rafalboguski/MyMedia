@@ -42,11 +42,42 @@
             <Button>
                 <StackPanel Orientation="Horizontal">
 
-                    <TextBlock Margin="4 0 0 0" VerticalAlignment="Center" Text="settings" />
+                    <TextBlock Margin="4 0 0 0"
+                               VerticalAlignment="Center"
+                               PreviewMouseDown="Settings_Click"
+                               Text="settings" />
                 </StackPanel>
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
+
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl>
+            <Controls:Flyout x:Name="SettingsFlyout" Width="200" Position="Right">
+                <Grid Margin="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Gallery item size:" />
+                    <Label Grid.Row="0" Grid.Column="1" Content="{Binding Settings.NoteItemSize}" />
+
+                    <Slider Grid.Row="1"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="2"
+                            Maximum="500"
+                            Minimum="20"
+                            Value="{Binding Settings.NoteItemSize}" />
+                </Grid>
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
 
     <Grid />
 </Controls:MetroWindow>

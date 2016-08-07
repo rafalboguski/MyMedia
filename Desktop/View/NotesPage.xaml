@@ -32,7 +32,7 @@
                 </ScrollViewer>
             </ControlTemplate>
             <DataTemplate x:Key="NoteTemplate">
-                <Label Width="100" Height="100" Content="{Binding Title}" />
+                <Label Width="{Binding DataContext.Settings.NoteItemSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" Height="{Binding DataContext.Settings.NoteItemSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" Content="{Binding Title}" />
             </DataTemplate>
         </Grid.Resources>
 

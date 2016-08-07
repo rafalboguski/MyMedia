@@ -83,7 +83,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="ViewModel\NoteViewModel.cs" />
+    <Compile Include="ViewModel\Page\MainPageViewModel.cs" />
     <Compile Include="ViewModel\Page\NotesPageViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="View\NotesPage.xaml.cs">
       <DependentUpon>NotesPage.xaml</DependentUpon>
     </Compile>

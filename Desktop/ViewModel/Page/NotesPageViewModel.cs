@@ -17,6 +17,7 @@ namespace Desktop.ViewModel.Page
     {
         public ObservableCollection<NoteViewModel> Notes { get; set; }
         public NoteViewModel NewNote { get; set; }
+        public SettingsViewModel Settings { get; set; }
 
         public NotesPageViewModel()
         {
