@@ -30,8 +30,11 @@ namespace Desktop.ViewModel.Page
             using (var uow = new UnitOfWork())
             {
                 Notes.Clear();
-                uow.NotesRepository.OrderBy(n => n.Position).ToList()
-                    .ForEach(note => Notes.Add((NoteViewModel)note));
+                var notes = uow.NotesRepository.ToList();
+                if (!string.IsNullOrWhiteSpace(NewNote.Title))
+                    notes = notes.Where(x => x.Title.ToLower().Contains(NewNote.Title.ToLower())).ToList();
+                notes.OrderBy(n => n.Position).ToList()
+                .ForEach(note => Notes.Add((NoteViewModel)note));
             }
         }
 

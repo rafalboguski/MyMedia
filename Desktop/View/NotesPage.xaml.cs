@@ -35,12 +35,19 @@ namespace Desktop.View
 
             model.Settings =  (window.DataContext as MainPageViewModel).Settings;
             model.LoadNotes();
+
+            SearchTextBox.Focus();
         }
 
         void AddButton_click(object sender, RoutedEventArgs e)
         {
             model.AddNote();
 
+        }
+
+        void NewNoteTitle_changed(object sender, TextChangedEventArgs e)
+        {
+            model.LoadNotes();
         }
     }
 }

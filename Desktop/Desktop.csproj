@@ -82,6 +82,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Resources\Converters\IsStringNonemptyConverter.cs" />
     <Compile Include="ViewModel\NoteViewModel.cs" />
     <Compile Include="ViewModel\Page\MainPageViewModel.cs" />
     <Compile Include="ViewModel\Page\NotesPageViewModel.cs" />

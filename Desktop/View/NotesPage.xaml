@@ -1,6 +1,7 @@
 ﻿<Page x:Class="Desktop.View.NotesPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:converters="clr-namespace:Desktop.Resources.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:Desktop.View"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,6 +12,9 @@
 
     <Grid>
         <Grid.Resources>
+            <converters:IsStringNonemptyConverter x:Key="ToolTipVisibilityConveter" />
+            <converters:MultiplyInt x:Key="MultiplyInt" />
+
             <ControlTemplate x:Key="NoteGalleryTemplate">
                 <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
                     <WrapPanel Width="{TemplateBinding Width}"
@@ -21,9 +25,9 @@
                         <WrapPanel.Resources>
                             <ResourceDictionary>
                                 <Style x:Key="labelStyle" TargetType="{x:Type Label}">
-                                    <Setter Property="Foreground" Value="{StaticResource IdealForegroundColorBrush}" />
-                                    <Setter Property="Background" Value="{StaticResource AccentColorBrush}" />
-                                    <Setter Property="Margin" Value="2 2 2 2" />
+                                    <!--<Setter Property="Foreground" Value="{StaticResource IdealForegroundColorBrush}" />-->
+                                    <!--<Setter Property="Background" Value="{StaticResource AccentColorBrush}" />-->
+                                    <!--<Setter Property="Margin" Value="2 2 2 2" />-->
                                 </Style>
                                 <Style BasedOn="{StaticResource labelStyle}" TargetType="{x:Type Label}" />
                             </ResourceDictionary>
@@ -32,7 +36,47 @@
                 </ScrollViewer>
             </ControlTemplate>
             <DataTemplate x:Key="NoteTemplate">
-                <Label Width="{Binding DataContext.Settings.NoteItemSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" Height="{Binding DataContext.Settings.NoteItemSize, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" Content="{Binding Title}" />
+                <Grid Width="{Binding DataContext.Settings.NoteItemSize,
+                                      RelativeSource={RelativeSource FindAncestor,
+                                                                     AncestorType={x:Type Page}}}"
+                      Height="{Binding DataContext.Settings.NoteItemSize,
+                                       Converter={StaticResource MultiplyInt},
+                                       ConverterParameter=1.41,
+                                       RelativeSource={RelativeSource FindAncestor,
+                                                                      AncestorType={x:Type Page}}}"
+                      Margin="{Binding DataContext.Settings.NoteItemSize,
+                                       Converter={StaticResource MultiplyInt},
+                                       ConverterParameter=0.02,
+                                       RelativeSource={RelativeSource FindAncestor,
+                                                                      AncestorType={x:Type Page}}}"
+                      Background="{StaticResource AccentColorBrush}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="{Binding DataContext.Settings.NoteItemSize, Converter={StaticResource MultiplyInt}, ConverterParameter=0.41, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Page}}}" />
+                    </Grid.RowDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="{Binding Id}" />
+
+                    <Grid Grid.Row="1" Grid.Column="0" Background="Black">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="1"
+                               Grid.Column="0"
+                               Grid.ColumnSpan="2"
+                               Content="{Binding Title}" />
+
+                    </Grid>
+
+                </Grid>
             </DataTemplate>
         </Grid.Resources>
 
@@ -44,14 +88,26 @@
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
+            <Label Width="300"
+                   Margin="365 0 0 0"
+                   Foreground="#3D3D3C"
+                   Visibility="{Binding NewNote.Title,
+                                        Converter={StaticResource ToolTipVisibilityConveter}}">
+                Ctrl+Enter to insert
+            </Label>
+
 
             <StackPanel Grid.Row="0"
                         Grid.Column="0"
                         HorizontalAlignment="Center"
                         Orientation="Horizontal">
-                <TextBox Width="300" Text="{Binding NewNote.Title}" />
-                <Button Width="60" Click="AddButton_click">Add</Button>
+                <TextBox x:Name="SearchTextBox"
+                         Width="300"
+                         Text="{Binding NewNote.Title,
+                                        UpdateSourceTrigger=PropertyChanged}"
+                         TextChanged="NewNoteTitle_changed" />
             </StackPanel>
+
 
             <!--  Notes Gallery  -->
             <ItemsControl x:Name="NotesGallery"

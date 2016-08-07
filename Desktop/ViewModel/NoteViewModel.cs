@@ -21,6 +21,7 @@ namespace Desktop.ViewModel
         {
             var m = new Note()
             {
+                Id = vm.Id,
                 Title = vm.Title,
                 Position = vm.Position
             };
@@ -31,6 +32,7 @@ namespace Desktop.ViewModel
         {
             var vm = new NoteViewModel()
             {
+                Id = m.Id,
                 Title = m.Title,
                 Position = m.Position
             };

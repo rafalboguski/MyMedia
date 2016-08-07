@@ -27,7 +27,7 @@ namespace Desktop
         {
             DataContext = model = new MainPageViewModel();
 
-            model.Settings.NoteItemSize = 45;
+            model.Settings.NoteItemSize = 100;
         }
 
         void Window_Loaded(object sender, RoutedEventArgs e)
