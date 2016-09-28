@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<Settings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <DataSources>
+    <DataSource>
+      <Name>FOLDER_A</Name>
+      <Path>C:\Users\user\Desktop\Programowanie\Github\MyMedia\TEST_FOLDER\FOLDER_A</Path>
+    </DataSource>
+    <DataSource>
+      <Name>FOLDER_B</Name>
+      <Path>C:\Users\user\Desktop\Programowanie\Github\MyMedia\TEST_FOLDER\FOLDER_B</Path>
+    </DataSource>
+  </DataSources>
+  <FolderInfoFileName>_myMedia.txt</FolderInfoFileName>
+</Settings>
