@@ -1,0 +1,6 @@
+ffmpeg-20170117-f7e9275-win32-static.zip install
+
+
+C:\ffmpeg\bin
+
+to Path

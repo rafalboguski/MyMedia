@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="libs/fontAwesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="content/styles/style.css" />
+    <title>Hello World!</title>
+</head>
+
+<body ng-controller="mainController">
+    <nav class="navigation-bar">
+        <div class="form-inline">
+            <div class="btn-group">
+                <a class="btn btn-default" ng-click="navigateBack()">&lt;</a>
+                <a class="btn btn-default" ng-click="navigateForward()">&gt;</a>
+            </div>
+
+            <div class="btn-group">
+                <a class="btn btn-default" href="#/stars">Stars</a>
+                <a class="btn btn-default" href="#/items">Items</a>
+            </div>
+
+            <input type="text" class="form-control" placeholder="Search">
+            <a class="btn btn-default right" href="#">Data sources</a>
+            <a class="btn btn-default right" href="#/settings">Settings</a>
+        </div>
+    </nav>
+
+    <div ng-view>
+    </div>
+</body>
+
+<script>
+
+    window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
+    window.Tether = require('tether');
+    require('./node_modules/bootstrap/dist/js/bootstrap.min.js');
+    require('./node_modules/angular/angular.js');
+    require('./node_modules/angular-route/angular-route.min.js');
+    require('./node_modules/angular-animate/angular-animate.min.js');
+    require('./node_modules/angular-sanitize/angular-sanitize.min.js');
+    require('./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
+
+    require('./app/contextMenu.js');
+    require('./renderer.js');
+
+    require('./app/app.js');
+    require('./app/controllers/_controllers.js');
+    require('./app/services/_services.js');
+    require('./app/helpers/windowHelper.js');
+
+</script>
+
+</html>
