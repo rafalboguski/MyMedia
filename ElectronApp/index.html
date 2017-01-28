@@ -28,6 +28,9 @@
         </div>
     </nav>
 
+    <div>
+        <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="alerts.splice($index, 1)">{{alert.message}}</div>
+    </div>
     <div ng-view>
     </div>
 </body>
@@ -50,6 +53,8 @@
     require('./app/controllers/_controllers.js');
     require('./app/services/_services.js');
     require('./app/helpers/windowHelper.js');
+
+    window.fs = require('fs');
 
 </script>
 
