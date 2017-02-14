@@ -19,10 +19,12 @@ body {
 }
 
 
-
-
 .right {
     float: right;
+}
+
+.container {
+    width: 95%;
 }
 
 /* Navbar */
@@ -45,4 +47,30 @@ img {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
+}
+
+/*sections*/
+.card{
+    margin: 5px;
+}
+
+.col.no-padding{
+    padding-left: 0 !important; 
+    padding-right: 0 !important; 
+}
+
+/*forms*/
+.input-button > div > input{
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-right-width: 0 !important;
+}
+
+.input-button > div > .btn{
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+/*buttons*/
+.btn{
+    cursor: pointer !important;
 }
