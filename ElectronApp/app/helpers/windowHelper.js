@@ -55,6 +55,7 @@ window.dialog = {
 // Database
 
 var MongoClient = require('mongodb').MongoClient, assert = require('assert');
+window.autoIncrement = require("mongodb-autoincrement");
 
 window.mongo = function (job) {
 

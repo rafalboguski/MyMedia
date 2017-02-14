@@ -18,7 +18,6 @@ body {
     cursor: default;
 }
 
-
 .right {
     float: right;
 }
@@ -73,4 +72,23 @@ img {
 /*buttons*/
 .btn{
     cursor: pointer !important;
+}
+
+.fill-width{
+    width: 100%;
+}
+
+.row{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+
+
+.show .show-on-hover{
+    display: none;
+}
+
+.show:hover .show-on-hover{
+    display: unset;
 }

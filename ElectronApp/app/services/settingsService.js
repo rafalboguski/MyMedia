@@ -10,7 +10,7 @@ angular.module('myApp')
 
                 getFilePath: function () { return this.path + '\\' + this.fileName },
                 update: function (newer) {
-                     this.dataSources = newer.dataSources;
+                    this.dataSources = newer.dataSources;
                 }
 
             };
@@ -18,6 +18,7 @@ angular.module('myApp')
             // settings crud
             this.loadSettings = function (callback) {
 
+           
                 this.loadSettingsPath(function (path) {
 
                     if (!path) {
@@ -45,39 +46,6 @@ angular.module('myApp')
 
             };
 
-            this.setSettingsPath = function (callback) {
-                dialog.selectFolderDialog(function (res) {
-                    storage.set('settings.path', res[0], function (error) {
-                        if (error)
-                            throw error;
-                        $rootScope.settings.path = res[0];
-                        $rootScope.$apply();
-
-                        if (angular.isFunction(callback))
-                            callback($rootScope.settings.path);
-                    });
-                });
-            };
-
-            this.loadSettingsPath = function (callback) {
-                storage.get('settings.path', function (error, data) {
-                    if (error || angular.equals({}, data)) {
-                        console.log('settingsService: settings path empty', data)
-                        $rootScope.settings.path = null;
-                        alertsService.showWarning('Path to settings dictionary is not set');
-                    }
-                    else {
-                        console.log('settingsService: settings path loaded', data)
-                        $rootScope.settings.path = data;
-                    }
-                    $rootScope.$apply();
-
-                    if (angular.isFunction(callback))
-                        callback($rootScope.settings.path);
-                });
-            };
-
-            // data sources
 
 
 

@@ -1,39 +1,41 @@
 angular.module('myApp')
-  .controller('settingsController', ['$rootScope', '$scope', '$http', '$window', 'settingsService',
-    function ($rootScope, $scope, $http, $window, settingsService) {
+  .controller('settingsController', ['$rootScope', '$scope', '$http', '$window', 'settingsService', 'dataSourcesService',
+    function ($rootScope, $scope, $http, $window, settingsService, dataSourcesService) {
 
+      $scope.dataSources = [];
 
-      $scope.setGlobalSettingsPath = function () {
-        settingsService.setSettingsPath();
-      };
-
-      $scope.addDataSource = function () {
-        $rootScope.settings.dataSources.push("");
+      $scope.getDataSources = function () {
+        dataSourcesService.getDataSources(function (data) {
+          $scope.dataSources = data;
+          $scope.$apply();
+        });
       };
 
       $scope.addDataSourceDialog = function () {
-
         dialog.selectFoldersDialog(function (res) {
           angular.forEach(res, function (value, key) {
-            $rootScope.settings.dataSources.push(value);
+            dataSourcesService.addDataSources({ path: value }, function () {
+              $scope.getDataSources();
+            });
           });
-          $rootScope.$apply();
         });
-
       };
 
-      $scope.removeDataSource = function () {
-        settingsService.setSettingsPath();
-      };
-
-      $scope.save = function () {
-        settingsService.saveSettings();
+      $scope.removeDataSource = function (ds) {
+        dataSourcesService.removeDataSource(ds, function () {
+          $scope.getDataSources();
+        });
       }
 
-
+      $scope.removeAllDataSources = function () {
+        dataSourcesService.removeAllDataSources(function () {
+          $scope.getDataSources();
+        });
+      };
 
       function init() {
 
+        $scope.getDataSources();
 
       };
 

@@ -8,10 +8,6 @@ angular.module('myApp')
 
                 
 
-                settingsService.loadSettings();
-                
-
-
             };
 
             appInit();
