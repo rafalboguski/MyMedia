@@ -3,39 +3,37 @@ angular.module('myApp')
 
         $scope.stars = [];
 
-        $scope.totalDisplayed = 20;
+
+        $scope.addStar = function () {
+
+            mongo(function (db) {
+
+                var collection = db.collection('documents');
+                collection.insertMany([
+                    { name: 'New Star' },
+                ], function (err, result) {
+                    db.close();
+                });
+
+            });
+        };
 
         function init() {
-
-            $scope.stars = [];
-
             console.log('starsController');
 
+            mongo(function (db) {
 
-            var dire = "C:\\Users\\user\\Desktop\\Obrazy".split('\\').join('/');
-            var th = dire + '/thumbnails';
+                var collection = db.collection('documents');
 
+                collection.find({}).toArray(function (err, docs) {
+                    console.log("Found the following records");
+                    console.dir(docs);
 
-            var exec = require('child_process').execFile;
+                    $scope.stars = docs;
+                    $scope.$apply();
 
-            var fun = function () {
-                console.log("fun() start");
-                exec('C:/Program Files (x86)/Google/Chrome/Application/chrome.exe', function (err, data) {
-                    console.log(err)
-                    console.log(data.toString());
+                    db.close();
                 });
-            }
-            //fun();
-
-
-            var fs = require("fs");
-            var glob = require('glob');
-
-            glob(dire + '/**/*.*', function (err, files) {
-                for (var i = 0; i < files.length; i++) {
-                    $scope.stars.push({ path: files[i] });
-                }
-                $scope.$apply();
 
             });
 

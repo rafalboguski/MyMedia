@@ -17,6 +17,10 @@ routeConfig.config(['$routeProvider',
         templateUrl: './app/views/settings.html',
         controller: 'settingsController'
       }).
+       when('/test', {
+        templateUrl: './app/views/test.html',
+        controller: 'testController'
+      }).
       otherwise({
         redirectTo: '/stars'
       });

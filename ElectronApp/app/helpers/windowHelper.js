@@ -52,3 +52,20 @@ window.dialog = {
 
 };
 
+// Database
+
+var MongoClient = require('mongodb').MongoClient, assert = require('assert');
+
+window.mongo = function (job) {
+
+    MongoClient.connect('mongodb://localhost:27017/media', function (err, db) {
+
+        if (err) {
+            return err;
+        }
+
+        job(db);
+    });
+
+};
+
