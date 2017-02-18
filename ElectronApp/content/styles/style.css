@@ -16,6 +16,8 @@ body {
     -ms-user-select: none;
     user-select: none;
     cursor: default;
+    background-color: rgb(5, 5, 5);
+    color: rgb(200, 200, 200);
 }
 
 .right {
@@ -23,16 +25,42 @@ body {
 }
 
 .container {
-    width: 95%;
+    width: 98%;
 }
 
 /* Navbar */
 .navigation-bar {
     padding: 2px;
+    padding-top: 5px;
+    background-color: rgb(50, 50, 50);
+    margin-bottom: 10px;
 }
+
+nav a {
+    color: rgb(200, 200, 200);
+}
+nav a:hover {
+    color: rgb(150, 150, 255);
+}
+
+nav a:focus {
+    color: rgb(100, 100, 255);
+    text-decoration: transparent;
+}
+
+nav input {
+    color: rgb(200, 200, 200) !important;
+    border: 0px;
+    background-color: rgb(30, 30, 30) !important;
+}
+
+nav input:focus {
+    color: rgb(230, 230, 230) !important;
+}
+
 /* Star Panel */
 
-img {
+.gallery img {
     max-height: 200px;
 }
 
@@ -51,6 +79,12 @@ img {
 /*sections*/
 .card{
     margin: 5px;
+    background-color: rgb(30, 30, 30);
+}
+
+.card-header{
+    color: rgb(200, 200, 200);
+    background-color: rgb(50, 50, 50);
 }
 
 .col.no-padding{
@@ -69,9 +103,39 @@ img {
     border-top-left-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
 }
+
+input {
+    color: rgb(200, 200, 200) !important;
+    border: 0px;
+    background-color: rgb(15, 15, 15) !important;
+}
+
+
 /*buttons*/
-.btn{
+.myview .btn{
     cursor: pointer !important;
+    color: rgb(200, 200, 200);
+    background-color: rgb(25, 25, 25);
+}
+.myview .btn:hover, .myview  .btn:active{
+    cursor: pointer !important;
+    color: rgb(250, 250, 250);
+    background-color: rgb(15, 15, 15);
+}
+
+.myview .btn-success:hover, .myview  .btn-success:active{
+    background-color: rgb(12, 55, 12);
+}
+
+.myview .btn-warning{
+    background-color: rgb(55, 42, 12);
+}
+.myview .btn-warning:hover, .myview  .btn-warning:active{
+    background-color: rgb(75, 62, 32);
+}
+
+.myview .btn-danger:hover, .myview  .btn-danger:active{
+    background-color: rgb(55, 12, 12);
 }
 
 .fill-width{
@@ -83,6 +147,14 @@ img {
     margin-right: 0;
 }
 
+#bootstrap-overrides .btn, .btn:focus{
+  border: 0 !important;
+  box-shadow: 0 0 0 transparent inset, 0 0 0  transparent !important;
+  outline: 0 none !important;
+   border-color: none !important;
+    box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
 
 
 .show .show-on-hover{
@@ -92,3 +164,5 @@ img {
 .show:hover .show-on-hover{
     display: unset;
 }
+
+

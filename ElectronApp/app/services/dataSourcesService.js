@@ -25,18 +25,24 @@ angular.module('myApp')
 
             this.addDataSources = function (newDataSource, callback) {
                 mongo(function (db) {
-                    autoIncrement.getNextSequence(db, 'dataSources', function (err, autoIndex) {
+                    var collection = db.collection('dataSources');
 
-                        newDataSource._id = autoIndex;
+                    collection.findOne({ path: newDataSource.path }, function (err, document) {
 
-                        var collection = db.collection('dataSources');
-                        collection.insert(newDataSource, function (err, result) {
-                            db.close()
-                            console.log('addDataSources => ', result)
+                        if (document == null) {
+                            autoIncrement.getNextSequence(db, 'dataSources', function (err, autoIndex) {
 
-                            if (angular.isFunction(callback))
-                                callback(result);
-                        });
+                                newDataSource._id = autoIndex;
+
+                                collection.insert(newDataSource, function (err, result) {
+                                    db.close()
+                                    console.log('addDataSources => ', result)
+
+                                    if (angular.isFunction(callback))
+                                        callback(result);
+                                });
+                            });
+                        }
                     });
                 });
             };
@@ -55,7 +61,7 @@ angular.module('myApp')
                 });
             };
 
-             this.removeAllDataSources = function (callback) {
+            this.removeAllDataSources = function (callback) {
                 mongo(function (db) {
                     var collection = db.collection('dataSources');
 

@@ -1,24 +1,35 @@
-<div class="container">
+<div>
     <div class="row">
         <div class="col-lg-6">
+            <!-- Data Sources -->
             <div class="card">
-                <div class="card-header">Data sources</div>
+                <div class="card-header">
+                    <i class="fa fa-database" aria-hidden="true"></i> Data sources
+                </div>
                 <div class="card-block">
-                    <div class="row" ng-repeat="dataSource in dataSources | orderBy: 'path' track by $index" style="margin-bottom: 10px">
-                        <div class="btn-group fill-width show">
-                            <button type="button" class="btn fill-width text-left"ng-class="dataSource.invalid ? 'btn-warning' : 'btn-secondary'"> 
+                    <div style="max-height: 500px; overflow-y: auto">
+                        <div class="row" ng-repeat="dataSource in dataSources | orderBy: 'path' track by $index" style="margin-bottom: 0px">
+                            <div class="btn-group fill-width show">
+                                <button type="button" class="btn fill-width text-left" ng-class="dataSource.invalid ? 'btn-warning' : 'btn-secondary'"> 
                                {{$index + 1}}. {{dataSource.path}}
                                 </button>
-                            <button type="button" class="btn btn-secondary show-on-hover" ng-click="removeDataSource(dataSource)">
+                                <button type="button" class="btn btn-secondary show-on-hover" ng-click="removeDataSource(dataSource)">
                                 <span >X</span>
                             </button>
-                             
+
+                            </div>
                         </div>
                     </div>
                     <div class="row-fluid">
-                        <button class="btn btn-success" ng-click="addDataSourceDialog()">Add new</button>
+                        <button class="btn btn-success" ng-click="addDataSourceDialog()">
+                            <i class="fa fa-plus"></i>
+                            Add new
+                        </button>
 
-                        <button class="btn btn-danger pull-right" ng-click="removeAllDataSources()">Clear</button>
+                        <button class="btn btn-danger pull-right" ng-click="removeAllDataSources()">
+                            <i class="fa fa-trash-o"></i>
+                            Remove all
+                        </button>
                     </div>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute', 'routeConfig', 'ngAnimate', 'ngSanitize', 'ui.bootstrap']);
+var myApp = angular.module('myApp', ['ngRoute', 'routeConfig', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'thatisuday.dropzone']);
 
 var routeConfig = angular.module('routeConfig', []);
 
@@ -8,6 +8,10 @@ routeConfig.config(['$routeProvider',
       when('/stars', {
         templateUrl: './app/views/stars.html',
         controller: 'starsController'
+      }).
+      when('/stars/add', {
+        templateUrl: './app/views/star.html',
+        controller: 'starController'
       }).
       when('/items', {
         templateUrl: './app/views/items.html',

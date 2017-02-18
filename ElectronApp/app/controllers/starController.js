@@ -1,8 +1,40 @@
 angular.module('myApp')
-    .controller('starsController', ['$scope', '$http', 'starsService',
+    .controller('starController', ['$scope', '$http', 'starsService',
         function ($scope, $http, starsService) {
 
             $scope.stars = [];
+
+
+
+
+            $scope.dzOptions = {
+                url: '/alt_upload_url',
+                paramName: 'photo',
+                maxFilesize: '10',
+                acceptedFiles: 'image/jpeg, images/jpg, image/png',
+                addRemoveLinks: true,
+            };
+
+
+            $scope.dzCallbacks = {
+                'addedfile': function (file) {
+                    console.log(file);
+                    $scope.newFile = file;
+                },
+                'success': function (file, xhr) {
+                    console.log(file, xhr);
+                },
+            };
+
+
+            $scope.dzMethods = {};
+            $scope.removeNewFile = function () {
+                $scope.dzMethods.removeFile($scope.newFile); //We got $scope.newFile from 'addedfile' event callback
+            }
+
+
+
+
 
 
             $scope.addStar = function () {
@@ -34,7 +66,7 @@ angular.module('myApp')
             };
 
             function init() {
-                console.log('starsController');
+                console.log('Add Star View');
 
                 $scope.getStars();
             };

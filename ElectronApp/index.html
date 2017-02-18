@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="libs/fontAwesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="node_modules/dropzone/dist/min/dropzone.min.css">
     <link rel="stylesheet" href="content/styles/style.css" />
     <title>Hello World!</title>
 </head>
 
-<body ng-controller="mainController">
+<body ng-controller="mainController" id="bootstrap-overrides">
     <nav class="navigation-bar">
         <div class="form-inline">
             <div class="btn-group">
@@ -18,26 +19,30 @@
             </div>
 
             <div class="btn-group">
-                <a class="btn btn-default" href="#/stars">Stars</a>
-                <a class="btn btn-default" href="#/items">Items</a>
+                <a class="btn btn-default" href="#/stars">
+                    <i class="fa fa-users" aria-hidden="true"></i> Stars
+                </a>
+                <a class="btn btn-default" href="#/items">
+                    <i class="fa fa-clone" aria-hidden="true"></i> Items
+                </a>
                 <a class="btn btn-default" href="#/test">Test</a>
             </div>
 
             <input type="text" class="form-control" placeholder="Search">
-            <a class="btn btn-default right" href="#">Data sources</a>
-            <a class="btn btn-default right" href="#/settings">Settings</a>
+            <a class="btn btn-default right" href="#/settings">
+                <i class="fa fa-cogs" aria-hidden="true"></i> Settings
+            </a>
         </div>
     </nav>
 
     <div>
         <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="alerts.splice($index, 1)">{{alert.message}}</div>
     </div>
-    <div ng-view>
+    <div class="myview" ng-view>
     </div>
 </body>
 
 <script>
-
     window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
     window.Tether = require('tether');
     require('./node_modules/bootstrap/dist/js/bootstrap.min.js');
@@ -46,6 +51,8 @@
     require('./node_modules/angular-animate/angular-animate.min.js');
     require('./node_modules/angular-sanitize/angular-sanitize.min.js');
     require('./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
+    window.Dropzone = require('./node_modules/dropzone/dist/min/dropzone.min.js');
+    require('./node_modules/ngdropzone/dist/ng-dropzone.js');
 
     require('./app/contextMenu.js');
     require('./renderer.js');
