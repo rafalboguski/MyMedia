@@ -7,6 +7,7 @@ angular.module('myApp')
                 var star = {
                     _id: null,
                     names: [],
+                    coverPath: null
                 }
 
                 return star;

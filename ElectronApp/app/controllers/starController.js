@@ -2,61 +2,28 @@ angular.module('myApp')
     .controller('starController', ['$scope', '$http', 'starsService',
         function ($scope, $http, starsService) {
 
-            $scope.stars = [];
+            $scope.star = null;
 
 
+            // UI File Drop
 
 
-            $scope.dzOptions = {
-                url: '/alt_upload_url',
-                paramName: 'photo',
-                maxFilesize: '10',
-                acceptedFiles: 'image/jpeg, images/jpg, image/png',
-                addRemoveLinks: true,
+            $scope.onFilesDropped = function ($files, $event) {
+                console.log('$files', $files[0].path);
+                $scope.star.coverPath = $files[0].path;
             };
 
-
-            $scope.dzCallbacks = {
-                'addedfile': function (file) {
-                    console.log(file);
-                    $scope.newFile = file;
-                },
-                'success': function (file, xhr) {
-                    console.log(file, xhr);
-                },
-            };
-
-
-            $scope.dzMethods = {};
-            $scope.removeNewFile = function () {
-                $scope.dzMethods.removeFile($scope.newFile); //We got $scope.newFile from 'addedfile' event callback
-            }
-
-
-
-
-
+            // DATA Set
 
             $scope.addStar = function () {
-                debugger;
-                var star = starsService.build();
 
                 starsService.addStar(star, function (result) {
 
                     $scope.getStars();
                 });
-
-                mongo(function (db) {
-
-                    var collection = db.collection('documents');
-                    collection.insertMany([
-                        { name: 'New Star' },
-                    ], function (err, result) {
-                        db.close();
-                    });
-
-                });
             };
+
+            // DATA Get
 
             $scope.getStars = function () {
                 starsService.getStars(function (result) {
@@ -65,8 +32,14 @@ angular.module('myApp')
                 })
             };
 
+            // INIT
+
             function init() {
                 console.log('Add Star View');
+
+                // if add
+                $scope.star = starsService.build();
+
 
                 $scope.getStars();
             };

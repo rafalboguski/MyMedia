@@ -166,3 +166,12 @@ input {
 }
 
 
+/* File drop directive */
+
+
+.filesDrop--dragover{
+    border: solid 1px blue;
+
+    filter: blur(15px);
+    
+}

@@ -2,6 +2,18 @@
 // https://github.com/jviotti/electron-json-storage
 window.storage = require('electron-json-storage');
 
+// electron
+
+//prevent url change on file drop
+// document.addEventListener('dragover',function(event){
+//     event.preventDefault();
+//     return false;
+//   },false);
+
+  document.addEventListener('drop',function(event){
+    event.preventDefault();
+    return false;
+  },false);
 
 // Dialogs
 // https://github.com/electron/electron/blob/master/docs/api/dialog.md
