@@ -5,10 +5,10 @@ window.storage = require('electron-json-storage');
 // electron
 
 //prevent url change on file drop
-// document.addEventListener('dragover',function(event){
-//     event.preventDefault();
-//     return false;
-//   },false);
+document.addEventListener('dragover',function(event){
+    event.preventDefault();
+    return false;
+  },false);
 
   document.addEventListener('drop',function(event){
     event.preventDefault();
@@ -69,7 +69,7 @@ window.dialog = {
 var MongoClient = require('mongodb').MongoClient, assert = require('assert');
 window.autoIncrement = require("mongodb-autoincrement");
 
-window.mongo = function (job) {
+window.mongo = function (job, self) {
 
     MongoClient.connect('mongodb://localhost:27017/media', function (err, db) {
 
@@ -77,7 +77,7 @@ window.mongo = function (job) {
             return err;
         }
 
-        job(db);
+        job(db, self);
     });
 
 };

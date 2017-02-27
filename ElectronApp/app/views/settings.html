@@ -35,19 +35,40 @@
             </div>
         </div>
         <div class="col-lg-6">
+            <!-- Paths -->
             <div class="card">
-                <div class="card-header">Settings</div>
+                <div class="card-header">
+                    <i class="fa fa-database" aria-hidden="true"></i> Paths
+                </div>
                 <div class="card-block">
 
                     <form>
-                        <div class="form-group row input-button">
+                        <!--<div class="form-group row input-button">
                             <div class="col col-sm-9 no-padding">
-                                <input type="text" class="form-control" placeholder="asdasd">
+                                <input type="text" class="form-control" ng-model="settings.">
                             </div>
                             <div class="col col-sm-3 no-padding">
                                 <button class="btn btn-secondary btn-block">Button</button>
                             </div>
+                        </div>-->
+                        <label>Global data path</label>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" ng-model="settings.paths.globalData">
+                            <div class="input-group-addon" ng-click="browseGlobalData()">Browse</div>
                         </div>
+
+                        <label>Thumbnail generator path</label>
+                        <div class="input-group form-group">
+                            <input type="text" class="form-control" ng-model="settings.paths.thumbnailGenerator">
+                            <div class="input-group-addon" ng-click="browseThumbnailGenerator()">Browse</div>
+                        </div>
+
+                        <button type="submit" class="btn large btn" ng-click="getSettings()">
+                            <i class="fa fa-refresh"></i> Reload
+                        </button>
+                        <button type="submit" class="btn large btn-success pull-right" ng-click="saveSettings()">
+                             <i class="fa fa-floppy-o"></i> Save
+                        </button>
                     </form>
 
                 </div>
