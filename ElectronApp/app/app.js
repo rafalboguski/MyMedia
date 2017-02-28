@@ -13,6 +13,10 @@ routeConfig.config(['$routeProvider',
         templateUrl: './app/views/star.html',
         controller: 'starController'
       }).
+       when('/star/:starId/edit', {
+        templateUrl: './app/views/star.html',
+        controller: 'starController'
+      }).
       when('/items', {
         templateUrl: './app/views/items.html',
         controller: 'itemsController'

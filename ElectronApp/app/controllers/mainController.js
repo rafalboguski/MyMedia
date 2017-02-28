@@ -6,12 +6,11 @@ angular.module('myApp')
 
                 console.log('appInit');
 
-                
+                settingsService.getSettings();
 
             };
 
             appInit();
-
 
             $scope.navigateBack = function () {
                 console.log('navigateBack');

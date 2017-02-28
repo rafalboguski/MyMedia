@@ -27,6 +27,7 @@ angular.module('myApp')
                             result = settings;
                         }
 
+                        $rootScope.settings = result;
                         self.Finish(err, result, db, callback);
                     });
                 }, this);

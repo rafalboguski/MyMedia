@@ -82,3 +82,9 @@ window.mongo = function (job, self) {
 
 };
 
+// Angular
+
+
+function $apply(scope, fn) {
+    (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
+}

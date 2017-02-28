@@ -17,23 +17,30 @@ namespace ThumbnailGenerator
         // source:       ../pic/1.jpg
         // destination:  ../pic/_thumbnails/1.jpg.jpg
 
-        static void Main(string[] args) // source[path] x[int] y[int] hidden[true/false] forceUpdate[true/false]
+        static void Main(string[] args) // source[path] destination[path] x[int] y[int] hidden[true/false] forceUpdate[true/false]
         {
-            if (args == null || args.Length < 5)
+            if (args == null || args.Length < 6)
             {
                 Console.WriteLine("source[path] x[int] y[int] hidden[true/false] forceUpdate[true/false]");
                 return;
             }
 
-            var source = @"C:/Users/user/Desktop/Obrazy/test";
+            string source = @"C:/Users/user/Desktop/Obrazy/test";
+            string dest = null;
             var size = new Size(300, 200);
             var hideDictionary = false;
             var forceUpdate = true;
 
             source = args[0];
-            size = new Size(int.Parse(args[1]), int.Parse(args[2]));
-            hideDictionary = bool.Parse(args[3]);
-            forceUpdate = bool.Parse(args[4]);
+            dest = args[1];
+            if (dest == "null")
+            {
+                dest = null;
+            }
+
+            size = new Size(int.Parse(args[2]), int.Parse(args[3]));
+            hideDictionary = bool.Parse(args[4]);
+            forceUpdate = bool.Parse(args[5]);
 
 
             var files = new List<string>();
@@ -50,7 +57,7 @@ namespace ThumbnailGenerator
             System.Threading.Tasks.Parallel.ForEach(files, file =>
             {
                 // set destination extension to jpg
-                var destination = Path.Combine(Path.GetDirectoryName(file), "_thumbnails", Path.GetFileName(file) + ".jpg");
+                var destination = dest ?? Path.Combine(Path.GetDirectoryName(file), "_thumbnails", Path.GetFileName(file) + ".jpg");
 
                 // check if source is newer than destination
                 if (forceUpdate || File.GetLastWriteTime(file) > File.GetLastWriteTime(destination))

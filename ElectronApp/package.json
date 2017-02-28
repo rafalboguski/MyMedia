@@ -39,11 +39,15 @@
     "angular-ui-bootstrap": "2.4.0",
     "bootstrap": "^4.0.0-alpha.6",
     "bower": "^1.8.0",
+    "cmd-exec": "^0.1.0",
     "electron-json-storage": "^3.0.0",
+    "fs-path": "0.0.23",
     "jquery": "2.2",
+    "lodash": "^4.17.4",
     "mongodb": "^2.2.24",
     "mongodb-autoincrement": "^1.0.1",
     "mongoose": "^4.8.2",
+    "path": "^0.12.7",
     "tether": "^1.4.0"
   }
 }
