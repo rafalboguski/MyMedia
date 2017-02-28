@@ -5,15 +5,15 @@ window.storage = require('electron-json-storage');
 // electron
 
 //prevent url change on file drop
-document.addEventListener('dragover',function(event){
+document.addEventListener('dragover', function (event) {
     event.preventDefault();
     return false;
-  },false);
+}, false);
 
-  document.addEventListener('drop',function(event){
+document.addEventListener('drop', function (event) {
     event.preventDefault();
     return false;
-  },false);
+}, false);
 
 // Dialogs
 // https://github.com/electron/electron/blob/master/docs/api/dialog.md
@@ -85,6 +85,9 @@ window.mongo = function (job, self) {
 // Angular
 
 
-function $apply(scope, fn) {
-    (scope.$$phase || scope.$root.$$phase) ? fn() : scope.$apply(fn);
+window.$apply = function (scope) {
+    _.defer(function () {
+        scope.$apply();
+    });
+
 }

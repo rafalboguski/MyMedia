@@ -21,7 +21,7 @@ angular.module('myApp')
         dialog.selectFoldersDialog(function (res) {
           if (res)
             $scope.settings.paths.globalData = res;
-          $scope.$apply();
+          $apply($scope);
         });
       };
 
@@ -29,7 +29,7 @@ angular.module('myApp')
         dialog.selectFoldersDialog(function (res) {
           if (res)
             $scope.settings.paths.thumbnailGenerator = res;
-          $scope.$apply();
+          $apply($scope);
         });
       };
 
@@ -50,7 +50,7 @@ angular.module('myApp')
       $scope.getSettings = function () {
         settingsService.getSettings(function (data) {
           $scope.settings = data;
-          $scope.$apply();
+          $apply($scope);
         });
       };
 
@@ -63,7 +63,7 @@ angular.module('myApp')
       $scope.getDataSources = function () {
         dataSourcesService.getDataSources(function (data) {
           $scope.dataSources = data;
-          $scope.$apply();
+          $apply($scope);
         });
       };
 

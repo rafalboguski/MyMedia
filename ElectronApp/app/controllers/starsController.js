@@ -29,7 +29,7 @@ angular.module('myApp')
             $scope.getStars = function () {
                 starsService.getStars(function (result) {
                     $scope.stars = result;
-                    $scope.$apply();
+                    $apply($scope);
                 })
             };
 

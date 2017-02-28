@@ -39,6 +39,9 @@ angular.module('myApp')
                             path = model.tmp.newCoverPath;
                         }
 
+                        if(path){
+                            path += '?'+ new Date().getTime();
+                        }
                         console.log(path);
 
                         return path;
@@ -148,7 +151,7 @@ angular.module('myApp')
                 // variable is set ony whe new photo was picked
                 if (!star.tmp.newCoverPath) {
                     console.log('No star.tmp.newCoverPath');
-                    return;
+                    callback();
                 }
 
                 star.hasCover = true;

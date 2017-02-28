@@ -35,7 +35,7 @@ angular.module('myApp')
                 for (var i = 0; i < files.length; i++) {
                     $scope.stars.push({ path: files[i] });
                 }
-                $scope.$apply();
+                $apply($scope);
 
             });
 
