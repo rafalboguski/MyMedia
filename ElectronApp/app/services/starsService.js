@@ -41,6 +41,7 @@ angular.module('myApp')
 
                         if(path){
                             path += '?'+ new Date().getTime();
+                            path = path.split('\\').join('/');
                         }
                         console.log(path);
 
