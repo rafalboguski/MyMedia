@@ -12,7 +12,7 @@ angular.module('myApp')
                         thumbnailGenerator: null
                     },
                     params: {}
-                }
+                };
             };
 
             this.getSettings = function (callback) {

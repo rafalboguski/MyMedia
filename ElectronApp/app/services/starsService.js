@@ -2,8 +2,9 @@ angular.module('myApp')
     .service('starsService', ['$rootScope', '$location', 'alertsService', 'settingsService',
         function ($rootScope, $location, alertsService, settingsService) {
 
-            this.collectionName = 'stars';
+            var collectionName = 'stars';
 
+            // run after fetching from db
             this.build = function (model) {
 
                 if (!model) { model = {}; }
@@ -14,49 +15,47 @@ angular.module('myApp')
                     names: [],
                     hasCover: false,
                     tmp: {
-                        newCoverPath: null
+                        coverThumbnailPath: null,
+                        coverFullPath: null,
+                        newCoverPath: null // userd to insert new image
                     }
                 });
 
                 // add functions
                 model.functions = {
-                    getThumbnail: function () {
-
-                        var path = null;
-
-                        if (model._id !== null) {
-
-                            if (model.hasCover) {
-                                path = $rootScope.settings.paths.globalData + '\\covers\\stars\\thumbails\\' + model._id + ".jpg";
-
-                            }
-                            else {
-                                path = $rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
-                            }
-
-                        }
-                        else {
-                            path = model.tmp.newCoverPath;
-                        }
-
-                        if(path){
-                            path += '?'+ new Date().getTime();
-                            path = path.split('\\').join('/');
-                        }
-                        console.log(path);
-
-                        return path;
-                    }
 
                 };
 
+                // set paths
+                if (model._id !== null) {
+                    if (model.hasCover) {
+                        path = $rootScope.settings.paths.globalData + '\\covers\\' + collectionName + '\\thumbails\\' + model._id + ".jpg";
+
+                    }
+                    else {
+                        path = $rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
+                    }
+                }
+
+                if (path) {
+                    path = path.split('\\').join('/') + '?' + new Date().getTime();
+                }
+
+                model.tmp.coverThumbnailPath = path;
+
                 return model;
-            }
+            };
+
+            // run before saving in db
+            this.clean = function (model) {
+                delete model.functions;
+                delete model.tmp;
+            };
 
             // Get
             this.getStar = function (id, callback) {
                 mongo(function (db, self) {
-                    db.collection(self.collectionName).findOne({ _id: id }, function (err, result) {
+                    db.collection(collectionName).findOne({ _id: id }, function (err, result) {
                         if (result) {
                             self.build(result);
                         }
@@ -67,7 +66,7 @@ angular.module('myApp')
 
             this.getStars = function (callback) {
                 mongo(function (db, self) {
-                    db.collection(self.collectionName).find({}).toArray(function (err, list) {
+                    db.collection(collectionName).find({}).toArray(function (err, list) {
 
                         angular.forEach(list, function (value, key) {
                             self.build(value);
@@ -81,19 +80,17 @@ angular.module('myApp')
             // Set
             this.addStar = function (model, callback) {
                 mongo(function (db, self) {
-                    var collection = db.collection(self.collectionName);
+                    var collection = db.collection(collectionName);
 
-                    autoIncrement.getNextSequence(db, self.collectionName, function (err, autoIndex) {
+                    autoIncrement.getNextSequence(db, collectionName, function (err, autoIndex) {
 
                         model._id = autoIndex;
 
                         // add thumbnail
                         self.generateThumbnail(model, function () {
-                            // clean not persisted data
-                            delete model.functions;
-                            delete model.tmp;
 
-                            // insert
+                            self.clean(model);
+
                             collection.insert(model, function (err, result) {
                                 self.Finish(err, result.insertedIds[0], db, callback);
                             });
@@ -104,7 +101,7 @@ angular.module('myApp')
 
             this.saveStar = function (model, callback) {
                 mongo(function (db, self) {
-                    var collection = db.collection(self.collectionName);
+                    var collection = db.collection(collectionName);
 
                     collection.findOne({ _id: model._id }, function (err, result) {
 
@@ -118,9 +115,7 @@ angular.module('myApp')
                             // add thumbnail
                             self.generateThumbnail(model, function () {
 
-                                // clean not persisted data
-                                delete model.functions;
-                                delete model.tmp;
+                                self.clean(model);
 
                                 // save
                                 collection.updateOne({ _id: model._id }, model, function (err, result) {

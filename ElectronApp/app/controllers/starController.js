@@ -31,6 +31,9 @@ angular.module('myApp')
             // UI File Drop
             $scope.onFilesDropped = function ($files, $event) {
                 $scope.star.tmp.newCoverPath = $files[0].path;
+                
+                $scope.star.tmp.coverThumbnailPath = $files[0].path;
+                $scope.star.tmp.coverFullPath = $files[0].path;
             };
 
             // DATA Set
@@ -51,7 +54,6 @@ angular.module('myApp')
 
             // DATA Get
             $scope.getStar = function () {
-                $apply($scope);
 
                 if ($scope.view == 'Edit') {
                     starsService.getStar(_starId, function (data) {

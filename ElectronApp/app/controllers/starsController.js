@@ -5,26 +5,7 @@ angular.module('myApp')
             $scope.stars = [];
 
 
-            $scope.addStar = function () {
-                debugger;
-                var star = starsService.build();
-
-                starsService.addStar(star, function (result) {
-
-                    $scope.getStars();
-                });
-
-                mongo(function (db) {
-
-                    var collection = db.collection('documents');
-                    collection.insertMany([
-                        { name: 'New Star' },
-                    ], function (err, result) {
-                        db.close();
-                    });
-
-                });
-            };
+     
 
             $scope.getStars = function () {
                 starsService.getStars(function (result) {
