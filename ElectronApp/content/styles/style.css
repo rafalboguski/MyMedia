@@ -167,3 +167,9 @@ input {
     filter: blur(15px);
     
 }
+
+/* when data inside was modyfied */
+.modyfied{
+
+    border: 1px darkorange solid;
+}

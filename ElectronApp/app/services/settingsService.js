@@ -26,7 +26,6 @@ angular.module('myApp')
                             collection.insert(settings);
                             result = settings;
                         }
-
                         $rootScope.settings = result;
                         self.Finish(err, result, db, callback);
                     });

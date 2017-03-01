@@ -84,10 +84,8 @@ window.mongo = function (job, self) {
 
 // Angular
 
-
 window.$apply = function (scope) {
     _.defer(function () {
         scope.$apply();
     });
-
-}
+};

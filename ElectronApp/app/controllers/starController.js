@@ -5,6 +5,7 @@ angular.module('myApp')
             var _starId;
 
             $scope.star = null;
+            $scope.starOryginal = null;
 
             // INIT
             function getRouteParams() {
@@ -31,7 +32,7 @@ angular.module('myApp')
             // UI File Drop
             $scope.onFilesDropped = function ($files, $event) {
                 $scope.star.tmp.newCoverPath = $files[0].path;
-                
+
                 $scope.star.tmp.coverThumbnailPath = $files[0].path;
                 $scope.star.tmp.coverFullPath = $files[0].path;
             };
@@ -58,6 +59,7 @@ angular.module('myApp')
                 if ($scope.view == 'Edit') {
                     starsService.getStar(_starId, function (data) {
                         $scope.star = data;
+                        $scope.starOryginal = angular.copy(data);
                         $apply($scope);
 
                     });

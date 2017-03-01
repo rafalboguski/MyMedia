@@ -8,13 +8,28 @@ angular.module('myApp')
 
                 settingsService.getSettings();
 
+                // Mouse back/forward
+                function KeyPress(e) {
+                    var evtobj = window.event ? event : e;
+
+                    if (evtobj.keyCode == 79 && evtobj.altKey) {
+                        console.log('B')
+                        $scope.navigateBack();
+                    }
+                    if (evtobj.keyCode == 80 && evtobj.altKey) {
+                        console.log('F')
+                        $scope.navigateForward();
+                    }
+                }
+
+                document.onkeydown = KeyPress;
+
             };
 
             appInit();
 
             $scope.navigateBack = function () {
                 console.log('navigateBack');
-                debugger;
                 $window.history.back();
             };
 

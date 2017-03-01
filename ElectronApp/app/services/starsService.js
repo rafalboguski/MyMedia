@@ -27,21 +27,18 @@ angular.module('myApp')
                 };
 
                 // set paths
-                if (model._id !== null) {
-                    if (model.hasCover) {
-                        path = $rootScope.settings.paths.globalData + '\\covers\\' + collectionName + '\\thumbails\\' + model._id + ".jpg";
+                if (model._id !== null && model.hasCover) {
+                    coverThumbnailPath = $rootScope.settings.paths.globalData + '\\covers\\' + collectionName + '\\thumbails\\' + model._id + ".jpg";
 
-                    }
-                    else {
-                        path = $rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
-                    }
+                    coverFullPath = $rootScope.settings.paths.globalData + '\\covers\\' + collectionName + '\\full\\' + model._id + ".jpg";
+
                 }
-
-                if (path) {
-                    path = path.split('\\').join('/') + '?' + new Date().getTime();
+                else {
+                    coverThumbnailPath = $rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
+                    coverFullPath = $rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
                 }
-
-                model.tmp.coverThumbnailPath = path;
+                model.tmp.coverThumbnailPath = coverThumbnailPath.split('\\').join('/') + '?' + new Date().getTime();
+                model.tmp.coverFullPath = coverFullPath.split('\\').join('/') + '?' + new Date().getTime();
 
                 return model;
             };
