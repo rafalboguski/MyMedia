@@ -173,3 +173,8 @@ input {
 
     border: 1px darkorange solid;
 }
+
+.no-padding-w{
+    padding-left: 0;
+    padding-right: 0;
+}
