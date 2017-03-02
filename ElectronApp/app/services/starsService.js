@@ -7,24 +7,21 @@ angular.module('myApp')
             // run after fetching from db
             this.build = function (model) {
 
-                if (!model) { model = {}; }
-
-                // add fiels if they don't exist
-                _.defaults(model, {
-                    _id: null,
-                    names: [],
-                    hasCover: false,
+                model = genericService.build(model, {
+                    properties: {
+                        _id: null,
+                        names: [],
+                        hasCover: false,
+                    },
                     tmp: {
                         coverThumbnailPath: null,
                         coverFullPath: null,
                         newCoverPath: null // userd to insert new image
+                    },
+                    functions: {
+
                     }
                 });
-
-                // add functions
-                model.functions = {
-
-                };
 
                 // set paths
                 if (model._id !== null && model.hasCover) {
@@ -45,33 +42,18 @@ angular.module('myApp')
 
             // run before saving in db
             this.clean = function (model) {
-                delete model.functions;
-                delete model.tmp;
+                genericService.clean(model);
             };
 
             // Get
-            this.getStar = function (id, callback) {
-                mongo(function (db, self) {
-                    db.collection(collectionName).findOne({ _id: id }, function (err, result) {
-                        if (result) {
-                            self.build(result);
-                        }
-                        self.Finish(err, result, db, callback);
-                    });
-                }, this);
+            this.getStar = function (id) {
+
+                return genericService.single(collectionName, id, this.build);
             };
 
-            this.getStars = function (callback) {
-                mongo(function (db, self) {
-                    db.collection(collectionName).find({}).toArray(function (err, list) {
+            this.getStars = function () {
 
-                        angular.forEach(list, function (value, key) {
-                            self.build(value);
-                        });
-
-                        self.Finish(err, list, db, callback);
-                    });
-                }, this);
+                return genericService.many(collectionName, {}, this.build);
             };
 
             // Set
@@ -190,46 +172,41 @@ angular.module('myApp')
 
 
 angular.module('myApp')
-    .service('genericService', ['$rootScope', '$location', 'alertsService', 'settingsService',
-        function ($rootScope, $location, alertsService, settingsService) {
+    .service('genericService', ['$rootScope', '$q', '$location', 'alertsService', 'settingsService',
+        function ($rootScope, $q, $location, alertsService, settingsService) {
 
-            var collectionName = 'stars';
+            var MongoClient = require('mongodb').MongoClient, assert = require('assert');
+            window.autoIncrement = require("mongodb-autoincrement");
+
+            window.mongo = function (job, self) {
+
+                MongoClient.connect('mongodb://localhost:27017/media', function (err, db) {
+
+                    if (err) {
+                        return err;
+                    }
+
+                    job(db, self);
+                });
+
+            };
 
             // run after fetching from db
-            this.build = function (model) {
+            this.build = function (model, data) {
 
                 if (!model) { model = {}; }
 
                 // add fiels if they don't exist
-                _.defaults(model, {
-                    _id: null,
-                    names: [],
-                    hasCover: false,
-                    tmp: {
-                        coverThumbnailPath: null,
-                        coverFullPath: null,
-                        newCoverPath: null // userd to insert new image
-                    }
-                });
+                _.defaults(model, data.properties);
+                // tmps are not saved in db
+                if (!model.tmp) {
+                    model.tmp = {};
+                    _.defaults(model.tmp, data.tmp);
+
+                }
 
                 // add functions
-                model.functions = {
-
-                };
-
-                // set paths
-                if (model._id !== null && model.hasCover) {
-                    coverThumbnailPath = $rootScope.settings.paths.globalData + '\\covers\\' + collectionName + '\\thumbails\\' + model._id + ".jpg";
-
-                    coverFullPath = $rootScope.settings.paths.globalData + '\\covers\\' + collectionName + '\\full\\' + model._id + ".jpg";
-
-                }
-                else {
-                    coverThumbnailPath = $rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
-                    coverFullPath = $rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
-                }
-                model.tmp.coverThumbnailPath = coverThumbnailPath.split('\\').join('/') + '?' + new Date().getTime();
-                model.tmp.coverFullPath = coverFullPath.split('\\').join('/') + '?' + new Date().getTime();
+                model.functions = data.functions;
 
                 return model;
             };
@@ -241,29 +218,54 @@ angular.module('myApp')
             };
 
             // Get
-            this.getStar = function (id, callback) {
+            this.single = function (collectionName, id, build) {
                 mongo(function (db, self) {
+
                     db.collection(collectionName).findOne({ _id: id }, function (err, result) {
                         if (result) {
-                            self.build(result);
+                            build(result);
                         }
-                        self.Finish(err, result, db, callback);
+                        return self.Finish(err, result, db);
                     });
                 }, this);
             };
 
-            this.getStars = function (callback) {
-                mongo(function (db, self) {
-                    db.collection(collectionName).find({}).toArray(function (err, list) {
+            this.many = function (collectionName, search, build) {
+                var self = this;
 
-                        angular.forEach(list, function (value, key) {
-                            self.build(value);
-                        });
+                return MongoClient.connect('mongodb://localhost:27017/media')
+                    .then(db => {
+                        return db.collection(collectionName).find(search).toArray()
+                            .then(result => {
 
-                        self.Finish(err, list, db, callback);
+                                angular.forEach(result, function (value, key) {
+                                    build(value);
+                                });
+
+                                db.close();
+
+                                return $q.resolve(result);
+                                // return $q.reject( someValue );b);
+                            });
+                    })
+                    .catch(error => {
+
+                        return $q.reject(error);
                     });
-                }, this);
             };
+
+            // this.many = function (collectionName, search, build) {
+            //     mongo(function (db, self) {
+            //         db.collection(collectionName).find(search).toArray(function (err, list) {
+
+            //             angular.forEach(list, function (value, key) {
+            //                 build(value);
+            //             });
+
+            //             return self.Finish(err, list, db);
+            //         });
+            //     }, this);
+            // };
 
             // Set
             this.addStar = function (model, callback) {
@@ -330,51 +332,14 @@ angular.module('myApp')
                 });
             };
 
-            this.generateThumbnail = function (star, callback) {
 
-                // variable is set ony whe new photo was picked
-                if (!star.tmp.newCoverPath) {
-                    console.log('No star.tmp.newCoverPath');
-                    callback();
-                    return;
-                }
-
-                star.hasCover = true;
-
-                var src = star.tmp.newCoverPath;
-
-                var pathThumbnail = $rootScope.settings.paths.globalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
-                var pathFull = $rootScope.settings.paths.globalData + '\\covers\\stars\\full\\' + star._id + '.jpg';
-
-                require('fs-path').writeFile(pathFull, fs.readFileSync(src));
-
-                var command = '"' + $rootScope.settings.paths.thumbnailGenerator + '\\tg.exe" ';
-                command += '"' + src + '" ';
-                command += '"' + pathThumbnail + '" ';
-                command += '300 300 false true';
-
-                require("cmd-exec").init().exec(command, function (err, res) {
-                    if (err) {
-                        alert(err)
-                        console.log(err.message);
-                    }
-
-                    if (angular.isFunction(callback))
-                        callback(pathThumbnail);
-                });
-
-
-            };
-
-            this.Finish = function (err, result, db, callback) {
+            this.Finish = function (result, db) {
                 db.close();
 
-                if (err) {
-                    console.log(err);
-                    alert(err);
-                }
+                return $q.resolve(result);
+                // return $q.reject( someValue );
 
-                if (angular.isFunction(callback))
-                    callback(result);
+                // if (angular.isFunction(callback))
+                //     callback(result);
             };
         }]);

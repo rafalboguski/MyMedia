@@ -57,7 +57,7 @@ angular.module('myApp')
             $scope.getStar = function () {
 
                 if ($scope.view == 'Edit') {
-                    starsService.getStar(_starId, function (data) {
+                    starsService.getStar(_starId).then(function (data) {
                         $scope.star = data;
                         $scope.starOryginal = angular.copy(data);
                         $apply($scope);

@@ -8,10 +8,11 @@ angular.module('myApp')
      
 
             $scope.getStars = function () {
-                starsService.getStars(function (result) {
+                starsService.getStars().then(function (result) {
                     $scope.stars = result;
                     $apply($scope);
                 })
+                
             };
 
             function init() {
