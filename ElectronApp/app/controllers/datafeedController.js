@@ -25,11 +25,18 @@ angular.module('myApp')
             function configureShortcuts() {
 
                 utils.registerShortcuts(this, [
-                    {
+                    { // CTRL + S
                         modyfier: 'ctrl',
                         key: 83,
                         action: function () {
                             alert('save');
+                        }
+                    }, 
+                    { // ESC
+                        modyfier: undefined,
+                        key: 27,
+                        action: function () {
+                            $scope.cancel();
                         }
                     },
                 ])

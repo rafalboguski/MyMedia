@@ -27,6 +27,9 @@ angular.module('myApp')
                     if (evtobj.ctrlKey) {
                         $rootScope.activeController.executeShortcut('ctrl', evtobj.keyCode);
                     }
+                    else {
+                        $rootScope.activeController.executeShortcut(null, evtobj.keyCode);
+                    }
                 }
             };
 
