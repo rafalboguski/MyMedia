@@ -5,14 +5,18 @@ angular.module('myApp')
             $scope.stars = [];
 
 
-     
+
 
             $scope.getStars = function () {
-                starsService.getStars().then(function (result) {
-                    $scope.stars = result;
-                    $apply($scope);
-                })
-                
+                starsService.getStars()
+                    .then(result => {
+                        $scope.stars = result;
+                        $apply($scope);
+                    },
+                    error => {
+                        console.error(error);
+                    })
+
             };
 
             function init() {

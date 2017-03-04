@@ -61,7 +61,6 @@ angular.module('myApp')
                         $scope.star = data;
                         $scope.starOryginal = angular.copy(data);
                         $apply($scope);
-
                     });
 
                 }

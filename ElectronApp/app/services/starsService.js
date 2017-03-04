@@ -191,8 +191,10 @@ angular.module('myApp')
 
             };
 
+            var _DB = 'mongodb://localhost:27017/media';
+
             // run after fetching from db
-            this.build = function (model, data) {
+            var build = function (model, data) {
 
                 if (!model) { model = {}; }
 
@@ -212,63 +214,50 @@ angular.module('myApp')
             };
 
             // run before saving in db
-            this.clean = function (model) {
+            var clean = function (model) {
                 delete model.functions;
                 delete model.tmp;
             };
 
+            this.build = build;
+            this.clean = clean;
+
+            this.execute = function (fun) {
+                return MongoClient.connect(_DB)
+                    .then(db => { return fun(db); })
+                    .catch(error => { return $q.reject(error); });
+            };
+
             // Get
             this.single = function (collectionName, id, build) {
-                mongo(function (db, self) {
+                return this.execute(db => {
+                    return db.collection(collectionName).findOne({ _id: id })
+                        .then(result => {
 
-                    db.collection(collectionName).findOne({ _id: id }, function (err, result) {
-                        if (result) {
-                            build(result);
-                        }
-                        return self.Finish(err, result, db);
-                    });
-                }, this);
+                            if (result) { build(result); }
+
+                            db.close();
+                            return $q.resolve(result);
+                        })
+                });
             };
 
             this.many = function (collectionName, search, build) {
-                var self = this;
+                return this.execute(db => {
+                    return db.collection(collectionName).find(search).toArray()
+                        .then(result => {
 
-                return MongoClient.connect('mongodb://localhost:27017/media')
-                    .then(db => {
-                        return db.collection(collectionName).find(search).toArray()
-                            .then(result => {
+                            angular.forEach(result, (value, key) => { build(value); });
 
-                                angular.forEach(result, function (value, key) {
-                                    build(value);
-                                });
-
-                                db.close();
-
-                                return $q.resolve(result);
-                                // return $q.reject( someValue );b);
-                            });
-                    })
-                    .catch(error => {
-
-                        return $q.reject(error);
-                    });
+                            db.close();
+                            return $q.resolve(result);
+                        });
+                });
             };
-
-            // this.many = function (collectionName, search, build) {
-            //     mongo(function (db, self) {
-            //         db.collection(collectionName).find(search).toArray(function (err, list) {
-
-            //             angular.forEach(list, function (value, key) {
-            //                 build(value);
-            //             });
-
-            //             return self.Finish(err, list, db);
-            //         });
-            //     }, this);
-            // };
 
             // Set
             this.addStar = function (model, callback) {
+
                 mongo(function (db, self) {
                     var collection = db.collection(collectionName);
 
@@ -289,33 +278,16 @@ angular.module('myApp')
                 }, this);
             };
 
-            this.saveStar = function (model, callback) {
-                mongo(function (db, self) {
-                    var collection = db.collection(collectionName);
+            this.saveStar = function (collectionName, model) {
+                return this.execute(db => {
 
-                    collection.findOne({ _id: model._id }, function (err, result) {
+                    clean(model);
 
-                        if (result === null) {
-                            alert('no such star');
-                            console.log('no such star', model);
-                            self.Finish(err, result, db, callback);
-                        }
-                        else if (model) {
-
-                            // add thumbnail
-                            self.generateThumbnail(model, function () {
-
-                                self.clean(model);
-
-                                // save
-                                collection.updateOne({ _id: model._id }, model, function (err, result) {
-                                    self.Finish(err, result, db, callback);
-                                });
-                            });
-
-                        }
+                    return db.collection(collectionName).updateOne({ _id: model._id }, model).then(result => {
+                        db.close();
+                        return $q.resolve(result);
                     });
-                }, this);
+                });
             };
 
             // Remove
@@ -333,13 +305,5 @@ angular.module('myApp')
             };
 
 
-            this.Finish = function (result, db) {
-                db.close();
 
-                return $q.resolve(result);
-                // return $q.reject( someValue );
-
-                // if (angular.isFunction(callback))
-                //     callback(result);
-            };
         }]);
