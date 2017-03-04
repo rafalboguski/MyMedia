@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .service('starsService', ['$rootScope', '$location', 'alertsService', 'genericService', 'settingsService',
-        function ($rootScope, $location, alertsService, genericService, settingsService) {
+    .service('starsService', ['$rootScope', '$location', 'alertsService', '$q', 'genericService', 'settingsService',
+        function ($rootScope, $location, alertsService, $q, genericService, settingsService) {
 
             var collectionName = 'stars';
 
@@ -47,64 +47,25 @@ angular.module('myApp')
 
             // Get
             this.getStar = function (id) {
-
                 return genericService.single(collectionName, id, this.build);
             };
 
             this.getStars = function () {
-
                 return genericService.many(collectionName, {}, this.build);
             };
 
             // Set
-            this.addStar = function (model, callback) {
-                mongo(function (db, self) {
-                    var collection = db.collection(collectionName);
-
-                    autoIncrement.getNextSequence(db, collectionName, function (err, autoIndex) {
-
-                        model._id = autoIndex;
-
-                        // add thumbnail
-                        self.generateThumbnail(model, function () {
-
-                            self.clean(model);
-
-                            collection.insert(model, function (err, result) {
-                                self.Finish(err, result.insertedIds[0], db, callback);
-                            });
-                        });
-                    });
-                }, this);
+            this.addStar = function (model) {
+                return this.generateThumbnail(model).then(function () {
+                    return genericService.add(collectionName, model);
+                });
             };
 
-            this.saveStar = function (model, callback) {
-                mongo(function (db, self) {
-                    var collection = db.collection(collectionName);
-
-                    collection.findOne({ _id: model._id }, function (err, result) {
-
-                        if (result === null) {
-                            alert('no such star');
-                            console.log('no such star', model);
-                            self.Finish(err, result, db, callback);
-                        }
-                        else if (model) {
-
-                            // add thumbnail
-                            self.generateThumbnail(model, function () {
-
-                                self.clean(model);
-
-                                // save
-                                collection.updateOne({ _id: model._id }, model, function (err, result) {
-                                    self.Finish(err, result, db, callback);
-                                });
-                            });
-
-                        }
-                    });
-                }, this);
+            this.saveStar = function (model) {
+                return this.generateThumbnail(model).then(function () {
+                    debugger;
+                    return genericService.save(collectionName, model);
+                });
             };
 
             // Remove
@@ -121,13 +82,12 @@ angular.module('myApp')
                 });
             };
 
-            this.generateThumbnail = function (star, callback) {
+            this.generateThumbnail = function (star) {
 
                 // variable is set ony whe new photo was picked
                 if (!star.tmp.newCoverPath) {
                     console.log('No star.tmp.newCoverPath');
-                    callback();
-                    return;
+                    return $q.resolve();
                 }
 
                 star.hasCover = true;
@@ -144,30 +104,18 @@ angular.module('myApp')
                 command += '"' + pathThumbnail + '" ';
                 command += '300 300 false true';
 
+                var d = $q.defer();
                 require("cmd-exec").init().exec(command, function (err, res) {
                     if (err) {
                         alert(err)
                         console.log(err.message);
+                        d.reject(err);
                     }
-
-                    if (angular.isFunction(callback))
-                        callback(pathThumbnail);
+                    d.resolve(pathThumbnail);
                 });
-
-
+                return d.promise;
             };
 
-            this.Finish = function (err, result, db, callback) {
-                db.close();
-
-                if (err) {
-                    console.log(err);
-                    alert(err);
-                }
-
-                if (angular.isFunction(callback))
-                    callback(result);
-            };
         }]);
 
 
@@ -194,7 +142,7 @@ angular.module('myApp')
             var _DB = 'mongodb://localhost:27017/media';
 
             // run after fetching from db
-            var build = function (model, data) {
+            this.build = function (model, data) {
 
                 if (!model) { model = {}; }
 
@@ -214,21 +162,24 @@ angular.module('myApp')
             };
 
             // run before saving in db
-            var clean = function (model) {
+            this.clean = function (model) {
                 delete model.functions;
                 delete model.tmp;
             };
 
-            this.build = build;
-            this.clean = clean;
 
             this.execute = function (fun) {
                 return MongoClient.connect(_DB)
                     .then(db => { return fun(db); })
-                    .catch(error => { return $q.reject(error); });
+                    .catch(error => {
+                        alert(error);
+                        console.error(error);
+                        return $q.reject(error);
+                    });
             };
 
-            // Get
+
+            // CRUD
             this.single = function (collectionName, id, build) {
                 return this.execute(db => {
                     return db.collection(collectionName).findOne({ _id: id })
@@ -255,43 +206,65 @@ angular.module('myApp')
                 });
             };
 
-            // Set
-            this.addStar = function (model, callback) {
-
-                mongo(function (db, self) {
-                    var collection = db.collection(collectionName);
-
-                    autoIncrement.getNextSequence(db, collectionName, function (err, autoIndex) {
-
-                        model._id = autoIndex;
-
-                        // add thumbnail
-                        self.generateThumbnail(model, function () {
-
-                            self.clean(model);
-
-                            collection.insert(model, function (err, result) {
-                                self.Finish(err, result.insertedIds[0], db, callback);
-                            });
-                        });
-                    });
-                }, this);
-            };
-
-            this.saveStar = function (collectionName, model) {
+            this.any = function (collectionName, search, build) {
                 return this.execute(db => {
+                    return db.collection(collectionName).findOne(search)
+                        .then(result => {
 
-                    clean(model);
-
-                    return db.collection(collectionName).updateOne({ _id: model._id }, model).then(result => {
-                        db.close();
-                        return $q.resolve(result);
-                    });
+                            if (result) {
+                                return $q.resolve(true);
+                            }
+                            else {
+                                return $q.resolve(false);
+                            }
+                        })
                 });
             };
 
-            // Remove
-            this.removeStar = function (star, callback) {
+            this.add = function (collectionName, model) {
+
+                var genericService = this;
+                return genericService.execute(db => {
+
+                    var collection = db.collection(collectionName);
+
+                    return getNext_Id(db, collectionName).then(autoIndex => {
+
+                        model._id = autoIndex;
+
+                        genericService.clean(model);
+
+                        return collection.insert(model).then(result => {
+                            db.close();
+                            return $q.resolve(model._id);
+                        });
+                    });
+
+                });
+            };
+
+            this.save = function (collectionName, model) {
+                var self = this;
+                return self.execute(db => {
+
+                    return self.any(collectionName, { _id: model._id }).then(result => {
+                        if (!result) {
+                            throw 'Document doesn\'t exist in database';
+                        }
+                        else {
+                            self.clean(model);
+
+                            return db.collection(collectionName).updateOne({ _id: model._id }, model).then(result => {
+                                db.close();
+                                return $q.resolve(result);
+                            });
+                        }
+                    })
+
+                });
+            };
+
+            this.remove = function (star, callback) {
                 mongo(function (db) {
                     var collection = db.collection('stars');
 
@@ -304,6 +277,18 @@ angular.module('myApp')
                 });
             };
 
+            // Utils
+            function getNext_Id(db, collectionName) {
+                var d = $.Deferred();
+                autoIncrement.getNextSequence(db, collectionName, function (error, res) {
 
+                    if (error) {
+                        d.reject(err);
+                    }
+
+                    d.resolve(res);
+                });
+                return d.promise();
+            };
 
         }]);

@@ -25,21 +25,25 @@
                 <div class="card-block">
 
                     <form>
+                        <!-- Name -->
                         <div class="form-group">
                             <label for="formGroupExampleInput">Names</label>
                             <input type="text" class="form-control" ng-model="star.name" ng-class="{modyfied: star.name !== starOryginal.name}">
                         </div>
+                        <!-- Tags -->
                         <div class="form-group">
                             <label for="formGroupExampleInput2">Tags</label>
                             <input type="text" class="form-control">
                         </div>
                         <div class="row">
+                            <!-- Born -->
                             <div class="col-sm-6 no-padding-w" style="padding-right: 5px">
                                 <div class="form-group">
                                     <label for="formGroupExampleInput2">Born</label>
                                     <input type="text" class="form-control">
                                 </div>
                             </div>
+                            <!-- Age -->
                             <div class="col-sm-6 no-padding-w" style="padding-left: 5px">
                                 <div class="form-group">
                                     <label for="formGroupExampleInput2">Age</label>
@@ -47,13 +51,18 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Country -->
                         <div class="form-group">
                             <label for="formGroupExampleInput2">Country</label>
                             <input type="text" class="form-control">
                         </div>
-
+                        <!-- Retired -->
                         <label class="checkbox-inline">
                             <input type="checkbox" value="option1"> Retired
+                        </label>
+                        <!-- Soft -->
+                        <label class="checkbox-inline">
+                            <input type="checkbox" value="option1"> Soft
                         </label>
 
                     </form>

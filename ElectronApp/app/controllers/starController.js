@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('starController', ['$window', '$routeParams', '$scope', '$http', 'starsService',
-        function ($window, $routeParams, $scope, $http, starsService) {
+    .controller('starController', ['$window', '$routeParams', '$scope', '$http', '$q', 'starsService',
+        function ($window, $routeParams, $scope, $http, $q, starsService) {
 
             var _starId;
 
@@ -39,7 +39,7 @@ angular.module('myApp')
 
             // DATA Set
             $scope.addStar = function () {
-                starsService.addStar($scope.star, function (result) {
+                starsService.addStar($scope.star).then(result => {
                     $routeParams.starId = result;
                     //$window.location.reload();
                     init();
@@ -47,7 +47,7 @@ angular.module('myApp')
             };
 
             $scope.saveStar = function () {
-                starsService.saveStar($scope.star, function (result) {
+                starsService.saveStar($scope.star).then(result => {
                     init();
                 });
             };
