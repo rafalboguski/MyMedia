@@ -19,9 +19,9 @@
         , checked: true
     }));
 
-    window.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-        menu.popup(remote.getCurrentWindow());
-    }, false);
+    // window.addEventListener('contextmenu', function (e) {
+    //     e.preventDefault();
+    //     menu.popup(remote.getCurrentWindow());
+    // }, false);
 
     //End of Context menu
