@@ -1,10 +1,11 @@
-var myApp = angular.module('myApp', ['ngRoute', 'routeConfig', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angular-files-drop']);
+var myApp = angular.module('myApp', ['ngRoute', 'routeConfig', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angular-files-drop', 'angularModalService']);
 
 var routeConfig = angular.module('routeConfig', []);
 
 routeConfig.config(['$routeProvider',
   function ($routeProvider) {
     $routeProvider.
+      // stars
       when('/stars', {
         templateUrl: './app/views/stars.html',
         controller: 'starsController'
@@ -13,9 +14,14 @@ routeConfig.config(['$routeProvider',
         templateUrl: './app/views/star.html',
         controller: 'starController'
       }).
-       when('/star/:starId/edit', {
+      when('/star/:starId/edit', {
         templateUrl: './app/views/star.html',
         controller: 'starController'
+      }).
+      // datafeeds
+      when('/datafeeds', {
+        templateUrl: './app/views/datafeeds.html',
+        controller: 'datafeedsController'
       }).
       when('/items', {
         templateUrl: './app/views/items.html',
@@ -25,7 +31,7 @@ routeConfig.config(['$routeProvider',
         templateUrl: './app/views/settings.html',
         controller: 'settingsController'
       }).
-       when('/test', {
+      when('/test', {
         templateUrl: './app/views/test.html',
         controller: 'testController'
       }).

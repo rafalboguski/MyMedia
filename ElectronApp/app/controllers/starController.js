@@ -7,7 +7,9 @@ angular.module('myApp')
             $scope.star = null;
             $scope.starOryginal = null;
 
-            // INIT
+            // ---------------------------------------------------------
+
+            // Routing
             function getRouteParams() {
 
                 _starId = parseInt($routeParams.starId);
@@ -21,6 +23,7 @@ angular.module('myApp')
                 console.log($scope.view + ' View');
             };
 
+            // Init
             function init() {
 
                 getRouteParams();
@@ -28,6 +31,7 @@ angular.module('myApp')
                 $scope.getStar();
             };
 
+            // ---------------------------------------------------------
 
             // UI File Drop
             $scope.onFilesDropped = function ($files, $event) {

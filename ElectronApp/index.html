@@ -10,36 +10,41 @@
     <title>MyMedia</title>
 </head>
 
-<body ng-controller="mainController" id="bootstrap-overrides">
-    <nav class="navigation-bar">
-        <div class="form-inline">
-            <div class="btn-group">
-                <a class="btn btn-default" ng-click="navigateBack()">&lt;</a>
-                <a class="btn btn-default" ng-click="navigateForward()">&gt;</a>
-            </div>
+<body ng-controller="mainController" id="bootstrap-overrides" class="">
+    <div class="supreme-container">
+        <nav class="navigation-bar">
+            <div class="form-inline">
+                <div class="btn-group">
+                    <a class="btn btn-default" ng-click="navigateBack()">&lt;</a>
+                    <a class="btn btn-default" ng-click="navigateForward()">&gt;</a>
+                </div>
 
-            <div class="btn-group">
-                <a class="btn btn-default" href="#/stars">
-                    <i class="fa fa-users" aria-hidden="true"></i> Stars
-                </a>
-                <a class="btn btn-default" href="#/items">
-                    <i class="fa fa-clone" aria-hidden="true"></i> Items
-                </a>
-                <a class="btn btn-default" href="#/test">Test</a>
-            </div>
+                <div class="btn-group">
+                    <a class="btn btn-default" href="#/stars">
+                        <i class="fa fa-users" aria-hidden="true"></i> Stars
+                    </a>
+                    <a class="btn btn-default" href="#/datafeeds">
+                        <i class="fa fa-cloud" aria-hidden="true"></i> Data feeds
+                    </a>
+                    <a class="btn btn-default" href="#/items">
+                        <i class="fa fa-clone" aria-hidden="true"></i> Items
+                    </a>
+                    <a class="btn btn-default" href="#/test">Test</a>
+                </div>
 
-            <input type="text" class="form-control" placeholder="Search">
-            <a class="btn btn-default right" href="#/settings">
-                <i class="fa fa-cogs" aria-hidden="true"></i> Settings
-            </a>
+                <input type="text" class="form-control" placeholder="Search">
+                <a class="btn btn-default right" href="#/settings">
+                    <i class="fa fa-cogs" aria-hidden="true"></i> Settings
+                </a>
+            </div>
+        </nav>
+
+        <div>
+            <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="alerts.splice($index, 1)">{{alert.message}}</div>
         </div>
-    </nav>
-
-    <div>
-        <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="alerts.splice($index, 1)">{{alert.message}}</div>
-    </div>
-    <div class="myview" ng-view>
-    </div>
+        <div class="myview" ng-view>
+        </div>
+        <div>
 </body>
 
 <script>
@@ -54,7 +59,7 @@
     require('./node_modules/angular-files-drop/dist/index.js');
     window.Dropzone = require('./node_modules/dropzone/dist/min/dropzone.min.js');
     require('./node_modules/ngdropzone/dist/ng-dropzone.js');
-
+    require('./node_modules/angular-modal-service/dst/angular-modal-service.min.js')
     require('./app/contextMenu.js');
     require('./renderer.js');
 
