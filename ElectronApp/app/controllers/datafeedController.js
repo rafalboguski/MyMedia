@@ -52,14 +52,13 @@ angular.module('myApp')
 
             // Modal
 
+
             $scope.close = function () {
-                $element.off('hidden.bs.modal');
                 close({ name: $scope.name, age: $scope.age }, 100); // close, but give 500ms for bootstrap to animate
             };
 
             $scope.cancel = function () {
                 $element.modal('hide');
-
                 close({ name: $scope.name, age: $scope.age }, 100); // close, but give 500ms for bootstrap to animate
             };
 

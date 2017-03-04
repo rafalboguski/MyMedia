@@ -56,13 +56,8 @@ angular.module('myApp')
                     }
                 }).then(function (modal) {
                     modal.element.modal();
-                    modal.element.on('hidden.bs.modal', function () {
-                        modal.scope.close();
-                    });
-                    modal.close.then(function (result) {
-                        configureShortcuts();
-                        $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
-                    });
+                    modal.element.on('hidden.bs.modal', function () { configureShortcuts(); });
+                    modal.close.then(function (result) { configureShortcuts(); });
                 });
 
             };
