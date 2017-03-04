@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('datafeedController', ['$scope', '$q', 'datafeedsService', 'starsService', '$element', 'data', 'close',
-        function ($scope, $q, datafeedsService, starsService, $element, data, close) {
+    .controller('datafeedController', ['$rootScope', '$scope', '$q', 'datafeedsService', 'starsService', '$element', 'data', 'close', 'utils',
+        function ($rootScope, $scope, $q, datafeedsService, starsService, $element, data, close, utils) {
 
             var _datafeedId = null;
 
@@ -22,10 +22,26 @@ angular.module('myApp')
                 console.log($scope.view + ' View');
             };
 
+            function configureShortcuts() {
+
+                utils.registerShortcuts(this, [
+                    {
+                        modyfier: 'ctrl',
+                        key: 83,
+                        action: function () {
+                            alert('save');
+                        }
+                    },
+                ])
+
+            };
+
             // Init
             function init() {
 
                 getRouteParams();
+
+                configureShortcuts();
 
                 //$scope.getDatafeed();
             };
@@ -34,22 +50,20 @@ angular.module('myApp')
 
             // UI
 
+            // Modal
+
             $scope.close = function () {
-                close({
-                    name: $scope.name,
-                    age: $scope.age
-                }, 500); // close, but give 500ms for bootstrap to animate
+                $element.off('hidden.bs.modal');
+                close({ name: $scope.name, age: $scope.age }, 100); // close, but give 500ms for bootstrap to animate
             };
 
             $scope.cancel = function () {
-
                 $element.modal('hide');
 
-                close({
-                    name: $scope.name,
-                    age: $scope.age
-                }, 500); // close, but give 500ms for bootstrap to animate
+                close({ name: $scope.name, age: $scope.age }, 100); // close, but give 500ms for bootstrap to animate
             };
+
+            // ---------------------------------------------------------
 
 
             // DATA Set

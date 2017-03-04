@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$http', '$q', 'datafeedsService', 'starsService',
-        function ($window, ModalService, $routeParams, $scope, $http, $q, datafeedsService, starsService) {
+    .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$http', '$q', 'datafeedsService', 'starsService', 'utils',
+        function ($window, ModalService, $routeParams, $scope, $http, $q, datafeedsService, starsService, utils) {
 
             $scope.datafeeds = null;
 
@@ -11,10 +11,27 @@ angular.module('myApp')
                 $scope.view = 'Lits';
             };
 
+            function configureShortcuts() {
+
+                utils.registerShortcuts(this, [
+                    { // CTRL + A
+                        modyfier: 'ctrl',
+                        key: 65,
+                        action: function () {
+                            $scope.modal();
+                        }
+                    },
+
+                ])
+
+            };
+
             // Init
             function init() {
 
                 getRouteParams();
+
+                configureShortcuts();
 
                 $scope.getDatafeeds();
             };
@@ -22,6 +39,10 @@ angular.module('myApp')
             // ---------------------------------------------------------
 
             // UI
+
+            $scope.keypress = function () {
+                console.log('key;');
+            };
 
             $scope.modal = function (datafeed_id) {
 
@@ -35,7 +56,11 @@ angular.module('myApp')
                     }
                 }).then(function (modal) {
                     modal.element.modal();
+                    modal.element.on('hidden.bs.modal', function () {
+                        modal.scope.close();
+                    });
                     modal.close.then(function (result) {
+                        configureShortcuts();
                         $scope.complexResult = "Name: " + result.name + ", age: " + result.age;
                     });
                 });

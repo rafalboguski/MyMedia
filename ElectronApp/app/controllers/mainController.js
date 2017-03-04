@@ -1,29 +1,33 @@
 angular.module('myApp')
-    .controller('mainController', ['$scope', '$http', '$window', '$location', 'settingsService',
-        function ($scope, $http, $window, $location, settingsService) {
+    .controller('mainController', ['$rootScope', '$scope', '$http', '$window', '$location', 'settingsService',
+        function ($rootScope, $scope, $http, $window, $location, settingsService) {
 
             var appInit = function () {
 
-                console.log('appInit');
-
                 settingsService.getSettings();
 
-                // Mouse back/forward
-                function KeyPress(e) {
-                    var evtobj = window.event ? event : e;
+                document.onkeydown = KeyPress;
+            };
 
-                    if (evtobj.keyCode == 79 && evtobj.altKey) {
-                        console.log('B')
-                        $scope.navigateBack();
-                    }
-                    if (evtobj.keyCode == 80 && evtobj.altKey) {
-                        console.log('F')
-                        $scope.navigateForward();
-                    }
+            function KeyPress(e) {
+                var evtobj = window.event ? event : e;
+                console.log("Key: " + evtobj.keyCode)
+
+                // Mouse back/forward
+                if (evtobj.keyCode == 79 && evtobj.altKey) {
+                    console.log('B')
+                    $scope.navigateBack();
+                }
+                if (evtobj.keyCode == 80 && evtobj.altKey) {
+                    console.log('F')
+                    $scope.navigateForward();
                 }
 
-                document.onkeydown = KeyPress;
-
+                if ($rootScope.activeController) {
+                    if (evtobj.ctrlKey) {
+                        $rootScope.activeController.executeShortcut('ctrl', evtobj.keyCode);
+                    }
+                }
             };
 
             appInit();
@@ -34,7 +38,7 @@ angular.module('myApp')
             };
 
             $scope.navigateForward = function () {
-                console.log('navigateBack');
+                console.log('navigateForward');
                 $window.history.forward();
             };
 
