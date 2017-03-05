@@ -12,7 +12,7 @@ angular.module('myApp')
                         _id: null,
                         name: null,
 
-                        star_id: null,
+                        stars_ids: null,
                         tags_ids: null,
 
                         linkFrom: null,

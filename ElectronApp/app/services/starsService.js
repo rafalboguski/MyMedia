@@ -50,8 +50,10 @@ angular.module('myApp')
                 return genericService.single(collectionName, id, this.build);
             };
 
-            this.getStars = function () {
-                return genericService.many(collectionName, {}, this.build);
+            this.getStars = function (search) {
+                if (!search)
+                    search = {};
+                return genericService.many(collectionName, search, this.build);
             };
 
             // Set

@@ -5,7 +5,7 @@ angular.module('myApp')
                 restrict: 'EA', //E = element, A = attribute, C = class, M = comment         
                 scope: {
                     //@ reads the attribute value, = provides two-way binding, & works with functions
-                    model: '=',
+                    ids: '=',
                     max: '@'
                 },
                 templateUrl: 'app/directives/starsAutocomplete.html',
@@ -21,6 +21,21 @@ angular.module('myApp')
                         });
 
                     };
+                    $scope.stars = [];
+
+                    $scope.$watchCollection('stars', function (newValue, oldValue) {
+                        debugger;
+                        $scope.ids = _.map(newValue, '_id');
+                    });
+
+                    $scope.$watchCollection('ids', function (newValue, oldValue) {
+                        if (!$scope.initialized && $scope.ids && newValue !== oldValue)
+                            starsService.getStars({ _id: { $in: $scope.ids } }).then(stars => {
+                                $scope.stars = stars;
+                                $scope.initialized = true;
+                                $scope.$apply();
+                            })
+                    });
 
                 }
             }
@@ -33,7 +48,7 @@ angular.module('myApp')
                 ngModelController.$validators.checkLength = function (value) {
 
                     if (attrs.onlyFromList == 'true') {
-                        if (value.length > 0 && !value[value.length - 1]._id) {
+                        if (value && value.length > 0 && !value[value.length - 1]._id) {
                             value.splice(value.length - 1, 1);
                         }
                     }

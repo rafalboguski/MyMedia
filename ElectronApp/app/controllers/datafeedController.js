@@ -116,9 +116,5 @@ angular.module('myApp')
 
             init();
 
-            $scope.tags = [];
-
-    
-
 
         }]);
