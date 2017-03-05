@@ -10,11 +10,33 @@ angular.module('myApp')
                 model = genericService.build(model, {
                     properties: {
                         _id: null,
-                        name: null
+                        name: null,
+                        linkFrom: null,
+                        linkTo: null,
+                        rangeFrom: null,
+                        rangeTo: null,
+                        dateFrom: null,
+                        dateTo: null,
+                        textFrom: null,
+                        textTo: null,
+                        text: null,
+                        rank: null, // <0;5>
+                        timestamp: null,
+
+                        marked: null,
+                        done: null
                     },
                     tmp: {
                     },
                     functions: {
+                        openLinkFrom: function (self) {
+                            const opn = require('opn');
+                            opn(self.linkFrom);
+                        },
+                        openLinkTo: function (self) {
+                            const opn = require('opn');
+                            opn(self.linkTo);
+                        }
 
                     }
                 });

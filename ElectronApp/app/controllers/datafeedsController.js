@@ -57,7 +57,12 @@ angular.module('myApp')
                 }).then(function (modal) {
                     modal.element.modal();
                     modal.element.on('hidden.bs.modal', function () { configureShortcuts(); });
-                    modal.close.then(function (result) { configureShortcuts(); });
+                    modal.close.then(function (result) {
+                        if (result.action === 'confirm') {
+                            init();
+                        }
+                        configureShortcuts();
+                    });
                 });
 
             };

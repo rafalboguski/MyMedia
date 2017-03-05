@@ -115,6 +115,10 @@ input {
     background-color: rgb(55, 55, 55);
 }
 
+.myview .btn-success{
+    background-color: rgb(12, 100, 12);
+}
+
 .myview .btn-success:hover, .myview  .btn-success:active{
     background-color: rgb(12, 125, 12);
 }
@@ -213,3 +217,25 @@ body.modal-open .supreme-container{
     border-color: transparent !important;
 }
 
+.table tr:hover{
+     background-color: rgba(255, 255, 255, .10) !important;
+}
+
+
+
+/* icons */
+.fa.fa-star{
+    color: gold;
+}
+.fa:focus{
+    outline: 0;
+}
+.fa.rank{
+    margin-right: 2px;
+}
+.fa-2x.rank{
+    margin-right: 10px;
+}
+span:focus{
+    outline: 0;
+}

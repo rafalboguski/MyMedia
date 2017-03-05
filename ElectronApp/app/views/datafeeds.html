@@ -5,6 +5,7 @@
         </div>
         <div class="col col-sm-6 ">
             <button type="button" class="btn btn-success right" ng-click="modal()">Add new data feed</button>
+            <button type="button" class="btn btn-default right">Filter data feeds</button>
         </div>
     </div>
 
@@ -13,17 +14,43 @@
             <thead class="thead-inverse">
                 <tr>
                     <th>#</th>
+                    <th>Rank</th>
                     <th>Name</th>
-                    <th>asd</th>
-                    <th>asd</th>
+                    <th>Range</th>
+                    <th>Links</th>
+                    <th>Star</th>
+                    <th>Tags</th>
+                    <th>Timestamp</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="datafeed in datafeeds">
                     <td>{{$index + 1}}</td>
-                    <td><a style="cursor: pointer">{{datafeed.name}}</a></td>
-                    <td></td>
-                    <td></td>
+                    <!-- Rank -->
+                    <td>
+                        <span uib-rating ng-model="datafeed.rank" max="5" state-on="'fa fa-star rank'" state-off="'fa fa-star-o rank'" aria-labelledby="custom-icons-1" read-only="true"></span>
+                    </td>
+                    <!-- Name -->
+                    <td class="text-white" ng-click="modal(datafeed._id)" style="cursor: pointer">
+                        <a>{{datafeed.name}}</a>
+                    </td>
+                    <!-- Range -->
+                    <td>Range</td>
+                    <!-- Links -->
+                    <td>
+                        <a ng-show="datafeed.linkFrom && !datafeed.linkTo" ng-click="datafeed.functions.openLinkFrom(datafeed)">link</a>
+                        <a ng-show="!datafeed.linkFrom && datafeed.linkTo" ng-click="datafeed.functions.openLinkTo(datafeed)">link</a>
+
+                        <a ng-show="datafeed.linkFrom && datafeed.linkTo" ng-click="datafeed.functions.openLinkFrom(datafeed)">link form</a>
+                        <span ng-show="datafeed.linkFrom && datafeed.linkTo">/</span>
+                        <a ng-show="datafeed.linkFrom && datafeed.linkTo" ng-click="datafeed.functions.openLinkTo(datafeed)">link to</a>
+                    </td>
+                    <!-- Star -->
+                    <td>asd</td>
+                    <!-- Tags -->
+                    <td>#swag</td>
+                    <!-- Timestamp -->
+                    <td>2016/12/12</td>
 
                 </tr>
             </tbody>

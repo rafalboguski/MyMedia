@@ -11,7 +11,6 @@ angular.module('myApp')
             controller.executeShortcut = function (modyfier, keyCode) {
 
                 angular.forEach(shortcuts, (shortcut, key) => {
-                    debugger;
                     if (shortcut.modyfier && shortcut.modyfier == modyfier && shortcut.key == keyCode || (!shortcut.modyfier && shortcut.key == keyCode)) {
                         shortcut.action();
                     }

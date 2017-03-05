@@ -63,7 +63,6 @@ angular.module('myApp')
 
             this.saveStar = function (model) {
                 return this.generateThumbnail(model).then(function () {
-                    debugger;
                     return genericService.save(collectionName, model);
                 });
             };

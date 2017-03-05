@@ -31,7 +31,7 @@ angular.module('myApp')
                         action: function () {
                             alert('save');
                         }
-                    }, 
+                    },
                     { // ESC
                         modyfier: undefined,
                         key: 27,
@@ -50,7 +50,7 @@ angular.module('myApp')
 
                 configureShortcuts();
 
-                //$scope.getDatafeed();
+                $scope.getDatafeed();
             };
 
             // ---------------------------------------------------------
@@ -58,6 +58,11 @@ angular.module('myApp')
             // UI
 
             // Modal
+
+            $scope.confirm = function () {
+                $element.modal('hide');
+                close({ action: 'confirm' }, 100); // close, but give 500ms for bootstrap to animate
+            };
 
 
             $scope.close = function () {
@@ -69,6 +74,9 @@ angular.module('myApp')
                 close({ name: $scope.name, age: $scope.age }, 100); // close, but give 500ms for bootstrap to animate
             };
 
+            $scope.today = function () {
+                return new Date();
+            };
             // ---------------------------------------------------------
 
 
@@ -83,7 +91,8 @@ angular.module('myApp')
 
             $scope.saveDatafeed = function () {
                 datafeedsService.saveDatafeed($scope.datafeed).then(result => {
-                    init();
+                    $scope.confirm();
+                    //init();
                 });
             };
 
@@ -106,5 +115,11 @@ angular.module('myApp')
 
 
             init();
+
+            // $scope.hoveringOver = function (value) {
+            //     $scope.overStar = value;
+            //     $scope.percent = 100 * (value / $scope.max);
+            // };
+
 
         }]);
