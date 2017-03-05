@@ -1,0 +1,26 @@
+<tags-input enforce-max-tags max-tags="{{maxa}}" only-from-list="true" ng-model="model" display-property="name" replace-spaces-with-dashes="false" template="tag-template">
+    <auto-complete source="load($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="ac-stars-template"></auto-complete>
+</tags-input>
+
+<script type="text/ng-template" id="tag-template">
+    <div class="tag-template">
+        <div class="left-panel" style="float:left; margin-right:21px;">
+            <img style="width:70px;height:70px;" ng-src="{{ data.tmp.coverThumbnailPath }}" />
+        </div>
+        <div class="right-panel">
+            <span>{{$getDisplayText()}}</span>
+            <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="ac-stars-template">
+    <div class="left-panel" style="float:left; margin-right:21px;">
+        <img style="width:70px;height:70px;" ng-src="{{ data.tmp.coverThumbnailPath }}" />
+    </div>
+    <div class="right-panel">
+        <span ng-bind-html="$highlight($getDisplayText())"></span>
+        <span>({{ data._id }})</span>
+        <span>{{ data.name }}</span>
+    </div>
+</script>

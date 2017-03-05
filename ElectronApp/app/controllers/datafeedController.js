@@ -118,17 +118,7 @@ angular.module('myApp')
 
             $scope.tags = [];
 
-            $scope.loadCountries = function ($query) {
-
-                return starsService.getStars().then(result => {
-                    var dd = _.filter(result, country => {
-                        if (country.name)
-                            return country.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
-                    });
-                    return dd;
-                });
-
-            };
+    
 
 
         }]);
