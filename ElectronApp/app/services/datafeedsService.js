@@ -11,6 +11,10 @@ angular.module('myApp')
                     properties: {
                         _id: null,
                         name: null,
+
+                        star_id: null,
+                        tags_ids: null,
+
                         linkFrom: null,
                         linkTo: null,
                         rangeFrom: null,
@@ -21,10 +25,11 @@ angular.module('myApp')
                         textTo: null,
                         text: null,
                         rank: null, // <0;5>
-                        timestamp: null,
 
                         marked: null,
-                        done: null
+                        done: null,
+
+                        timestamp: null,
                     },
                     tmp: {
                     },

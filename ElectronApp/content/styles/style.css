@@ -239,3 +239,39 @@ body.modal-open .supreme-container{
 span:focus{
     outline: 0;
 }
+
+/* autoomplete */
+.host .tags{ 
+    color: rgb(200, 200, 200) !important;
+    border: 0px;
+    background-color: rgb(15, 15, 15) !important;
+}
+.tag-item{
+    width: 250px !important;
+    height: 72px !important;
+    padding: 0px !important;
+    border: 0 !important;
+    background-color: black!important;
+}
+
+.tags > .input {
+    background-color: transparent !important;
+    /*width: 1px !important;*/
+}
+
+ti-autocomplete-match em {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.autocomplete .suggestion-list {
+    max-height: 500px !important;
+}
+.autocomplete, .autocomplete .suggestion-item{ 
+    color: rgb(200, 200, 200) !important;
+    background-color: rgb(15, 15, 15) !important;
+}
+
+.autocomplete .suggestion-item.selected{ 
+    color: rgb(200, 200, 200) !important;
+    background-color: rgb(55, 55, 55) !important;

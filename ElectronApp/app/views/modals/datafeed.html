@@ -13,67 +13,111 @@
                 <form class="form-horizontal" role="form">
                     <div class="row">
                         <!-- Name -->
-                        <div class="form-group col-lg-7 col-sm-12" style="padding-left: 5px; padding-right: 5px;">
+                        <div class="form-group col-lg-6 col-sm-12" style="padding-left: 5px;">
                             <label>Name</label>
                             <input type="text" class="form-control" ng-model="datafeed.name">
                         </div>
                         <!-- Rank -->
-                        <div class="form-group col-lg-5 col-sm-12" style="padding-left: 5px; padding-right: 5px;">
+                        <div class="form-group col-lg-6 col-sm-12" style="padding-left: 5px; padding-right: 5px;">
                             <label>Rank</label>
                             <div>
-                                <span uib-rating ng-model="datafeed.rank" max="5" state-on="'fa fa-star rank fa-2x'" state-off="'fa fa-star-o rank fa-2x'" aria-labelledby="custom-icons-1"></span>
+                                <span uib-rating ng-model="datafeed.rank" max="5" state-on="'fa fa-star rank fa-2x'" state-off="'fa fa-star-o rank fa-2x'"
+                                    aria-labelledby="custom-icons-1"></span>
                             </div>
                         </div>
                     </div>
 
                     <div class="row">
-                        <!-- Link from -->
-                        <div class="form-group col-lg-5 col-sm-2 col-md-4" style="padding-left: 5px; padding-right: 5px;">
-                            <label>Link form</label>
-                            <input type="text" class="form-control" ng-model="datafeed.linkFrom">
-                            <button class="btn btn-default" ng-click="datafeed.functions.openLinkFrom(datafeed)">Open</button>
+                        <div class="col-6" style="padding-left: 0">
+                            <div class="row">
+                                <!-- Link -->
+                                <div class="row col-12">
+                                    <label><i class="fa fa-link" aria-hidden="true"></i> Link form/to</label>
+                                </div>
+                                <div class="row col-12" style="padding: 0">
+                                    <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                        <input type="text" class="form-control" ng-model="datafeed.linkFrom">
+                                        <a class="btn btn-default" ng-click="datafeed.functions.openLinkFrom(datafeed)">Open</a>
+                                    </div>
+                                    <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                        <input type="text" class="form-control" ng-model="datafeed.linkTo">
+                                        <a class="btn btn-default" ng-click="datafeed.functions.openLinkTo(datafeed)">Open</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Range -->
+                                <div class="row col-12">
+                                    <label><i class="fa fa-file-o" aria-hidden="true"></i> Range form/to</label>
+                                </div>
+                                <div class="row col-12" style="padding: 0">
+                                    <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                        <input type="number" min="1" class="form-control" ng-model="datafeed.rangeFrom">
+                                    </div>
+                                    <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                        <input type="number" min="1" class="form-control" ng-model="datafeed.raneTo">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Text -->
+                                <div class="row col-12">
+                                    <label><i class="fa fa-commenting-o" aria-hidden="true"></i> Text from/to</label>
+                                </div>
+                                <div class="row col-12" style="padding: 0">
+                                    <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                        <input type="text" class="form-control" ng-model="datafeed.textFrom">
+                                    </div>
+                                    <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                        <input type="text" class="form-control" ng-model="datafeed.textTo">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <!-- Date -->
+                                <div class="row col-12">
+                                    <label><i class="fa fa-calendar" aria-hidden="true"></i> Date from/to</label>
+                                </div>
+                                <div class="row col-12" style="padding: 0">
+                                    <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                        <input type="date" class="form-control" ng-model="datafeed.dateFrom" placeholder="yyyy-MM-dd" />
+                                        <a class="btn btn-default" ng-click="datafeed.dateFrom = today()">Today</a>
+                                    </div>
+                                    <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                        <input type="date" class="form-control" ng-model="datafeed.dateTo" placeholder="yyyy-MM-dd" />
+                                        <a class="btn btn-default" ng-click="datafeed.dateTo = today()">Today</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <!-- Range from -->
-                        <div class="form-group col-lg-2 col-sm-3 col-md-2" style="padding-left: 5px; padding-right: 5px;">
-                            <label>Range form</label>
-                            <input type="number" min="1" class="form-control" ng-model="datafeed.rangeFrom">
-                        </div>
-                        <!-- Date from -->
-                        <div class="form-group col-lg-2 col-sm-4 col-md-3" style="padding-left: 5px; padding-right: 5px;">
-                            <label>Date from</label>
-                            <input type="date" class="form-control" ng-model="datafeed.dateFrom" placeholder="yyyy-MM-dd" />
-                            <button class="btn btn-default" ng-click="datafeed.dateFrom = today()">Today</button>
-                        </div>
-                        <!-- Text from-->
-                        <div class="form-group col-lg-3 col-sm-3 col-md-3" style="padding-left: 5px; padding-right: 5px;">
-                            <label>Text from</label>
-                            <input type="text" class="form-control" ng-model="datafeed.textFrom">
-                        </div>
-                    </div>
+                        <div class="col-6">
+                            <tags-input ng-model="tags" display-property="name" replace-spaces-with-dashes="false" template="tag-template">
+                                <auto-complete source="loadCountries($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32"
+                                    template="ac-stars-template"></auto-complete>
+                            </tags-input>
 
-                    <div class="row">
-                        <!-- Link to -->
-                        <div class="form-group col-lg-5 col-sm-2 col-md-4" style="padding-left: 5px; padding-right: 5px;">
-                            <label>Link To</label>
-                            <input type="text" class="form-control" ng-model="datafeed.linkTo">
-                            <button class="btn btn-default" ng-click="datafeed.functions.openLinkTo(datafeed)">Open</button>
-                        </div>
+                            <script type="text/ng-template" id="tag-template">
+                                <div class="tag-template">
+                                    <div class="left-panel" style="float:left; margin-right:21px;">
+                                        <img style="width:70px;height:70px;" ng-src="{{ data.tmp.coverThumbnailPath }}" />
+                                    </div>
+                                    <div class="right-panel">
+                                        <span>{{$getDisplayText()}}</span>
+                                        <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
+                                    </div>
+                                </div>
+                            </script>
 
-                        <!-- Range to -->
-                        <div class="form-group col-lg-2 col-sm-3 col-md-2" style="padding-left: 5px; padding-right: 5px;">
-                            <label>Range To</label>
-                            <input type="number" min="1" class="form-control" ng-model="datafeed.raneTo">
-                        </div>
-                        <!-- Date to -->
-                        <div class="form-group col-lg-2 col-sm-4 col-md-3" style="padding-left: 5px; padding-right: 5px;">
-                            <label>Date To</label>
-                            <input type="date" class="form-control" ng-model="datafeed.dateTo" placeholder="yyyy-MM-dd" />
-                            <button class="btn btn-default" ng-click="datafeed.dateTo = today()">Today</button>
-                        </div>
-                        <!-- Text to-->
-                        <div class="form-group col-lg-3 col-sm-3 col-md-3" style="padding-left: 5px; padding-right: 5px;">
-                            <label>Text to</label>
-                            <input type="text" class="form-control" ng-model="datafeed.textTo">
+                            <script type="text/ng-template" id="ac-stars-template">
+                                <div class="left-panel" style="float:left; margin-right:21px;">
+                                    <img style="width:70px;height:70px;" ng-src="{{ data.tmp.coverThumbnailPath }}" />
+                                </div>
+                                <div class="right-panel">
+                                    <span ng-bind-html="$highlight($getDisplayText())"></span>
+                                    <span>({{ data._id }})</span>
+                                    <span>{{ data.name }}</span>
+                                </div>
+                            </script>
                         </div>
                     </div>
 

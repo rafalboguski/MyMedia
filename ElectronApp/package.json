@@ -48,6 +48,7 @@
     "mongodb": "^2.2.24",
     "mongodb-autoincrement": "^1.0.1",
     "mongoose": "^4.8.2",
+    "ng-tags-input": "^3.1.1",
     "opn": "^4.0.2",
     "path": "^0.12.7",
     "tether": "^1.4.0"

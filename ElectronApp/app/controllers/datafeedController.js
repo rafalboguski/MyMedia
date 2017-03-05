@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('datafeedController', ['$rootScope', '$scope', '$q', 'datafeedsService', 'starsService', '$element', 'data', 'close', 'utils',
-        function ($rootScope, $scope, $q, datafeedsService, starsService, $element, data, close, utils) {
+    .controller('datafeedController', ['$rootScope', '$scope', '$q', 'datafeedsService', 'starsService', '$element', 'data', 'close', 'utils', '$http',
+        function ($rootScope, $scope, $q, datafeedsService, starsService, $element, data, close, utils, $http) {
 
             var _datafeedId = null;
 
@@ -116,10 +116,19 @@ angular.module('myApp')
 
             init();
 
-            // $scope.hoveringOver = function (value) {
-            //     $scope.overStar = value;
-            //     $scope.percent = 100 * (value / $scope.max);
-            // };
+            $scope.tags = [];
+
+            $scope.loadCountries = function ($query) {
+
+                return starsService.getStars().then(result => {
+                    var dd = _.filter(result, country => {
+                        if (country.name)
+                            return country.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+                    });
+                    return dd;
+                });
+
+            };
 
 
         }]);

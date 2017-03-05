@@ -10,7 +10,7 @@ angular.module('myApp')
                 model = genericService.build(model, {
                     properties: {
                         _id: null,
-                        names: [],
+                        name: null,
                         hasCover: false,
                     },
                     tmp: {

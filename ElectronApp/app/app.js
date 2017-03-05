@@ -1,4 +1,4 @@
-var myApp = angular.module('myApp', ['ngRoute', 'routeConfig', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angular-files-drop', 'angularModalService']);
+var myApp = angular.module('myApp', ['ngRoute', 'routeConfig', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angular-files-drop', 'angularModalService', 'ngTagsInput']);
 
 var routeConfig = angular.module('routeConfig', []);
 
