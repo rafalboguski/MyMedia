@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg modal-ex-lg">
         <div class="modal-content">
             <!-- Header -->
-            <div class="modal-header">
+            <div class="modal-header card-header">
                 <h4 class="modal-title" ng-show="view === 'Add'">Add data feed</h4>
                 <h4 class="modal-title" ng-show="view === 'Edit'">Edit data feed</h4>
                 <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -111,7 +111,7 @@
 
             </div>
             <!-- Footer -->
-            <div class="modal-footer">
+            <div class="modal-footer card-header">
                 <button class="btn btn-success" ng-show="view === 'Add'" ng-click="addDatafeed()">Add new data feed</button>
                 <button class="btn btn-success" ng-show="view === 'Edit'" ng-click="saveDatafeed()"> Save data feed</button>
                 <!--<button type="button" ng-click="close()" class="btn btn-primary" data-dismiss="modal">OK</button>-->

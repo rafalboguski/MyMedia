@@ -1,8 +1,8 @@
 angular.module('myApp')
-    .controller('starController', ['$window', '$routeParams', '$scope', '$http', '$q', 'starsService',
-        function ($window, $routeParams, $scope, $http, $q, starsService) {
+    .controller('starController', ['$window', '$scope', '$http', '$q', 'starsService', 'data', 'utils', 'close', '$element',
+        function ($window, $scope, $http, $q, starsService, data, utils, close,  $element) {
 
-            var _starId;
+            var _starId = null;
 
             $scope.star = null;
             $scope.starOryginal = null;
@@ -12,7 +12,7 @@ angular.module('myApp')
             // Routing
             function getRouteParams() {
 
-                _starId = parseInt($routeParams.starId);
+                _starId = parseInt(data.star_id);
 
                 if (_starId) {
                     $scope.view = 'Edit';
@@ -23,13 +23,60 @@ angular.module('myApp')
                 console.log($scope.view + ' View');
             };
 
+            function configureShortcuts() {
+
+                utils.registerShortcuts(this, [
+                    { // CTRL + S - Save
+                        modyfier: 'ctrl',
+                        key: 83,
+                        action: function () {
+                            alert('save');
+                        }
+                    },
+                    { // ESC
+                        modyfier: undefined,
+                        key: 27,
+                        action: function () {
+                            $scope.cancel();
+                        }
+                    },
+                ])
+
+            };
+
             // Init
             function init() {
 
                 getRouteParams();
 
+                configureShortcuts();
+
                 $scope.getStar();
             };
+
+            // ---------------------------------------------------------
+
+            // UI
+
+            // Modal
+
+            $scope.confirm = function () {
+                debugger;
+                // $element.modal('hide');
+                close({ action: 'confirm' }, 500); // close, but give 500ms for bootstrap to animate
+            };
+
+            $scope.close = function () {
+                debugger;
+                //close({}, 1500); // close, but give 500ms for bootstrap to animate
+            };
+
+            $scope.cancel = function () {
+                debugger;
+                 $element.modal('hide');
+                close({}, 1500); // close, but give 500ms for bootstrap to animate
+            };
+
 
             // ---------------------------------------------------------
 
@@ -44,7 +91,6 @@ angular.module('myApp')
             // DATA Set
             $scope.addStar = function () {
                 starsService.addStar($scope.star).then(result => {
-                    debugger;
                     $routeParams.starId = result;
                     //$window.location.reload();
                     init();
@@ -53,14 +99,13 @@ angular.module('myApp')
 
             $scope.saveStar = function () {
                 starsService.saveStar($scope.star).then(result => {
-                    init();
+                    $scope.confirm();
                 });
             };
 
 
             // DATA Get
             $scope.getStar = function () {
-                debugger
                 if ($scope.view == 'Edit') {
                     starsService.getStar(_starId).then(function (data) {
                         $scope.star = data;

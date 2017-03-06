@@ -10,14 +10,6 @@ routeConfig.config(['$routeProvider',
         templateUrl: './app/views/stars.html',
         controller: 'starsController'
       }).
-      when('/stars/add', {
-        templateUrl: './app/views/star.html',
-        controller: 'starController'
-      }).
-      when('/star/:starId/edit', {
-        templateUrl: './app/views/star.html',
-        controller: 'starController'
-      }).
       // datafeeds
       when('/datafeeds', {
         templateUrl: './app/views/datafeeds.html',

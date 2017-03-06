@@ -185,20 +185,56 @@ input {
 
 /* Modals */
 .modal-content {
-    background-color: rgb(45,45,45);
+    background-color: rgb(30, 30, 30);
 }
 
 .modal-ex-lg {
     max-width: 1800px;
 }
 
+.modal-header {
+   border-bottom-color: black;
+}
+
+.modal-content {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+.modal-footer {
+   border-top-color: black;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+/* optional: show position indicator in red */
+::-webkit-scrollbar-thumb {
+    background: #FF0000;
+}
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+
+.modal-body{
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.modal-content button.close{
+    font-size: 35px;
+}
+
 /* fade background */
 body.modal-open .supreme-container{
-    -webkit-filter: blur(4px);
+    /*-webkit-filter: blur(4px);
     -moz-filter: blur(4px);
     -o-filter: blur(4px);
     -ms-filter: blur(4px);
-    filter: blur(4px);
+    filter: blur(4px);*/
+    filter: brightness(10%);
 }
 
 /* table */
@@ -275,3 +311,5 @@ ti-autocomplete-match em {
 .autocomplete .suggestion-item.selected{ 
     color: rgb(200, 200, 200) !important;
     background-color: rgb(55, 55, 55) !important;
+
+

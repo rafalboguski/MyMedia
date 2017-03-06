@@ -4,24 +4,23 @@ angular.module('myApp')
         function ($window, ModalService, $routeParams, $scope, $http, $q,
             datafeedsService, starsService, utils, myModalService) {
 
-            $ctrl = this;
             $scope.datafeeds = null;
 
             // ---------------------------------------------------------
 
             // Routing
             function getRouteParams() {
-                $scope.view = 'Lits';
+                $scope.view = 'List';
             };
 
             function configureShortcuts() {
 
                 utils.registerShortcuts(this, [
-                    { // CTRL + A
+                    { // CTRL + A - add datafeed
                         modyfier: 'ctrl',
                         key: 65,
                         action: function () {
-                            $scope.modal();
+                            $scope.datafeedModal();
                         }
                     },
                 ])
@@ -46,33 +45,16 @@ angular.module('myApp')
             };
 
             $scope.datafeedModal = function (datafeed_id) {
-
-                myModalService.DataFeed($ctrl, {
+                myModalService.DataFeed({
                     datafeed_id: datafeed_id
                 }, result => {
-                    if (result.action === 'confirm') {
+                    configureShortcuts();
+                    if (result && result.action === 'confirm') {
                         init();
                     }
                 });
 
             };
-
-
-            // DATA Set
-            $scope.addDatafeed = function () {
-                datafeedsService.addDatafeed($scope.star).then(result => {
-                    $routeParams.starId = result;
-                    //$window.location.reload();
-                    init();
-                });
-            };
-
-            $scope.saveDatafeed = function () {
-                datafeedsService.saveDatafeed($scope.star).then(result => {
-                    init();
-                });
-            };
-
 
             // DATA Get
             $scope.getDatafeeds = function () {

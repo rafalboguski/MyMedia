@@ -24,7 +24,6 @@ angular.module('myApp')
                     $scope.stars = [];
 
                     $scope.$watchCollection('stars', function (newValue, oldValue) {
-                        debugger;
                         $scope.ids = _.map(newValue, '_id');
                     });
 

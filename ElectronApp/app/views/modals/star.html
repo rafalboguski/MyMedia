@@ -1,0 +1,100 @@
+<div class="modal myview">
+    <div class="modal-dialog modal-lg modal-ex-lg">
+        <div class="modal-content">
+            <!-- Header -->
+            <div class="modal-header card-header">
+                <h5 class="modal-title" ng-show="view === 'Add'">Add data feed</h4>
+                <h5 class="modal-title" ng-show="view === 'Edit'">Edit data feed</h4>
+                <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <!-- Body -->
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-4">
+                        <!-- Cover -->
+                        <div class="row">
+                            <div class="card fill-width" ng-class="{modyfied: star.tmp.coverThumbnailPath !== starOryginal.tmp.coverThumbnailPath}">
+                                <div class="card-block fill-width" style="padding: 4px" files-drop="onFilesDropped($files, $event)">
+
+                                    <img class="fill-width" src="{{ star.tmp.coverFullPath }}" alt="cover">
+                                    <div class="caption">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Data -->
+                    <div class="col-sm-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <i class="fa fa-user"></i>
+                                <span ng-show="view === 'Add'">Add Star</span>
+                                <span ng-show="view === 'Edit'">Edit Star</span>
+                            </div>
+                            <div class="card-block">
+
+                                <form>
+                                    <!-- Name -->
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput">Name</label>
+                                        <input type="text" class="form-control" ng-model="star.name" ng-class="{modyfied: star.name !== starOryginal.name}">
+                                    </div>
+                                    <!-- Tags -->
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput2">Tags</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <div class="row">
+                                        <!-- Born -->
+                                        <div class="col-sm-6 no-padding-w" style="padding-right: 5px">
+                                            <div class="form-group">
+                                                <label for="formGroupExampleInput2">Born</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <!-- Age -->
+                                        <div class="col-sm-6 no-padding-w" style="padding-left: 5px">
+                                            <div class="form-group">
+                                                <label for="formGroupExampleInput2">Age</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Country -->
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput2">Country</label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <!-- Retired -->
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="option1"> Retired
+                                    </label>
+                                    <!-- Soft -->
+                                    <label class="checkbox-inline">
+                                        <input type="checkbox" value="option1"> Soft
+                                    </label>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Footer -->
+            <div class="modal-footer card-header">
+
+                <button class="btn btn-success"  >DUpa</button>
+
+
+                <button class="btn btn-success" ng-show="view === 'Add'" ng-click="addStar()">Add new star</button>
+                <button class="btn btn-success" ng-show="view === 'Edit'" ng-click="saveStar()">Save star</button>
+
+                <button type="button" ng-click="cancel()" class="btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>

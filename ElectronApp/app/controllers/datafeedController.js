@@ -64,19 +64,19 @@ angular.module('myApp')
                 close({ action: 'confirm' }, 100); // close, but give 500ms for bootstrap to animate
             };
 
-
             $scope.close = function () {
-                close({ name: $scope.name, age: $scope.age }, 100); // close, but give 500ms for bootstrap to animate
+                close({}, 100); // close, but give 500ms for bootstrap to animate
             };
 
             $scope.cancel = function () {
                 $element.modal('hide');
-                close({ name: $scope.name, age: $scope.age }, 100); // close, but give 500ms for bootstrap to animate
+                close({}, 100); // close, but give 500ms for bootstrap to animate
             };
 
             $scope.today = function () {
                 return new Date();
             };
+            
             // ---------------------------------------------------------
 
 
