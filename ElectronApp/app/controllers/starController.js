@@ -44,6 +44,7 @@ angular.module('myApp')
             // DATA Set
             $scope.addStar = function () {
                 starsService.addStar($scope.star).then(result => {
+                    debugger;
                     $routeParams.starId = result;
                     //$window.location.reload();
                     init();
@@ -59,7 +60,7 @@ angular.module('myApp')
 
             // DATA Get
             $scope.getStar = function () {
-
+                debugger
                 if ($scope.view == 'Edit') {
                     starsService.getStar(_starId).then(function (data) {
                         $scope.star = data;

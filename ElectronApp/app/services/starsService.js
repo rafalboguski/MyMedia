@@ -3,7 +3,7 @@ angular.module('myApp')
         function ($rootScope, $location, alertsService, $q, genericService, settingsService) {
 
             var collectionName = 'stars';
-
+            var $servive = this;
             // run after fetching from db
             this.build = function (model) {
 
@@ -58,8 +58,16 @@ angular.module('myApp')
 
             // Set
             this.addStar = function (model) {
-                return this.generateThumbnail(model).then(function () {
-                    return genericService.add(collectionName, model);
+                var tmp = angular.copy(model.tmp);
+                return genericService.add(collectionName, model).then(id => {
+                    model._id = id;
+                    model.tmp = tmp;
+                    return $servive.generateThumbnail(model).then(function () {
+                        return $servive.saveStar(model).then(res => {
+                            return model._id;
+                        })
+                    });
+
                 });
             };
 
