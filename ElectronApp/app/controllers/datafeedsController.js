@@ -45,11 +45,11 @@ angular.module('myApp')
                 console.log('key;');
             };
 
-            $scope.modal = function (datafeed_id) {
+            $scope.datafeedModal = function (datafeed_id) {
 
                 myModalService.DataFeed($ctrl, {
                     datafeed_id: datafeed_id
-                }, function (result) {
+                }, result => {
                     if (result.action === 'confirm') {
                         init();
                     }

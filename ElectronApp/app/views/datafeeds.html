@@ -4,7 +4,7 @@
             <h3>Data feeds</h1>
         </div>
         <div class="col col-sm-6 ">
-            <button type="button" class="btn btn-success right" ng-click="modal()">Add new data feed</button>
+            <button type="button" class="btn btn-success right" ng-click="datafeedModal()">Add new data feed</button>
             <button type="button" class="btn btn-default right">Filter data feeds</button>
         </div>
     </div>
@@ -31,7 +31,7 @@
                         <span uib-rating ng-model="datafeed.rank" max="5" state-on="'fa fa-star rank'" state-off="'fa fa-star-o rank'" aria-labelledby="custom-icons-1" read-only="true"></span>
                     </td>
                     <!-- Name -->
-                    <td class="text-white" ng-click="modal(datafeed._id)" style="cursor: pointer">
+                    <td class="text-white" ng-click="datafeedModal(datafeed._id)" style="cursor: pointer">
                         <a>{{datafeed.name}}</a>
                     </td>
                     <!-- Range -->
