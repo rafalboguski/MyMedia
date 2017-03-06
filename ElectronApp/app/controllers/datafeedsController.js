@@ -1,7 +1,10 @@
 angular.module('myApp')
-    .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$http', '$q', 'datafeedsService', 'starsService', 'utils',
-        function ($window, ModalService, $routeParams, $scope, $http, $q, datafeedsService, starsService, utils) {
+    .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$http', '$q',
+        'datafeedsService', 'starsService', 'utils', 'myModalService',
+        function ($window, ModalService, $routeParams, $scope, $http, $q,
+            datafeedsService, starsService, utils, myModalService) {
 
+            $ctrl = this;
             $scope.datafeeds = null;
 
             // ---------------------------------------------------------
@@ -21,9 +24,7 @@ angular.module('myApp')
                             $scope.modal();
                         }
                     },
-
                 ])
-
             };
 
             // Init
@@ -46,23 +47,12 @@ angular.module('myApp')
 
             $scope.modal = function (datafeed_id) {
 
-                ModalService.showModal({
-                    templateUrl: "app/views/modals/datafeed.html",
-                    controller: "datafeedController",
-                    inputs: {
-                        data: {
-                            datafeed_id: datafeed_id
-                        }
+                myModalService.DataFeed($ctrl, {
+                    datafeed_id: datafeed_id
+                }, function (result) {
+                    if (result.action === 'confirm') {
+                        init();
                     }
-                }).then(function (modal) {
-                    modal.element.modal();
-                    modal.element.on('hidden.bs.modal', function () { configureShortcuts(); });
-                    modal.close.then(function (result) {
-                        if (result.action === 'confirm') {
-                            init();
-                        }
-                        configureShortcuts();
-                    });
                 });
 
             };

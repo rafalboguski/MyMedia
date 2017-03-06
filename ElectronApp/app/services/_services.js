@@ -10,4 +10,5 @@ require("./datafeedsService.js")
 require("./dataSourcesService.js")
 
 require("./utils.js")
+require("./myModalService.js")
 
