@@ -1,6 +1,6 @@
 angular.module('myApp')
     .controller('starController', ['$window', '$scope', '$http', '$q', 'starsService', 'data', 'utils', 'close', '$element',
-        function ($window, $scope, $http, $q, starsService, data, utils, close,  $element) {
+        function ($window, $scope, $http, $q, starsService, data, utils, close, $element) {
 
             var _starId = null;
 
@@ -61,20 +61,17 @@ angular.module('myApp')
             // Modal
 
             $scope.confirm = function () {
-                debugger;
-                // $element.modal('hide');
-                close({ action: 'confirm' }, 500); // close, but give 500ms for bootstrap to animate
+                $element.modal('hide');
+                close({ action: 'confirm' }, 100); // close, but give 500ms for bootstrap to animate
             };
 
             $scope.close = function () {
-                debugger;
                 //close({}, 1500); // close, but give 500ms for bootstrap to animate
             };
 
             $scope.cancel = function () {
-                debugger;
-                 $element.modal('hide');
-                close({}, 1500); // close, but give 500ms for bootstrap to animate
+                $element.modal('hide');
+                close({}, 100); // close, but give 500ms for bootstrap to animate
             };
 
 
@@ -82,10 +79,11 @@ angular.module('myApp')
 
             // UI File Drop
             $scope.onFilesDropped = function ($files, $event) {
-                $scope.star.tmp.newCoverPath = $files[0].path;
+                var path = $files[0].path.split('\\').join('/');
+                $scope.star.tmp.newCoverPath = path;
 
-                $scope.star.tmp.coverThumbnailPath = $files[0].path;
-                $scope.star.tmp.coverFullPath = $files[0].path;
+                $scope.star.tmp.coverThumbnailPath = path;
+                $scope.star.tmp.coverFullPath = path;
             };
 
             // DATA Set
@@ -99,6 +97,7 @@ angular.module('myApp')
 
             $scope.saveStar = function () {
                 starsService.saveStar($scope.star).then(result => {
+                    //init();
                     $scope.confirm();
                 });
             };
