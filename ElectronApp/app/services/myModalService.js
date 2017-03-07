@@ -27,11 +27,9 @@ angular.module('myApp')
                 }).then(function (modal) {
                     modal.element.modal();
                     modal.element.on('hidden.bs.modal', function () {
-                        debugger;
                         callback(null)
                     });
                     return modal.close.then(function (result) {
-                        debugger;
                         callback(result);
                     });
                 });

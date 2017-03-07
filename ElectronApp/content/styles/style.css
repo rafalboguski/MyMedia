@@ -28,6 +28,26 @@ body {
     width: 98%;
 }
 
+
+
+::-webkit-scrollbar
+{
+  width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
+
+::-webkit-scrollbar-track
+{
+  background: rgba(0,0,0, 100);
+  
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(15,15,15, 100);
+}
+
+
 /* Navbar */
 .navigation-bar {
     padding: 2px;
@@ -205,15 +225,6 @@ input {
    border-top-color: black;
 }
 
-::-webkit-scrollbar {
-    width: 0px;  /* remove scrollbar space */
-    background: transparent;  /* optional: just make scrollbar invisible */
-}
-/* optional: show position indicator in red */
-::-webkit-scrollbar-thumb {
-    background: #FF0000;
-}
-
 .modal-dialog{
     overflow-y: initial !important
 }
@@ -234,8 +245,14 @@ body.modal-open .supreme-container{
     -o-filter: blur(4px);
     -ms-filter: blur(4px);
     filter: blur(4px);*/
-    filter: brightness(10%);
+    filter: brightness(0%);
 }
+
+
+.modal.fade:not(.in) .modal-dialog {
+    transform: translate3d(0, 0, 0);
+}
+
 
 /* table */
 
@@ -311,5 +328,19 @@ ti-autocomplete-match em {
 .autocomplete .suggestion-item.selected{ 
     color: rgb(200, 200, 200) !important;
     background-color: rgb(55, 55, 55) !important;
+}
 
-
+.parent-hover{
+      opacity: 1;
+     transition: opacity 0.3s;
+}
+.child-hover{
+     opacity: 0;
+     transition: opacity 0.6s;
+}
+.parent-hover:hover{
+      opacity: 0.95;
+}
+.parent-hover:hover .child-hover{
+      opacity: 1;
+}
