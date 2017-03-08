@@ -79,12 +79,25 @@ angular.module('myApp')
 
             // UI File Drop
             $scope.onFilesDropped = function ($files, $event) {
-                var path = $files[0].path.split('\\').join('/');
-                $scope.star.tmp.newCoverPath = path;
+                addCover($files[0].path);
+            };
 
+            $scope.addCoverDialog = function () {
+                dialog.selectFileDialog(res => {
+                    if (res) {
+                        addCover(res[0]);
+                        $apply($scope);
+                    }
+                });
+            };
+
+            var addCover = function (path) {
+                var path = path.split('\\').join('/');
+
+                $scope.star.tmp.newCoverPath = path;
                 $scope.star.tmp.coverThumbnailPath = path;
                 $scope.star.tmp.coverFullPath = path;
-            };
+            }
 
             // DATA Set
             $scope.addStar = function () {
