@@ -1,15 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html ng-app="myApp">
 
 <head>
+    <title>MyMedia</title>
     <meta charset="UTF-8">
+
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="libs/fontAwesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="node_modules/ng-tags-input/build/ng-tags-input.min.css" />
     <link rel="stylesheet" href="node_modules/ng-tags-input/build/ng-tags-input.bootstrap.min.css" />
-    <!--<link rel="stylesheet" href="node_modules/dropzone/dist/min/dropzone.min.css">-->
     <link rel="stylesheet" href="content/styles/style.css" />
-    <title>MyMedia</title>
 </head>
 
 <body ng-controller="mainController" id="bootstrap-overrides" class="">
@@ -44,38 +44,34 @@
         <div>
             <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="alerts.splice($index, 1)">{{alert.message}}</div>
         </div>
-        <div class="myview" ng-view>
-        </div>
-        <div>
+        <div class="myview" ng-view></div>
+    </div>
+
+    <script>
+        window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
+        window._ = require('lodash');
+        window.fs = require('fs');
+        window.path = require('path');
+        window.Tether = require('tether');
+        require('bootstrap');
+        require('angular');
+        require('angular-route');
+        require('angular-animate');
+        require('angular-sanitize');
+        require('./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
+        require('angular-files-drop');
+        require('angular-modal-service');
+        require('ng-tags-input');
+
+        require('./renderer.js');
+        require('./app/contextMenu.js');
+
+        require('./app/app.js');
+        require('./app/controllers/_controllers.js');
+        require('./app/directives/_directives.js');
+        require('./app/services/_services.js');
+        require('./app/helpers/windowHelper.js');
+    </script>
 </body>
-
-<script>
-    window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
-    window.Tether = require('tether');
-    require('./node_modules/bootstrap/dist/js/bootstrap.min.js');
-    require('./node_modules/angular/angular.js');
-    require('./node_modules/angular-route/angular-route.min.js');
-    require('./node_modules/angular-animate/angular-animate.min.js');
-    require('./node_modules/angular-sanitize/angular-sanitize.min.js');
-    require('./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
-    require('./node_modules/angular-files-drop/dist/index.js');
-    window.Dropzone = require('./node_modules/dropzone/dist/min/dropzone.min.js');
-    require('./node_modules/ngdropzone/dist/ng-dropzone.js');
-    require('./node_modules/angular-modal-service/dst/angular-modal-service.min.js');
-    require('./node_modules/ng-tags-input/build/ng-tags-input.min.js');
-    require('./app/contextMenu.js');
-    require('./renderer.js');
-
-    require('./app/app.js');
-    require('./app/controllers/_controllers.js');
-    require('./app/directives/_directives.js');
-    require('./app/services/_services.js');
-    require('./app/helpers/windowHelper.js');
-
-    window._ = require('lodash');
-    window.fs = require('fs');
-    window.path = require('path');
-
-</script>
 
 </html>

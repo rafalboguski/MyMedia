@@ -16,13 +16,13 @@ function createWindow() {
     //      titleBarStyle: "hidden-inset"
   })
 
-  require('electron-context-menu')({
-    prepend: (params, browserWindow) => [{
-      label: 'Rainbow',
-      // only show it when right-clicking images
-      visible: params.mediaType === 'image'
-    }]
-  });
+  // require('electron-context-menu')({
+  //   prepend: (params, browserWindow) => [{
+  //     label: 'Rainbow',
+  //     // only show it when right-clicking images
+  //     visible: params.mediaType === 'image'
+  //   }]
+  // });
 
   //  mainWindow.setMenu(null);
 
