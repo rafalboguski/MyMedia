@@ -32,6 +32,7 @@
                         <i class="fa fa-clone" aria-hidden="true"></i> Items
                     </a>
                     <a class="btn btn-default" href="#/test">Test</a>
+                    <button class="btn btn-default" ng-click="mergeWindows()">Windows</button>
                 </div>
 
                 <input type="text" class="form-control" placeholder="Search">
@@ -71,6 +72,50 @@
         require('./app/directives/_directives.js');
         require('./app/services/_services.js');
         require('./app/helpers/windowHelper.js');
+
+        // const remote = require('electron').remote;
+        // const BrowserWindow = remote.BrowserWindow;
+
+        // var win = remote.getCurrentWindow();
+        // var dat = new Date().getTime();
+
+        // win.on('resize', function (e) {
+
+            // setTimeout(function () {
+            //     if ((new Date().getTime() - dat > 200)) {
+            //         console.log('resize');
+
+            //         dat = new Date().getTime();
+            //         var parentWin = BrowserWindow.getFocusedWindow();
+            //         var pos = parentWin.getPosition();
+            //         var size = parentWin.getSize();
+            //         var max = parentWin.isMaximized();
+
+            //         angular.forEach(BrowserWindow.getAllWindows(), win => {
+            //             if (win.isFocused() == false) {
+            //                 win.setPosition(pos[0], pos[1]);
+            //                 win.setSize(size[0], size[1]);
+            //                 if (max) {
+            //                     win.maximize();
+            //                 }
+            //             }
+            //         })
+            //     }
+            // }, 300);
+
+        // });
+
+        // win.on('maximize', function (e) {
+        //     console.log('maximize');
+        // });
+
+        // win.on('unmaximize', function (e) {
+        //     console.log('unmaximize');
+        // });
+
+        // win.on('move', function (e) {
+        //     console.log('move');
+        // });
     </script>
 </body>
 

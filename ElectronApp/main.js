@@ -26,6 +26,38 @@ function createWindow() {
 
   //  mainWindow.setMenu(null);
 
+  var createNewCard = function (event, urlToOpen) {
+
+    var parentWin = event.sender.getOwnerBrowserWindow();
+    var pos = parentWin.getPosition();
+    var size = parentWin.getSize();
+    var max = parentWin.isMaximized();
+
+    setTimeout(function () {
+      var list = BrowserWindow.getAllWindows();
+      list.forEach(w => {
+        if (w.id > 1 && w.getMaximumSize()[0] < 10000 && w.getMaximumSize()[1] < 10000) {
+          w.close();
+        }
+      })
+    }, 50);
+
+    var win = new BrowserWindow({
+      x: pos[0],
+      y: pos[1],
+      width: size[0],
+      height: size[1]
+    });
+    if (max) { win.maximize(); }
+    win.setMaximumSize(20000, 20000)
+    win.loadURL(urlToOpen);
+    win.webContents.on('new-window', createNewCard);
+    parentWin.focus();
+  }
+
+  mainWindow.webContents.on('new-window', createNewCard);
+
+
   mainWindow.loadURL(`file://${__dirname}/index.html`)
 
   mainWindow.webContents.openDevTools()
@@ -43,9 +75,4 @@ app.on('window-all-closed', function () {
   }
 })
 
-app.on('activate', function () {
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
 
