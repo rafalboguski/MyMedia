@@ -85,7 +85,7 @@ angular.module('myApp')
                 });
             };
 
-            this.any = function (collectionName, search, build) {
+            this.any = function (collectionName, search) {
                 return this.execute(db => {
                     return db.collection(collectionName).findOne(search)
                         .then(result => {
@@ -99,6 +99,8 @@ angular.module('myApp')
                         })
                 });
             };
+
+            // todo get, if not add and get
 
             this.add = function (collectionName, model) {
 

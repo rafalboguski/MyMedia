@@ -47,6 +47,8 @@ angular.module('myApp')
                 })
             };
 
-            init();
+            $rootScope.settingsPromise.then(res => {
+                init();
+            })
 
         }]);

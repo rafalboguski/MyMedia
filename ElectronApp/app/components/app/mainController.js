@@ -5,7 +5,7 @@ angular.module('myApp')
             var appInit = function () {
 
                 helpers();
-                settingsService.getSettings();
+                $rootScope.settingsPromise = settingsService.getSettings();
                 document.onkeydown = handleKeyboard;
             };
 

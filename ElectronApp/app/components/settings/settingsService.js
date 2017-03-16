@@ -2,44 +2,59 @@ angular.module('myApp')
     .service('settingsService', ['$rootScope', '$location', 'alertsService', 'genericService',
         function ($rootScope, $location, alertsService, genericService) {
 
-            this.collectionName = 'settings';
+            var collectionName = 'settings';
 
-            this.buildSettings = function () {
-                return {
-                    _id: 'settings',
-                    paths: {
-                        globalData: null,
-                        thumbnailGenerator: null
+            this.build = function (model) {
+
+                model = genericService.build(model, {
+                    properties: {
+                        _id: 'settings',
+                        paths: {
+                            globalData: null,
+                            thumbnailGenerator: null
+                        },
+                        params: {}
                     },
-                    params: {}
-                };
+                    tmp: {
+                    },
+                    functions: {
+
+                    }
+                });
+
+                return model
             };
 
-            this.getSettings = function (callback) {
-                genericService.mongo(function (db, self) {
-                    var collection = db.collection(self.collectionName);
+            this.getSettings = function () {
+                debugger;
+                return genericService.any(collectionName, { _id: 'settings' }).then(found => {
 
-                    collection.findOne({ _id: 'settings' }, function (err, result) {
+                    if (found) {
+                        return genericService.single(collectionName, 'settings', this.build).then(settings => {
+                            $rootScope.settings = settings;
+                            return settings;
+                        })
+                    } else {
+                        return genericService.add(collectionName, this.build()).then(id => {
+                            return genericService.single(collectionName, 'settings', this.build).then(settings => {
+                                $rootScope.settings = settings;
+                                return settings;
+                            })
+                        })
+                    }
 
-                        if (result === null) {
-                            var settings = self.buildSettings();
-                            collection.insert(settings);
-                            result = settings;
-                        }
-                        $rootScope.settings = result;
-                        self.Finish(err, result, db, callback);
-                    });
-                }, this);
+                })
+
             };
 
             this.saveSettings = function (settings, callback) {
                 genericService.mongo(function (db, self) {
-                    var collection = db.collection(self.collectionName);
+                    var collection = db.collection(collectionName);
 
                     collection.findOne({ _id: 'settings' }, function (err, document) {
 
                         if (document === null) {
-                            collection.insert(self.buildSettings(), function (err, result) {
+                            collection.insert(self.build(), function (err, result) {
                                 self.Finish(err, result, db, callback);
                             });
                         }

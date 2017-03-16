@@ -48,8 +48,8 @@ angular.module('myApp')
 
       // GET
       $scope.getSettings = function () {
-        settingsService.getSettings(function (data) {
-          $scope.settings = data;
+        settingsService.getSettings().then(settings => {
+          $scope.settings = settings;
           $apply($scope);
         });
       };
