@@ -54,13 +54,14 @@ angular.module('myApp')
                 var size = parentWin.getSize();
                 var max = parentWin.isMaximized();
 
-                angular.forEach(BrowserWindow.getAllWindows(), win => {
+                BrowserWindow.getAllWindows().forEach(win => {
                     if (max) {
                         win.maximize();
                     } else {
                         win.setPosition(pos[0], pos[1]);
                         win.setSize(size[0], size[1]);
                     }
+                    win.focus();
                 })
 
                 parentWin.focus();

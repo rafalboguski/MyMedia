@@ -52,6 +52,10 @@ function createWindow() {
     win.setMaximumSize(20000, 20000)
     win.loadURL(urlToOpen);
     win.webContents.on('new-window', createNewCard);
+
+    var list = BrowserWindow.getAllWindows();
+    list.forEach(w => { w.focus(); })
+
     parentWin.focus();
   }
 
