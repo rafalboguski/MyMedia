@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('starController', ['$window', '$scope', '$http', '$q', 'starsService', 'data', 'utils', 'close', '$element',
-        function ($window, $scope, $http, $q, starsService, data, utils, close, $element) {
+    .controller('starController', ['$window', '$scope', '$rootScope', '$http', '$q', 'starsService', 'utils', '$routeParams',
+        function ($window, $scope, $rootScope, $http, $q, starsService, utils, $routeParams) {
 
             var _starId = null;
 
@@ -12,14 +12,19 @@ angular.module('myApp')
             // Routing
             function getRouteParams() {
 
-                _starId = parseInt(data.star_id);
+                _starId = parseInt($routeParams.starId);
 
                 if (_starId) {
                     $scope.view = 'Edit';
+                    $rootScope.windowTitle = 'Star';
+
                 }
                 else {
                     $scope.view = 'Add';
+                    $rootScope.windowTitle = 'Add star';
+
                 }
+
                 console.log($scope.view + ' View');
             };
 
@@ -58,23 +63,6 @@ angular.module('myApp')
 
             // UI
 
-            // Modal
-
-            $scope.confirm = function () {
-                $element.modal('hide');
-                close({ action: 'confirm' }, 100); // close, but give 500ms for bootstrap to animate
-            };
-
-            $scope.close = function () {
-                //close({}, 1500); // close, but give 500ms for bootstrap to animate
-            };
-
-            $scope.cancel = function () {
-                $element.modal('hide');
-                close({}, 100); // close, but give 500ms for bootstrap to animate
-            };
-
-
             // ---------------------------------------------------------
 
             // UI File Drop
@@ -103,15 +91,13 @@ angular.module('myApp')
             $scope.addStar = function () {
                 starsService.addStar($scope.star).then(result => {
                     $routeParams.starId = result;
-                    //$window.location.reload();
                     init();
                 });
             };
 
             $scope.saveStar = function () {
                 starsService.saveStar($scope.star).then(result => {
-                    //init();
-                    $scope.confirm();
+                    init();
                 });
             };
 
@@ -119,18 +105,20 @@ angular.module('myApp')
             // DATA Get
             $scope.getStar = function () {
                 if ($scope.view == 'Edit') {
-                    starsService.getStar(_starId).then(function (data) {
-                        $scope.star = data;
-                        $scope.starOryginal = angular.copy(data);
+                    starsService.getStar(_starId).then(star => {
+                        $scope.star = star;
+                        $scope.starOryginal = angular.copy(star);
+                        $rootScope.windowTitle = 'Star "' + star.name + '"';
                         $apply($scope);
                     });
 
                 }
                 else if ($scope.view == 'Add') {
                     $scope.star = starsService.build();
+                    $rootScope.windowTitle = 'Add star';
+
                 }
             };
-
 
             init();
 

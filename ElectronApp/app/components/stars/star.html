@@ -1,0 +1,73 @@
+<!-- Cover -->
+<div class="parent-hover" style="background-color: black;padding: 0;position: fixed; width:29vw;height:calc(100vh);" ng-class="{modyfied: star.tmp.coverThumbnailPath !== starOryginal.tmp.coverThumbnailPath}">
+    <div class="crop border" files-drop="onFilesDropped($files, $event)" style="background-image: url('{{ star.tmp.coverFullPath }}');">
+
+        <div class="child-hover">
+            <button type="button" class="btn btn-secondary fill-width" ng-click="addCoverDialog()" style="height:50px; margin-top: calc(100vh - 50px); border-radius: 0;">Select cover</button>
+        </div>
+    </div>
+</div>
+
+<div style="width: 69vw; margin-left: 30vw;margin-right: 1vw;">
+    <div>
+        <!-- Header -->
+        <div class="card-header">
+            <i class="fa fa-user"></i>
+            <h4 class="left" ng-show="view === 'Add'">Add Star</h4>
+            <h4 class="left" ng-show="view === 'Edit'">Edit Star</h4>
+        </div>
+        <!-- Body -->
+        <div class="row">
+            <!-- Data -->
+            <div class="col-sm-12">
+                <form>
+                    <!-- Name -->
+                    <div class="form-group">
+                        <label for="formGroupExampleInput">Name</label>
+                        <input type="text" class="form-control" ng-model="star.name" ng-class="{modyfied: star.name !== starOryginal.name}">
+                    </div>
+                    <!-- Tags -->
+                    <div class="form-group">
+                        <label for="formGroupExampleInput2">Tags</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="row">
+                        <!-- Born -->
+                        <div class="col-sm-6 no-padding-w" style="padding-right: 5px">
+                            <div class="form-group">
+                                <label for="formGroupExampleInput2">Born</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                        <!-- Age -->
+                        <div class="col-sm-6 no-padding-w" style="padding-left: 5px">
+                            <div class="form-group">
+                                <label for="formGroupExampleInput2">Age</label>
+                                <input type="text" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Country -->
+                    <div class="form-group">
+                        <label for="formGroupExampleInput2">Country</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <!-- Retired -->
+                    <label class="checkbox-inline">
+                                <input type="checkbox" value="option1"> Retired
+                            </label>
+                    <!-- Soft -->
+                    <label class="checkbox-inline">
+                                <input type="checkbox" value="option1"> Soft
+                            </label>
+                </form>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div>
+            <button class="btn btn-success" ng-show="view === 'Add'" ng-click="addStar()">Add new star</button>
+            <button class="btn btn-success" ng-show="view === 'Edit'" ng-click="saveStar()">Save star</button>
+
+        </div>
+    </div>
+</div>

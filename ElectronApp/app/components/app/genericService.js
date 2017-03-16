@@ -1,13 +1,13 @@
 angular.module('myApp')
-    .service('genericService', ['$rootScope', '$q', '$location', 'alertsService', 'settingsService',
-        function ($rootScope, $q, $location, alertsService, settingsService) {
+    .service('genericService', ['$q', 'alertsService',
+        function ($q, alertsService) {
 
-            var MongoClient = require('mongodb').MongoClient, assert = require('assert');
-            window.autoIncrement = require("mongodb-autoincrement");
+            var mongoClient = require('mongodb').MongoClient;
+            var autoIncrement = require("mongodb-autoincrement");
 
-            window.mongo = function (job, self) {
+            var mongo = function (job, self) {
 
-                MongoClient.connect('mongodb://localhost:27017/media', function (err, db) {
+                mongoClient.connect('mongodb://localhost:27017/media', (err, db) => {
 
                     if (err) {
                         return err;
@@ -15,8 +15,8 @@ angular.module('myApp')
 
                     job(db, self);
                 });
-
             };
+            this.mongo = mongo;
 
             var _DB = 'mongodb://localhost:27017/media';
 
@@ -48,7 +48,7 @@ angular.module('myApp')
 
 
             this.execute = function (fun) {
-                return MongoClient.connect(_DB)
+                return mongoClient.connect(_DB)
                     .then(db => { return fun(db); })
                     .catch(error => {
                         alert(error);

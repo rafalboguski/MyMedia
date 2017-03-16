@@ -1,7 +1,7 @@
 angular.module('myApp')
-    .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$http', '$q',
+    .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$rootScope', '$http', '$q',
         'datafeedsService', 'starsService', 'utils', 'myModalService',
-        function ($window, ModalService, $routeParams, $scope, $http, $q,
+        function ($window, ModalService, $routeParams, $scope, $rootScope, $http, $q,
             datafeedsService, starsService, utils, myModalService) {
 
             $scope.datafeeds = null;
@@ -11,6 +11,7 @@ angular.module('myApp')
             // Routing
             function getRouteParams() {
                 $scope.view = 'List';
+                $rootScope.windowTitle = 'Datafeeds List';
             };
 
             function configureShortcuts() {
@@ -42,18 +43,6 @@ angular.module('myApp')
 
             $scope.keypress = function () {
                 console.log('key;');
-            };
-
-            $scope.datafeedModal = function (datafeed_id) {
-                myModalService.DataFeed({
-                    datafeed_id: datafeed_id
-                }, result => {
-                    configureShortcuts();
-                    if (result && result.action === 'confirm') {
-                        init();
-                    }
-                });
-
             };
 
             // DATA Get

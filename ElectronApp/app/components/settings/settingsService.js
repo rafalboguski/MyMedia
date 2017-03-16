@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .service('settingsService', ['$rootScope', '$location', 'alertsService',
-        function ($rootScope, $location, alertsService) {
+    .service('settingsService', ['$rootScope', '$location', 'alertsService', 'genericService',
+        function ($rootScope, $location, alertsService, genericService) {
 
             this.collectionName = 'settings';
 
@@ -16,7 +16,7 @@ angular.module('myApp')
             };
 
             this.getSettings = function (callback) {
-                mongo(function (db, self) {
+                genericService.mongo(function (db, self) {
                     var collection = db.collection(self.collectionName);
 
                     collection.findOne({ _id: 'settings' }, function (err, result) {
@@ -33,7 +33,7 @@ angular.module('myApp')
             };
 
             this.saveSettings = function (settings, callback) {
-                mongo(function (db, self) {
+                genericService.mongo(function (db, self) {
                     var collection = db.collection(self.collectionName);
 
                     collection.findOne({ _id: 'settings' }, function (err, document) {

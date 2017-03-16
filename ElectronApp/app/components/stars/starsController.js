@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('starsController', ['$scope', '$http', 'starsService', 'utils', 'myModalService',
-        function ($scope, $http, starsService, utils, myModalService) {
+    .controller('starsController', ['$scope', '$rootScope', '$http', 'starsService', 'utils', 'myModalService',
+        function ($scope, $rootScope, $http, starsService, utils, myModalService) {
 
             $scope.stars = [];
 
@@ -9,6 +9,7 @@ angular.module('myApp')
             // Routing
             function getRouteParams() {
                 $scope.view = 'List';
+                $rootScope.windowTitle = 'Stars List';
             };
 
             function configureShortcuts() {
@@ -36,16 +37,7 @@ angular.module('myApp')
             // ---------------------------------------------------------
 
             // UI
-            $scope.starsModal = function (star_id) {
-                myModalService.openStar({
-                    star_id: star_id
-                }, result => {
-                    configureShortcuts();
-                    if (result && result.action === 'confirm') {
-                        init();
-                    }
-                });
-            };
+
 
             // DATA Get
             $scope.getStars = function () {

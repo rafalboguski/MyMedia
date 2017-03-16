@@ -2,7 +2,7 @@
 <html ng-app="myApp">
 
 <head>
-    <title>MyMedia</title>
+    <title>{{windowTitle}} - MyMedia</title>
     <meta charset="UTF-8">
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
@@ -28,11 +28,7 @@
                     <a class="btn btn-default" href="#/datafeeds">
                         <i class="fa fa-cloud" aria-hidden="true"></i> Data feeds
                     </a>
-                    <a class="btn btn-default" href="#/items">
-                        <i class="fa fa-clone" aria-hidden="true"></i> Items
-                    </a>
-                    <a class="btn btn-default" href="#/test">Test</a>
-                    <button class="btn btn-default" ng-click="mergeWindows()">Windows</button>
+                    <a class="btn btn-default" ng-click="mergeWindows()">Windows</a>
                 </div>
 
                 <input type="text" class="form-control" placeholder="Search">
@@ -54,24 +50,21 @@
         window.fs = require('fs');
         window.path = require('path');
         window.Tether = require('tether');
+
         require('bootstrap');
         require('angular');
         require('angular-route');
         require('angular-animate');
         require('angular-sanitize');
-        require('./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
         require('angular-files-drop');
         require('angular-modal-service');
         require('ng-tags-input');
+        require('./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
 
         require('./renderer.js');
         require('./app/contextMenu.js');
 
         require('./app/app.js');
-        require('./app/controllers/_controllers.js');
-        require('./app/directives/_directives.js');
-        require('./app/services/_services.js');
-        require('./app/helpers/windowHelper.js');
 
         // const remote = require('electron').remote;
         // const BrowserWindow = remote.BrowserWindow;

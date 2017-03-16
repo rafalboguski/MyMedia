@@ -7,27 +7,48 @@ routeConfig.config(['$routeProvider',
         $routeProvider.
             // stars
             when('/stars', {
-                templateUrl: './app/views/stars.html',
+                templateUrl: './app/components/stars/stars.html',
                 controller: 'starsController'
+            }).
+            when('/star/:starId', {
+                templateUrl: './app/components/stars/star.html',
+                controller: 'starController'
             }).
             // datafeeds
             when('/datafeeds', {
-                templateUrl: './app/views/datafeeds.html',
+                templateUrl: './app/components/datafeeds/datafeeds.html',
                 controller: 'datafeedsController'
             }).
-            when('/items', {
-                templateUrl: './app/views/items.html',
-                controller: 'itemsController'
+            when('/datafeed/:datafeedId', {
+                templateUrl: './app/components/datafeeds/datafeed.html',
+                controller: 'datafeedController'
             }).
             when('/settings', {
-                templateUrl: './app/views/settings.html',
+                templateUrl: './app/components/settings/settings.html',
                 controller: 'settingsController'
-            }).
-            when('/test', {
-                templateUrl: './app/views/test.html',
-                controller: 'testController'
             }).
             otherwise({
                 redirectTo: '/stars'
             });
     }]);
+
+// controllers
+require("./components/app/mainController.js")
+require("./components/stars/starsController.js")
+require("./components/stars/starController.js")
+require("./components/datafeeds/datafeedsController.js")
+require("./components/datafeeds/datafeedController.js")
+require("./components/settings/settingsController.js")
+
+// services
+require("./components/app/alertsService.js")
+require("./components/app/genericService.js")
+require("./components/stars/starsService.js")
+require("./components/datafeeds/datafeedsService.js")
+require("./components/settings/dataSourcesService.js")
+require("./components/settings/settingsService.js")
+require("./components/app/utils.js")
+require("./components/app/myModalService.js")
+
+// directives
+require("./directives/starsAutocomplete.js")

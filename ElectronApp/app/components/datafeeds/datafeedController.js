@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('datafeedController', ['$rootScope', '$scope', '$q', 'datafeedsService', 'starsService', '$element', 'data', 'close', 'utils', '$http',
-        function ($rootScope, $scope, $q, datafeedsService, starsService, $element, data, close, utils, $http) {
+    .controller('datafeedController', ['$rootScope', '$scope', '$q', 'datafeedsService', 'starsService', '$routeParams', 'utils', '$http',
+        function ($rootScope, $scope, $q, datafeedsService, starsService, $routeParams, utils, $http) {
 
             var _datafeedId = null;
 
@@ -11,13 +11,15 @@ angular.module('myApp')
 
             // Routing
             function getRouteParams() {
-                _datafeedId = parseInt(data.datafeed_id);
+                _datafeedId = parseInt($routeParams.datafeedId);
 
                 if (_datafeedId) {
                     $scope.view = 'Edit';
+                    $rootScope.windowTitle = 'Datafeed';
                 }
                 else {
                     $scope.view = 'Add';
+                    $rootScope.windowTitle = 'Add datafeed';
                 }
                 console.log($scope.view + ' View');
             };
@@ -57,26 +59,10 @@ angular.module('myApp')
 
             // UI
 
-            // Modal
-
-            $scope.confirm = function () {
-                $element.modal('hide');
-                close({ action: 'confirm' }, 100); // close, but give 500ms for bootstrap to animate
-            };
-
-            $scope.close = function () {
-                close({}, 100); // close, but give 500ms for bootstrap to animate
-            };
-
-            $scope.cancel = function () {
-                $element.modal('hide');
-                close({}, 100); // close, but give 500ms for bootstrap to animate
-            };
-
             $scope.today = function () {
                 return new Date();
             };
-            
+
             // ---------------------------------------------------------
 
 
@@ -91,11 +77,9 @@ angular.module('myApp')
 
             $scope.saveDatafeed = function () {
                 datafeedsService.saveDatafeed($scope.datafeed).then(result => {
-                    $scope.confirm();
-                    //init();
+                    init();
                 });
             };
-
 
             // DATA Get
             $scope.getDatafeed = function () {
@@ -104,17 +88,17 @@ angular.module('myApp')
                     datafeedsService.getDatafeed(_datafeedId).then(data => {
                         $scope.datafeed = data;
                         $scope.datafeedOryginal = angular.copy(data);
+                        $rootScope.windowTitle = 'Datafeed "' + data.name + '"';
                         $apply($scope);
                     });
 
                 }
                 else if ($scope.view == 'Add') {
                     $scope.datafeed = datafeedsService.build();
+                    $rootScope.windowTitle = 'Add datafeed';
                 }
             };
 
-
             init();
-
 
         }]);

@@ -1,2 +1,0 @@
-require("./starsAutocomplete.js")
-

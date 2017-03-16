@@ -1,8 +1,7 @@
 angular.module('myApp')
     .service('myModalService', ['$rootScope', '$location', 'alertsService', '$q', 'genericService', 'ModalService',
         function ($rootScope, $location, alertsService, $q, genericService, ModalService) {
-
-
+            /*
             this.DataFeed = function (modal_data, callback) {
                 ModalService.showModal({
                     templateUrl: "app/views/modals/datafeed.html",
@@ -34,5 +33,5 @@ angular.module('myApp')
                     });
                 });
             };
-
+            */
         }]);

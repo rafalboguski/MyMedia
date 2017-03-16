@@ -28,11 +28,12 @@
                     <td>{{$index + 1}}</td>
                     <!-- Rank -->
                     <td>
-                        <span uib-rating ng-model="datafeed.rank" max="5" state-on="'fa fa-star rank'" state-off="'fa fa-star-o rank'" aria-labelledby="custom-icons-1" read-only="true"></span>
+                        <span uib-rating ng-model="datafeed.rank" max="5" state-on="'fa fa-star rank'" state-off="'fa fa-star-o rank'" aria-labelledby="custom-icons-1"
+                            read-only="true"></span>
                     </td>
                     <!-- Name -->
-                    <td class="text-white" ng-click="datafeedModal(datafeed._id)" style="cursor: pointer">
-                        <a>{{datafeed.name}}</a>
+                    <td class="text-white">
+                        <a ng-href="#/datafeed/{{datafeed._id}}" style="cursor: pointer">{{datafeed.name}}</a>
                     </td>
                     <!-- Range -->
                     <td>Range</td>

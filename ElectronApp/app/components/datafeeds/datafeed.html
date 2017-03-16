@@ -1,0 +1,116 @@
+<div class="modal-content">
+    <!-- Header -->
+    <div class="modal-header card-header">
+        <h4 class="modal-title" ng-show="view === 'Add'">Add data feed</h4>
+        <h4 class="modal-title" ng-show="view === 'Edit'">Edit data feed</h4>
+        <button type="button" class="close" ng-click="close()" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <!-- Body -->
+    <div class="modal-body">
+
+        <form class="form-horizontal" role="form">
+            <div class="row">
+                <!-- Name -->
+                <div class="form-group col-lg-6 col-sm-12" style="padding-left: 5px;">
+                    <label>Name</label>
+                    <input type="text" class="form-control" ng-model="datafeed.name">
+                </div>
+                <!-- Rank -->
+                <div class="form-group col-lg-6 col-sm-12" style="padding-left: 5px; padding-right: 5px;">
+                    <label>Rank</label>
+                    <div>
+                        <span uib-rating ng-model="datafeed.rank" max="5" state-on="'fa fa-star rank fa-2x'" state-off="'fa fa-star-o rank fa-2x'"
+                            aria-labelledby="custom-icons-1"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6" style="padding-left: 0">
+                    <div class="row">
+                        <!-- Link -->
+                        <div class="row col-12">
+                            <label><i class="fa fa-link" aria-hidden="true"></i> Link form/to</label>
+                        </div>
+                        <div class="row col-12" style="padding: 0">
+                            <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                <input type="text" class="form-control" ng-model="datafeed.linkFrom">
+                                <a class="btn btn-default" ng-click="datafeed.functions.openLinkFrom(datafeed)">Open</a>
+                            </div>
+                            <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                <input type="text" class="form-control" ng-model="datafeed.linkTo">
+                                <a class="btn btn-default" ng-click="datafeed.functions.openLinkTo(datafeed)">Open</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Range -->
+                        <div class="row col-12">
+                            <label><i class="fa fa-file-o" aria-hidden="true"></i> Range form/to</label>
+                        </div>
+                        <div class="row col-12" style="padding: 0">
+                            <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                <input type="number" min="1" class="form-control" ng-model="datafeed.rangeFrom">
+                            </div>
+                            <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                <input type="number" min="1" class="form-control" ng-model="datafeed.raneTo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Text -->
+                        <div class="row col-12">
+                            <label><i class="fa fa-commenting-o" aria-hidden="true"></i> Text from/to</label>
+                        </div>
+                        <div class="row col-12" style="padding: 0">
+                            <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                <input type="text" class="form-control" ng-model="datafeed.textFrom">
+                            </div>
+                            <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                <input type="text" class="form-control" ng-model="datafeed.textTo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- Date -->
+                        <div class="row col-12">
+                            <label><i class="fa fa-calendar" aria-hidden="true"></i> Date from/to</label>
+                        </div>
+                        <div class="row col-12" style="padding: 0">
+                            <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                <input type="date" class="form-control" ng-model="datafeed.dateFrom" placeholder="yyyy-MM-dd" />
+                                <a class="btn btn-default" ng-click="datafeed.dateFrom = today()">Today</a>
+                            </div>
+                            <div class="form-group col-6" style="padding-left: 5px; padding-right: 5px;">
+                                <input type="date" class="form-control" ng-model="datafeed.dateTo" placeholder="yyyy-MM-dd" />
+                                <a class="btn btn-default" ng-click="datafeed.dateTo = today()">Today</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <label>Star</label>
+                    <stars-autocomplete ids="datafeed.stars_ids" max="1"></stars-autocomplete>
+                </div>
+            </div>
+
+            <!-- Text -->
+            <div class="form-group">
+                <label>Text</label>
+                <input type="text" class="form-control" ng-model="datafeed.text">
+            </div>
+
+            <button>Mark</button>
+            <button>Done</button>
+            <button>Tags</button>
+            <button>Star</button>
+
+        </form>
+
+    </div>
+    <!-- Footer -->
+    <div class="modal-footer card-header">
+        <button class="btn btn-success" ng-show="view === 'Add'" ng-click="addDatafeed()">Add new data feed</button>
+        <button class="btn btn-success" ng-show="view === 'Edit'" ng-click="saveDatafeed()"> Save data feed</button>
+    </div>
+</div>
