@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('mainController', ['$rootScope', '$scope', '$http', '$window', '$location', 'settingsService',
-        function ($rootScope, $scope, $http, $window, $location, settingsService) {
+    .controller('mainController', ['$rootScope', '$scope', '$http', '$window', '$location', 'settingsService', '$sce',
+        function ($rootScope, $scope, $http, $window, $location, settingsService, $sce) {
 
             var appInit = function () {
 
@@ -139,5 +139,16 @@ angular.module('myApp')
             }
 
             appInit();
+
+            // popoers
+
+            $rootScope.createStarImagePopover = function (star, scope) {
+
+                if (star && star.tmp && star.tmp.coverFullPath && scope)
+                    scope.starImagePopover = $sce.trustAsHtml("<div style=\"width:200px; height:200px;\"><div class=\"crop\" style=\"background-image: url('" + star.tmp.coverFullPath + "');\"></div></div>")
+
+                else
+                    scope.starImagePopover = '';
+            };
 
         }]);

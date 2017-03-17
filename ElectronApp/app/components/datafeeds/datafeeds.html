@@ -5,10 +5,34 @@
         </div>
         <div class="col col-sm-6 ">
             <button type="button" class="btn btn-success right" ng-click="datafeedModal()">Add new data feed</button>
-            <button type="button" class="btn btn-default right">Filter data feeds</button>
+            <button type="button" class="btn btn-default right" ng-click="collapseFilters = !collapseFilters">Filter data feeds</button>
         </div>
     </div>
 
+    <!--Filters-->
+    <div uib-collapse="collapseFilters">
+        <div class="well well-lg">
+
+            <div class="col-sm-3">
+                <label>Name</label>
+                <input type="text" class="form-control" ng-model="filter.name" style="font-weight: bold">
+            </div>
+            <div class="col-sm-3">
+                Type
+
+            </div>
+            <div class="col-sm-3">
+                <label>Star</label>
+                <stars-autocomplete ids="filter.stars_ids" max="1"></stars-autocomplete>
+            </div>
+            <div class="col-sm-3">
+                Date
+            </div>
+
+        </div>
+    </div>
+
+    <!--Table-->
     <div class="row">
         <table class="table table-striped table-sm">
             <thead class="thead-inverse">
@@ -47,7 +71,11 @@
                         <a ng-show="datafeed.linkFrom && datafeed.linkTo" ng-click="datafeed.functions.openLinkTo(datafeed)">link to</a>
                     </td>
                     <!-- Star -->
-                    <td>asd</td>
+
+                    <!--ng-href="#/star/{{datafeed.star._id}}" -->
+                    <td ng-mouseenter="createStarImagePopover(datafeed.star, scope)">
+                        <a ng-mouseover="datafeed.star.popover=true" ng-mouseleave="datafeed.star.popover=false" uib-popover-html="starImagePopover"
+                            popover-placement="left" popover-trigger="none" popover-is-open="starImagePopover != '' && datafeed.star.popover">{{datafeed.star.name}}</a></td>
                     <!-- Tags -->
                     <td>#swag</td>
                     <!-- Timestamp -->

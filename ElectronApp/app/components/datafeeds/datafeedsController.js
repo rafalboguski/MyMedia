@@ -1,10 +1,13 @@
 angular.module('myApp')
     .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$rootScope', '$http', '$q',
-        'datafeedsService', 'starsService', 'utils', 'myModalService',
+        'datafeedsService', 'starsService', 'utils', 'myModalService', '$sce',
         function ($window, ModalService, $routeParams, $scope, $rootScope, $http, $q,
-            datafeedsService, starsService, utils, myModalService) {
+            datafeedsService, starsService, utils, myModalService, $sce) {
 
+            $scope.scope = $scope;
             $scope.datafeeds = null;
+
+            $scope.filter = {};
 
             // ---------------------------------------------------------
 
@@ -49,11 +52,24 @@ angular.module('myApp')
             $scope.getDatafeeds = function () {
                 datafeedsService.getDatafeeds().then(function (data) {
                     $scope.datafeeds = data;
-                    $apply($scope);
+
+                    var starPromises = [];
+                    _.each($scope.datafeeds, (value, key) => {
+                        if (value.stars_ids.length > 0)
+                            var p = starsService.getStar(value.stars_ids[0]).then(star => value.star = star);
+                        starPromises.push(p);
+                    })
+
+                    $q.all(starPromises).then(() => {
+                        $apply($scope);
+                    })
+
                 });
             };
 
 
-            init();
+            $rootScope.settingsPromise.then(res => {
+                init();
+            })
 
         }]);

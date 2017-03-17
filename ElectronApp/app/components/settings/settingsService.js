@@ -26,7 +26,6 @@ angular.module('myApp')
             };
 
             this.getSettings = function () {
-                debugger;
                 return genericService.any(collectionName, { _id: 'settings' }).then(found => {
 
                     if (found) {

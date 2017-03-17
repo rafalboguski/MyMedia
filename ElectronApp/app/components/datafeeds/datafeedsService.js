@@ -12,8 +12,8 @@ angular.module('myApp')
                         _id: null,
                         name: null,
 
-                        stars_ids: null,
-                        tags_ids: null,
+                        stars_ids: [],
+                        tags_ids: [],
 
                         linkFrom: null,
                         linkTo: null,

@@ -16,8 +16,6 @@ body {
     -ms-user-select: none;
     user-select: none;
     cursor: default;
-    background-color: rgb(5, 5, 5);
-    color: rgb(200, 200, 200);
 }
 
 .right {
@@ -27,8 +25,6 @@ body {
 .container {
     width: 98%;
 }
-
-
 
 ::-webkit-scrollbar
 {
@@ -52,30 +48,19 @@ body {
 .navigation-bar {
     padding: 2px;
     padding-top: 5px;
-    background-color: rgb(50, 50, 50);
     margin-bottom: 10px;
 }
 
-nav a {
-    color: rgb(200, 200, 200);
-}
-nav a:hover {
-    color: rgb(150, 150, 255);
-}
 
 nav a:focus {
-    color: rgb(100, 100, 255);
     text-decoration: transparent;
 }
 
 nav input {
-    color: rgb(200, 200, 200) !important;
     border: 0px;
-    background-color: rgb(30, 30, 30) !important;
 }
 
 nav input:focus {
-    color: rgb(230, 230, 230) !important;
 }
 
 /* Star Panel */
@@ -84,74 +69,39 @@ nav input:focus {
     max-height: 200px;
 }
 
-.border-line {
-    border: solid 2px red;
-}
 
 .crop {
-    width: inherit;
+    width: initial;
     height: inherit;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: 50% 50%;
 }
 
+/*grid*/
+.nopad{
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
 /*sections*/
-.card{
-    margin: 5px;
-    background-color: rgb(30, 30, 30);
-}
 
-.card-header{
-    color: rgb(200, 200, 200);
-    background-color: rgb(50, 50, 50);
-}
-
-.col.no-padding{
-    padding-left: 0 !important; 
-    padding-right: 0 !important; 
+.form-group{
+    margin-left: 0 !important;
+    margin-right: 0 !important;
 }
 
 /*forms*/
-input {
-    color: rgb(200, 200, 200) !important;
-    border: 0px;
-    background-color: rgb(15, 15, 15) !important;
-}
 
-.input-group-addon{
-    color: rgb(250, 250, 250);
-    background-color: rgb(25, 25, 25);
+input, textarea{
+    border-radius: 0 !important;
 }
 
 /*buttons*/
-.myview .btn, .input-group-addon{
-    cursor: pointer !important;
-    color: rgb(200, 200, 200);
-    background-color: rgb(25, 25, 25);
-}
-.myview .btn:hover, .myview  .btn:active, .input-group-addon:hover{
-    color: rgb(250, 250, 250);
-    background-color: rgb(55, 55, 55);
-}
 
-.myview .btn-success{
-    background-color: rgb(12, 100, 12);
-}
-
-.myview .btn-success:hover, .myview  .btn-success:active{
-    background-color: rgb(12, 125, 12);
-}
-
-.myview .btn-warning{
-    background-color: rgb(55, 42, 12);
-}
-.myview .btn-warning:hover, .myview  .btn-warning:active{
-    background-color: rgb(75, 62, 32);
-}
-
-.myview .btn-danger:hover, .myview  .btn-danger:active{
-    background-color: rgb(125, 12, 12);
+a, button{
+    border-radius: 0 !important;
 }
 
 .fill-width{
@@ -172,7 +122,6 @@ input {
     -webkit-box-shadow: none !important;
 }
 
-
 .show .show-on-hover{
     display: none;
 }
@@ -184,18 +133,14 @@ input {
 
 /* File drop directive */
 
-
 .filesDrop--dragover{
     border: solid 1px blue;
-
     filter: blur(15px);
-    
 }
 
 /* when data inside was modyfied */
 .modyfied{
-
-    border: 1px darkorange solid;
+    border: 2px darkorange solid;
 }
 
 .no-padding-w{
@@ -204,16 +149,9 @@ input {
 }
 
 /* Modals */
-.modal-content {
-    background-color: rgb(30, 30, 30);
-}
 
 .modal-ex-lg {
     max-width: 1800px;
-}
-
-.modal-header {
-   border-bottom-color: black;
 }
 
 .modal-content {
@@ -221,9 +159,6 @@ input {
     overflow-x: hidden;
 }
 
-.modal-footer {
-   border-top-color: black;
-}
 
 .modal-dialog{
     overflow-y: initial !important
@@ -234,9 +169,6 @@ input {
     overflow-y: auto;
 }
 
-.modal-content button.close{
-    font-size: 35px;
-}
 
 /* fade background */
 body.modal-open .supreme-container{
@@ -248,33 +180,11 @@ body.modal-open .supreme-container{
     filter: brightness(0%);
 }
 
-
 .modal.fade:not(.in) .modal-dialog {
     transform: translate3d(0, 0, 0);
 }
 
-
 /* table */
-
-
-.table-striped tbody tr:nth-of-type(even){
-    background-color: rgba(255, 255, 255, .03);
-}
-
-.table th{
-    /*background-color: rgb(55,55,55) !important;*/
-    border-color: transparent !important;
-}
-
-.table td{
-    border-color: transparent !important;
-}
-
-.table tr:hover{
-     background-color: rgba(255, 255, 255, .10) !important;
-}
-
-
 
 /* icons */
 .fa.fa-star{
