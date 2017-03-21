@@ -1,0 +1,12 @@
+{
+    "version": "0.1.0",
+    "tasks": [
+         {
+            "taskName": "watch",
+            "isBuildCommand": true,
+            "command": "gulp",
+            "args": ["watch"],
+            "isShellCommand": true
+        }
+    ]
+}

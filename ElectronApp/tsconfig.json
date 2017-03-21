@@ -1,0 +1,15 @@
+{
+    "files": [
+        "app/**/*.ts",
+        "app/**/*.js",
+        "main.js",
+        "renderer.js"
+    ],
+    "compilerOptions": {
+        "target": "es5",
+        "module": "commonjs",
+        "sourceMap": true,
+        "allowJs": true,
+        "rootDir": "."
+    }
+}

@@ -11,7 +11,7 @@ angular.module('myApp')
 
             // ---------------------------------------------------------
 
-            // Routing
+            // Routing  
             function getRouteParams() {
                 $scope.view = 'List';
                 $rootScope.windowTitle = 'Datafeeds List';
