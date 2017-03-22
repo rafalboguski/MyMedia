@@ -1,0 +1,32 @@
+
+class AlertsService {
+
+    rootScope: RootScope;
+
+    constructor($rootScope: RootScope) {
+        this.rootScope = $rootScope;
+    }
+
+    showWarning(message: string) {
+        debugger
+
+        if (!this.rootScope.alerts) {
+            this.rootScope.alerts = [];
+        }
+
+        this.rootScope.alerts.push(new Alert('warning', message))
+    }
+
+}
+
+class Alert {
+
+    type: string;
+    message: string;
+
+    constructor(type: string, message: string) {
+        this.type = type;
+        this.message = message;
+    }
+}
+angular.module('myApp').service('alertsService', ['$rootScope', AlertsService]);

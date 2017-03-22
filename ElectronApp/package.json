@@ -4,7 +4,7 @@
   "description": "Electron application with Bootstrap3, AngularJs 1.5.5, jQuery, d3.js and Font Awesome",
   "main": "main.js",
   "scripts": {
-    "start": "electron main.js"
+    "start": "electron dist/main.js"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,8 @@
     "electron": "1.6.2"
   },
   "dependencies": {
+    "@types/angular": "^1.6.10",
+    "@types/jquery": "^2.0.41",
     "angular": "1.5.8",
     "angular-animate": "1.5.8",
     "angular-files-drop": "^1.0.0",
@@ -45,6 +47,7 @@
     "fs-path": "0.0.23",
     "grunt": "^0.4.0",
     "gulp": "^3.9.1",
+    "gulp-sourcemaps": "^2.4.1",
     "gulp-typescript": "^3.1.6",
     "jquery": "2.2.4",
     "lodash": "^4.17.4",

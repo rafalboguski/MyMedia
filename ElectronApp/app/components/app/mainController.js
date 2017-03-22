@@ -3,7 +3,6 @@ angular.module('myApp')
         function ($rootScope, $scope, $http, $window, $location, settingsService, $sce) {
 
             var appInit = function () {
-
                 helpers();
                 $rootScope.settingsPromise = settingsService.getSettings();
                 document.onkeydown = handleKeyboard;

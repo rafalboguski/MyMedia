@@ -40,7 +40,7 @@ require("./components/settings/settingsController.js")
 
 // services
 require("./components/app/alertsService.js")
-require("./components/app/genericService.js")
+require("./components/app/genericService.js") 
 require("./components/stars/starsService.js")
 require("./components/datafeeds/datafeedsService.js")
 require("./components/settings/dataSourcesService.js")

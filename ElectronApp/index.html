@@ -5,11 +5,11 @@
     <title>{{windowTitle}} - MyMedia</title>
     <meta charset="UTF-8">
 
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="content/libs/fontAwesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="node_modules/ng-tags-input/build/ng-tags-input.min.css" />
-    <link rel="stylesheet" href="node_modules/ng-tags-input/build/ng-tags-input.bootstrap.min.css" />
-    <link rel="stylesheet" href="content/styles/style.css" />
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../content/libs/fontAwesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../node_modules/ng-tags-input/build/ng-tags-input.min.css" />
+    <link rel="stylesheet" href="../node_modules/ng-tags-input/build/ng-tags-input.bootstrap.min.css" />
+    <link rel="stylesheet" href="../content/styles/style.css" />
 </head>
 
 <body ng-controller="mainController" id="bootstrap-overrides" class="">
@@ -45,21 +45,22 @@
     </div>
 
     <script>
-        window.$ = window.jQuery = require('./node_modules/jquery/dist/jquery.min.js');
+        window.$ = window.jQuery = require('jquery');
         window._ = require('lodash');
         window.fs = require('fs');
         window.path = require('path');
         window.Tether = require('tether');
 
+
         require('bootstrap');
-        require('angular');
+        require("angular");
         require('angular-route');
         require('angular-animate');
         require('angular-sanitize');
         require('angular-files-drop');
         require('angular-modal-service');
         require('ng-tags-input');
-        require('./node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
+        require('../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
 
         require('./renderer.js');
         require('./app/contextMenu.js');
@@ -67,10 +68,10 @@
         require('./app/app.js');
 
         // const remote = require('electron').remote;
-        // const BrowserWindow = remote.BrowserWindow;
+        // const BrowserWindow = remote.BrowserWindow; 
 
         // var win = remote.getCurrentWindow();
-        // var dat = new Date().getTime();
+        // var dat = new Date().getTime(); 
 
         // win.on('resize', function (e) {
 

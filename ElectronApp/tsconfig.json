@@ -8,8 +8,13 @@
     "compilerOptions": {
         "target": "es5",
         "module": "commonjs",
-        "sourceMap": true,
+        "moduleResolution": "node",
+        "sourceMap": true, 
         "allowJs": true,
-        "rootDir": "."
+        "rootDir": ".",
+        "outDir": "dist",
+        "typeRoots": [
+            "./node_modules/@types"
+        ]
     }
 }
