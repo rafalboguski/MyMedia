@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('starController', ['$window', '$scope', '$rootScope', '$http', '$q', 'starsService', 'utils', '$routeParams',
-        function ($window, $scope, $rootScope, $http, $q, starsService, utils, $routeParams) {
+    .controller('starController', ['$window', '$scope', '$rootScope', '$http', '$q', 'starsService', 'Utils', '$routeParams',
+        function ($window, $scope, $rootScope, $http, $q, starsService, Utils, $routeParams) {
 
             var _starId = null;
 
@@ -30,7 +30,7 @@ angular.module('myApp')
 
             function configureShortcuts() {
 
-                utils.registerShortcuts(this, [
+                Utils.registerShortcuts(this, [
                     { // CTRL + S - Save
                         modyfier: 'ctrl',
                         key: 83,

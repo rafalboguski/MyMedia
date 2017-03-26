@@ -184,4 +184,4 @@ class GenericService {
 
 }
 
-angular.module('myApp').service('genericService', ['$q', 'alertsService', GenericService]);
+angular.module('myApp').service('GenericService', ['$q', 'alertsService', GenericService]);

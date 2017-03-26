@@ -1,8 +1,8 @@
 angular.module('myApp')
     .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$rootScope', '$http', '$q',
-        'datafeedsService', 'starsService', 'utils', 'myModalService', '$sce',
+        'datafeedsService', 'starsService', 'Utils', 'myModalService', '$sce',
         function ($window, ModalService, $routeParams, $scope, $rootScope, $http, $q,
-            datafeedsService, starsService, utils, myModalService, $sce) {
+            datafeedsService, starsService, Utils, myModalService, $sce) {
 
             $scope.scope = $scope;
             $scope.datafeeds = null;
@@ -19,7 +19,7 @@ angular.module('myApp')
 
             function configureShortcuts() {
 
-                utils.registerShortcuts(this, [
+                Utils.registerShortcuts(this, [
                     { // CTRL + A - add datafeed
                         modyfier: 'ctrl',
                         key: 65,

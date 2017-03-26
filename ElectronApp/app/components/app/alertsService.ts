@@ -8,7 +8,6 @@ class AlertsService {
     }
 
     showWarning(message: string) {
-        debugger
 
         if (!this.rootScope.alerts) {
             this.rootScope.alerts = [];

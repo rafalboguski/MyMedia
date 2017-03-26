@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('starsController', ['$scope', '$rootScope', '$http', 'starsService', 'utils', 'myModalService',
-        function ($scope, $rootScope, $http, starsService, utils, myModalService) {
+    .controller('starsController', ['$scope', '$rootScope', '$http', 'starsService', 'Utils', 'myModalService',
+        function ($scope, $rootScope, $http, starsService, Utils, myModalService) {
 
             $scope.stars = [];
 
@@ -13,7 +13,7 @@ angular.module('myApp')
             };
 
             function configureShortcuts() {
-                utils.registerShortcuts(this, [
+                Utils.registerShortcuts(this, [
                     { // CTRL + A - Add star
                         modyfier: 'ctrl',
                         key: 65,

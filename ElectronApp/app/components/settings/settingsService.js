@@ -27,6 +27,7 @@ angular.module('myApp')
 
             this.getSettings = function () {
                 alertsService.showWarning('asd', 'asdasd');
+
                 return GenericService.any(collectionName, { _id: 'settings' }).then(found => {
 
                     if (found) {
