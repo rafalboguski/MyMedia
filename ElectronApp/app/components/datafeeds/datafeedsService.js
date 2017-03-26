@@ -1,13 +1,13 @@
 angular.module('myApp')
-    .service('datafeedsService', ['$rootScope', '$location', 'alertsService', 'genericService',
-        function ($rootScope, $location, alertsService, genericService) {
+    .service('datafeedsService', ['$rootScope', '$location', 'alertsService', 'GenericService',
+        function ($rootScope, $location, alertsService, GenericService) {
 
             var collectionName = 'datafeeds';
 
             // run after fetching from db
             this.build = function (model) {
 
-                model = genericService.build(model, {
+                model = GenericService.build(model, {
                     properties: {
                         _id: null,
                         name: null,
@@ -51,25 +51,25 @@ angular.module('myApp')
 
             // run before saving in db
             this.clean = function (model) {
-                genericService.clean(model);
+                GenericService.clean(model);
             };
 
             // Get
             this.getDatafeed = function (id) {
-                return genericService.single(collectionName, id, this.build);
+                return GenericService.single(collectionName, id, this.build);
             };
 
             this.getDatafeeds = function () {
-                return genericService.many(collectionName, {}, this.build);
+                return GenericService.many(collectionName, {}, this.build);
             };
 
             // Set
             this.addDatafeed = function (model) {
-                return genericService.add(collectionName, model);
+                return GenericService.add(collectionName, model);
             };
 
             this.saveDatafeed = function (model) {
-                return genericService.save(collectionName, model);
+                return GenericService.save(collectionName, model);
             };
 
             // Remove

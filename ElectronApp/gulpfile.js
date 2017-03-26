@@ -27,9 +27,10 @@ gulp.task("build", function () {
         .pipe(sourcemaps.init())
         .pipe(tsProject())
         .js
-        .pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: '' }))
+        .pipe(sourcemaps.write())
         .pipe(gulp.dest("dist"));
 });
+
 
 gulp.task('move', function () {
     return gulp.src([
@@ -38,3 +39,13 @@ gulp.task('move', function () {
     ], { base: '.' })
         .pipe(gulp.dest('dist'));
 });
+
+// source maps in separate files, don't work with chromium
+// gulp.task("build", function () {
+//     return tsProject.src()
+//         .pipe(sourcemaps.init())
+//         .pipe(tsProject())
+//         .js
+//         .pipe(sourcemaps.write('.', { includeContent: false, sourceRoot: '' }))
+//         .pipe(gulp.dest("dist"));
+// });

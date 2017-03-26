@@ -1,12 +1,12 @@
 angular.module('myApp')
-    .service('settingsService', ['$rootScope', '$location', 'alertsService', 'genericService',
-        function ($rootScope, $location, alertsService, genericService) {
+    .service('settingsService', ['$rootScope', '$location', 'alertsService', 'GenericService',
+        function ($rootScope, $location, alertsService, GenericService) {
 
             var collectionName = 'settings';
 
             this.build = function (model) {
 
-                model = genericService.build(model, {
+                model = GenericService.build(model, {
                     properties: {
                         _id: 'settings',
                         paths: {
@@ -26,16 +26,17 @@ angular.module('myApp')
             };
 
             this.getSettings = function () {
-                return genericService.any(collectionName, { _id: 'settings' }).then(found => {
+                alertsService.showWarning('asd', 'asdasd');
+                return GenericService.any(collectionName, { _id: 'settings' }).then(found => {
 
                     if (found) {
-                        return genericService.single(collectionName, 'settings', this.build).then(settings => {
+                        return GenericService.single(collectionName, 'settings', this.build).then(settings => {
                             $rootScope.settings = settings;
                             return settings;
                         })
                     } else {
-                        return genericService.add(collectionName, this.build()).then(id => {
-                            return genericService.single(collectionName, 'settings', this.build).then(settings => {
+                        return GenericService.add(collectionName, this.build()).then(id => {
+                            return GenericService.single(collectionName, 'settings', this.build).then(settings => {
                                 $rootScope.settings = settings;
                                 return settings;
                             })
@@ -47,7 +48,7 @@ angular.module('myApp')
             };
 
             this.saveSettings = function (settings, callback) {
-                genericService.mongo(function (db, self) {
+                GenericService.mongo(function (db, self) {
                     var collection = db.collection(collectionName);
 
                     collection.findOne({ _id: 'settings' }, function (err, document) {

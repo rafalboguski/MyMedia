@@ -1,13 +1,13 @@
 angular.module('myApp')
-    .service('starsService', ['$rootScope', '$location', 'alertsService', '$q', 'genericService', 'settingsService',
-        function ($rootScope, $location, alertsService, $q, genericService, settingsService) {
+    .service('starsService', ['$rootScope', '$location', 'alertsService', '$q', 'GenericService', 'settingsService',
+        function ($rootScope, $location, alertsService, $q, GenericService, settingsService) {
 
             var collectionName = 'stars';
             var $servive = this;
             // run after fetching from db
             this.build = function (model) {
 
-                model = genericService.build(model, {
+                model = GenericService.build(model, {
                     properties: {
                         _id: null,
                         name: null,
@@ -42,24 +42,24 @@ angular.module('myApp')
 
             // run before saving in db
             this.clean = function (model) {
-                genericService.clean(model);
+                GenericService.clean(model);
             };
 
             // Get
             this.getStar = function (id) {
-                return genericService.single(collectionName, id, this.build);
+                return GenericService.single(collectionName, id, this.build);
             };
 
             this.getStars = function (search) {
                 if (!search)
                     search = {};
-                return genericService.many(collectionName, search, this.build);
+                return GenericService.many(collectionName, search, this.build);
             };
 
             // Set
             this.addStar = function (model) {
                 var tmp = angular.copy(model.tmp);
-                return genericService.add(collectionName, model).then(id => {
+                return GenericService.add(collectionName, model).then(id => {
                     model._id = id;
                     model.tmp = tmp;
                     return $servive.generateThumbnail(model).then(function () {
@@ -73,7 +73,7 @@ angular.module('myApp')
 
             this.saveStar = function (model) {
                 return this.generateThumbnail(model).then(function () {
-                    return genericService.save(collectionName, model);
+                    return GenericService.save(collectionName, model);
                 });
             };
 

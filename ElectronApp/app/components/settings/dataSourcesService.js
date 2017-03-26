@@ -1,9 +1,9 @@
 angular.module('myApp')
-    .service('dataSourcesService', ['$rootScope', 'alertsService', 'genericService',
-        function ($rootScope, alertsService, genericService) {
+    .service('dataSourcesService', ['$rootScope', 'alertsService', 'GenericService',
+        function ($rootScope, alertsService, GenericService) {
 
             this.getDataSources = function (callback) {
-                genericService.mongo(function (db) {
+                GenericService.mongo(function (db) {
                     db.collection('dataSources').find({}).toArray(function (err, list) {
                         db.close()
                         console.log('getDataSources => ', list)
@@ -24,7 +24,7 @@ angular.module('myApp')
             };
 
             this.addDataSources = function (newDataSource, callback) {
-                genericService.mongo(function (db) {
+                GenericService.mongo(function (db) {
                     var collection = db.collection('dataSources');
 
                     collection.findOne({ path: newDataSource.path }, function (err, document) {
@@ -48,7 +48,7 @@ angular.module('myApp')
             };
 
             this.removeDataSource = function (dataSource, callback) {
-                genericService.mongo(function (db) {
+                GenericService.mongo(function (db) {
                     var collection = db.collection('dataSources');
 
                     collection.deleteOne({ _id: dataSource._id }, function (err, result) {
@@ -62,7 +62,7 @@ angular.module('myApp')
             };
 
             this.removeAllDataSources = function (callback) {
-                genericService.mongo(function (db) {
+                GenericService.mongo(function (db) {
                     var collection = db.collection('dataSources');
 
                     collection.deleteMany({}, function (err, result) {

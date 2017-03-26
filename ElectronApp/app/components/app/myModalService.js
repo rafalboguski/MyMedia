@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .service('myModalService', ['$rootScope', '$location', 'alertsService', '$q', 'genericService', 'ModalService',
-        function ($rootScope, $location, alertsService, $q, genericService, ModalService) {
+    .service('myModalService', ['$rootScope', '$location', 'alertsService', '$q', 'GenericService', 'ModalService',
+        function ($rootScope, $location, alertsService, $q, GenericService, ModalService) {
             /*
             this.DataFeed = function (modal_data, callback) {
                 ModalService.showModal({
