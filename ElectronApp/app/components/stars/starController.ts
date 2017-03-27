@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('starController', ['$window', '$scope', '$rootScope', '$http', '$q', 'starsService', 'Utils', '$routeParams',
-        function ($window, $scope, $rootScope, $http, $q, starsService, Utils, $routeParams) {
+    .controller('starController', ['$window', '$scope', '$rootScope', '$http', '$q', 'StarsService', 'Utils', '$routeParams',
+        function ($window, $scope, $rootScope, $http, $q, StarsService, Utils, $routeParams) {
 
             var _starId = null;
 
@@ -89,14 +89,14 @@ angular.module('myApp')
 
             // DATA Set
             $scope.addStar = function () {
-                starsService.addStar($scope.star).then(result => {
+                StarsService.addStar($scope.star).then(result => {
                     $routeParams.starId = result;
                     init();
                 });
             };
 
             $scope.saveStar = function () {
-                starsService.saveStar($scope.star).then(result => {
+                StarsService.saveStar($scope.star).then(result => {
                     init();
                 });
             };
@@ -105,7 +105,7 @@ angular.module('myApp')
             // DATA Get
             $scope.getStar = function () {
                 if ($scope.view == 'Edit') {
-                    starsService.getStar(_starId).then(star => {
+                    StarsService.getStar(_starId).then(star => {
                         $scope.star = star;
                         $scope.starOryginal = angular.copy(star);
                         $rootScope.windowTitle = 'Star "' + star.name + '"';
@@ -114,7 +114,7 @@ angular.module('myApp')
 
                 }
                 else if ($scope.view == 'Add') {
-                    $scope.star = starsService.build();
+                    $scope.star = StarsService.build();
                     $rootScope.windowTitle = 'Add star';
 
                 }

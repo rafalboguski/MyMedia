@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .service('dataSourcesService', ['$rootScope', 'alertsService', 'GenericService',
-        function ($rootScope, alertsService, GenericService) {
+    .service('dataSourcesService', ['$rootScope', 'AlertsService', 'GenericService',
+        function ($rootScope, AlertsService, GenericService) {
 
             this.getDataSources = function (callback) {
                 GenericService.mongo(function (db) {

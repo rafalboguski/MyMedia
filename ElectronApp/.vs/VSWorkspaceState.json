@@ -2,10 +2,11 @@
   "ExpandedNodes": [
     "",
     "\\app",
-    "\\app\\controllers",
-    "\\app\\views",
-    "\\app\\views\\modals"
+    "\\app\\components",
+    "\\app\\components\\app",
+    "\\app\\components\\stars",
+    "\\app\\models"
   ],
-  "SelectedNode": "\\app\\controllers\\starController.js",
+  "SelectedNode": "\\app\\components\\app\\AlertsService.ts",
   "PreviewInSolutionExplorer": false
 }

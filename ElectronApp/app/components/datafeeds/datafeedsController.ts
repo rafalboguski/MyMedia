@@ -1,8 +1,8 @@
 angular.module('myApp')
     .controller('datafeedsController', ['$window', 'ModalService', '$routeParams', '$scope', '$rootScope', '$http', '$q',
-        'datafeedsService', 'starsService', 'Utils', 'myModalService', '$sce',
+        'datafeedsService', 'StarsService', 'Utils', 'myModalService', '$sce',
         function ($window, ModalService, $routeParams, $scope, $rootScope, $http, $q,
-            datafeedsService, starsService, Utils, myModalService, $sce) {
+            datafeedsService, StarsService, Utils, myModalService, $sce) {
 
             $scope.scope = $scope;
             $scope.datafeeds = null;
@@ -56,7 +56,7 @@ angular.module('myApp')
                     var starPromises = [];
                     _.each($scope.datafeeds, (value, key) => {
                         if (value.stars_ids.length > 0)
-                            var p = starsService.getStar(value.stars_ids[0]).then(star => value.star = star);
+                            var p = StarsService.getStar(value.stars_ids[0]).then(star => value.star = star);
                         starPromises.push(p);
                     })
 

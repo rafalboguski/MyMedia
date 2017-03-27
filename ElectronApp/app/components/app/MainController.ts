@@ -1,10 +1,12 @@
+
+
 angular.module('myApp')
-    .controller('mainController', ['$rootScope', '$scope', '$http', '$window', '$location', 'settingsService', '$sce',
-        function ($rootScope, $scope, $http, $window, $location, settingsService, $sce) {
+    .controller('MainController', ['$rootScope', '$scope', '$http', '$window', '$location', 'SettingsService', '$sce',
+        function ($rootScope, $scope, $http, $window, $location, SettingsService, $sce) {
 
             var appInit = function () {
                 helpers();
-                $rootScope.settingsPromise = settingsService.getSettings();
+                $rootScope.settingsPromise = SettingsService.getSettings();
                 document.onkeydown = handleKeyboard;
             };
 
@@ -45,7 +47,6 @@ angular.module('myApp')
 
             // UI
             $scope.mergeWindows = function () {
-                const remote = require('electron').remote;
                 const BrowserWindow = remote.BrowserWindow;
 
                 var parentWin = BrowserWindow.getFocusedWindow();
@@ -78,62 +79,9 @@ angular.module('myApp')
                     return false;
                 }, false);
 
-                // Angular
 
-                window.$apply = function (scope) {
-                    _.defer(function () {
-                        scope.$apply();
-                    });
-                };
 
-                // Dialogs
-                // https://github.com/electron/electron/blob/master/docs/api/dialog.md
-                const remote = require('electron').remote;
 
-                window.dialog = {
-
-                    selectFileDialog: function (callback, filters) {
-                        remote.dialog.showOpenDialog(
-                            {
-                                title: "Select file",
-                                properties: ['openFile'],
-                                filters: filters
-                            },
-                            callback
-                        );
-                    },
-                    selectFilesDialog: function (callback, filters) {
-                        remote.dialog.showOpenDialog(
-                            {
-                                title: "Select files",
-                                properties: ['openFile', 'multiSelections'],
-                                filters: filters
-                            },
-                            callback
-                        );
-                    },
-                    selectFolderDialog: function (callback, filters) {
-                        remote.dialog.showOpenDialog(
-                            {
-                                title: "Select folder",
-                                properties: ['openDirectory'],
-                                filters: filters
-                            },
-                            callback
-                        );
-                    },
-                    selectFoldersDialog: function (callback, filters) {
-                        remote.dialog.showOpenDialog(
-                            {
-                                title: "Select folders",
-                                properties: ['openDirectory', 'multiSelections'],
-                                filters: filters
-                            },
-                            callback
-                        );
-                    }
-
-                };
 
             }
 

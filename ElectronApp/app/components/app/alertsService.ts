@@ -1,4 +1,3 @@
-
 class AlertsService {
 
     rootScope: RootScope;
@@ -28,4 +27,4 @@ class Alert {
         this.message = message;
     }
 }
-angular.module('myApp').service('alertsService', ['$rootScope', AlertsService]);
+angular.module('myApp').service('AlertsService', ['$rootScope', AlertsService]);

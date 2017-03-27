@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .controller('starsController', ['$scope', '$rootScope', '$http', 'starsService', 'Utils', 'myModalService',
-        function ($scope, $rootScope, $http, starsService, Utils, myModalService) {
+    .controller('starsController', ['$scope', '$rootScope', '$http', 'StarsService', 'Utils', 'myModalService',
+        function ($scope, $rootScope, $http, StarsService, Utils, myModalService) {
 
             $scope.stars = [];
 
@@ -41,7 +41,7 @@ angular.module('myApp')
 
             // DATA Get
             $scope.getStars = function () {
-                starsService.getStars().then(result => {
+                StarsService.getStars().then(result => {
                     $scope.stars = result;
                     $apply($scope);
                 })

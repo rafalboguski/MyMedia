@@ -1,6 +1,6 @@
 angular.module('myApp')
-    .service('settingsService', ['$rootScope', '$location', 'alertsService', 'GenericService',
-        function ($rootScope, $location, alertsService, GenericService) {
+    .service('SettingsService', ['$rootScope', '$location', 'AlertsService', 'GenericService',
+        function ($rootScope, $location, AlertsService, GenericService) {
 
             var collectionName = 'settings';
 
@@ -26,18 +26,18 @@ angular.module('myApp')
             };
 
             this.getSettings = function () {
-                alertsService.showWarning('asd', 'asdasd');
+                AlertsService.showWarning('asd', 'asdasd');
 
                 return GenericService.any(collectionName, { _id: 'settings' }).then(found => {
 
                     if (found) {
-                        return GenericService.single(collectionName, 'settings', this.build).then(settings => {
+                        return GenericService.single(collectionName, 'settings', this).then(settings => {
                             $rootScope.settings = settings;
                             return settings;
                         })
                     } else {
-                        return GenericService.add(collectionName, this.build()).then(id => {
-                            return GenericService.single(collectionName, 'settings', this.build).then(settings => {
+                        return GenericService.add(collectionName, this).then(id => {
+                            return GenericService.single(collectionName, 'settings', this).then(settings => {
                                 $rootScope.settings = settings;
                                 return settings;
                             })
@@ -55,7 +55,7 @@ angular.module('myApp')
                     collection.findOne({ _id: 'settings' }, function (err, document) {
 
                         if (document === null) {
-                            collection.insert(self.build(), function (err, result) {
+                            collection.insert(self, function (err, result) {
                                 self.Finish(err, result, db, callback);
                             });
                         }

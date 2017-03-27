@@ -1,22 +1,14 @@
-declare function require(name: string);
-
-var $ = require('jquery');
-var _ = require('lodash');
-var mongoClient = require('mongodb').MongoClient;
-var autoIncrement = require("mongodb-autoincrement");
-var _DB = 'mongodb://localhost:27017/media';
-
 class GenericService {
 
-    q: ng.IQService;
-    alertsService: AlertsService;
+    private q: ng.IQService;
+    private AlertsService: AlertsService;
 
-    constructor($q: ng.IQService, alertsService: AlertsService) {
+    constructor($q: ng.IQService, AlertsService: AlertsService) {
         this.q = $q;
-        this.alertsService = alertsService;
+        this.AlertsService = AlertsService;
     }
 
-    mongo = function (job, self) {
+    mongo(job, self?) {
 
         mongoClient.connect('mongodb://localhost:27017/media', (err, db) => {
 
@@ -28,10 +20,8 @@ class GenericService {
         });
     };
 
-
-
     // run after fetching from db
-    build = function (model, data) {
+    build(model: any, data: any) {
 
         if (!model) { model = {}; }
 
@@ -51,13 +41,13 @@ class GenericService {
     };
 
     // run before saving in db
-    clean = function (model) {
+    clean(model: any) {
         delete model.functions;
         delete model.tmp;
     };
 
 
-    execute = function (fun) {
+    execute(fun) {
         return mongoClient.connect(_DB)
             .then(db => { return fun(db); })
             .catch(error => {
@@ -67,14 +57,13 @@ class GenericService {
             });
     };
 
-
     // CRUD
-    single = function (collectionName, id, build) {
+    single(collectionName: string, id: number | string, service: any) {
         return this.execute(db => {
             return db.collection(collectionName).findOne({ _id: id })
                 .then(result => {
 
-                    if (result) { build(result); }
+                    if (result) { service.build(result); }
 
                     db.close();
                     return this.q.resolve(result);
@@ -82,12 +71,12 @@ class GenericService {
         });
     };
 
-    many = function (collectionName, search, build) {
+    many(collectionName: string, search: any, service: any) {
         return this.execute(db => {
             return db.collection(collectionName).find(search).toArray()
                 .then(result => {
 
-                    angular.forEach(result, (value, key) => { build(value); });
+                    angular.forEach(result, (value, key) => { service.build(value); });
 
                     db.close();
                     return this.q.resolve(result);
@@ -95,7 +84,7 @@ class GenericService {
         });
     };
 
-    any = function (collectionName, search) {
+    any(collectionName: string, search) {
         return this.execute(db => {
             return db.collection(collectionName).findOne(search)
                 .then(result => {
@@ -112,10 +101,10 @@ class GenericService {
 
     // todo get, if not add and get
 
-    add = function (collectionName, model) {
+    add(collectionName: string, model) {
+        var self = this;
 
-        var GenericService = this;
-        return GenericService.execute(db => {
+        return self.execute(db => {
 
             var collection = db.collection(collectionName);
 
@@ -123,7 +112,7 @@ class GenericService {
 
                 model._id = autoIndex;
 
-                GenericService.clean(model);
+                self.clean(model);
 
                 return collection.insert(model).then(result => {
                     db.close();
@@ -134,8 +123,9 @@ class GenericService {
         });
     };
 
-    save = function (collectionName, model) {
+    save(collectionName, model) {
         var self = this;
+
         return self.execute(db => {
 
             return self.any(collectionName, { _id: model._id }).then(result => {
@@ -155,7 +145,7 @@ class GenericService {
         });
     };
 
-    remove = function (star, callback) {
+    remove(star, callback) {
         this.mongo(function (db) {
             var collection = db.collection('stars');
 
@@ -169,7 +159,8 @@ class GenericService {
     };
 
     // Utils
-    getNext_Id(db, collectionName) {
+    getNext_Id(db: IDBDatabase, collectionName: string) {
+
         var d = $.Deferred();
         autoIncrement.getNextSequence(db, collectionName, function (error, res) {
 
@@ -184,4 +175,4 @@ class GenericService {
 
 }
 
-angular.module('myApp').service('GenericService', ['$q', 'alertsService', GenericService]);
+angular.module('myApp').service('GenericService', ['$q', 'AlertsService', GenericService]);

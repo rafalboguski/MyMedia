@@ -4,7 +4,7 @@ class Utils {
 
     constructor($rootScope: RootScope) {
         this.rootScope = $rootScope;
-    }
+    } 
 
     // stores paths to settings and minor ui shit
     registerShortcuts = function (controller, shortcuts) {

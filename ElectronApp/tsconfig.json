@@ -1,22 +1,67 @@
 {
-    "files": [
-        "app/**/*.ts",
-        "app/**/*.js",
-        "main.js",
-        "renderer.js"
-    ],
-    "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "sourceMap": false,
-        "inlineSourceMap": true, 
-        "inlineSources": true,
-        "allowJs": true,
-        "rootDir": ".",
-        "outDir": "dist",
-        "typeRoots": [
-            "./node_modules/@types"
-        ]
-    }
+  "files": [
+    "main.js",
+    "renderer.js",
+    //app
+    "app/components/app/AlertsService.ts",
+    "app/components/app/GenericService.ts",
+    "app/components/app/MainController.ts",
+    "app/components/app/Utils.ts",
+    //datafeeds
+    "app/components/datafeeds/datafeedController.ts",
+    "app/components/datafeeds/datafeedsController.ts",
+    "app/components/datafeeds/datafeedsService.ts",
+    //settings
+    "app/components/settings/dataSourcesService.ts",
+    "app/components/settings/settingsController.ts",
+    "app/components/settings/SettingsService.ts",
+    //stars
+    "app/components/stars/starController.ts",
+    "app/components/stars/starsController.ts",
+    "app/components/stars/StarsService.ts",
+    //directives
+    "app/directives/enforceMaxTags.ts",
+    "app/directives/starsAutocomplete.ts",
+    //models
+    "app/models/RootScope.ts",
+    //root
+    "app/App.ts",
+    "app/contextMenu.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "content"
+  ],
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": false,
+    "inlineSourceMap": true,
+    "inlineSources": true,
+    "allowJs": true
+  }
 }
+// {
+//   "files": [
+//     "app/**/*.ts",
+//     "app/**/*.js",
+//     "main.js",
+//     "renderer.js"
+//   ],
+//   "compilerOptions": {
+//     "target": "es5",
+//     "module": "commonjs",
+//     "moduleResolution": "node",
+//     "sourceMap": false,
+//     "inlineSourceMap": true,
+//     "inlineSources": true,
+//     "allowJs": true,
+//     "rootDir": ".",
+//     "outDir": "dist",
+//     "typeRoots": [
+//       "./node_modules/@types"
+//     ]
+//   }
+// }

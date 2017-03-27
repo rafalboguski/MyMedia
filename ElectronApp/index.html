@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../content/styles/style.css" />
 </head>
 
-<body ng-controller="mainController" id="bootstrap-overrides" class="">
+<body ng-controller="MainController" id="bootstrap-overrides" class="">
     <div class="supreme-container">
         <nav class="navigation-bar">
             <div class="form-inline">
@@ -45,71 +45,7 @@
     </div>
 
     <script>
-        window.$ = window.jQuery = require('jquery');
-        window._ = require('lodash');
-        window.fs = require('fs');
-        window.path = require('path');
-        window.Tether = require('tether');
-
-
-        require('bootstrap');
-        require("angular");
-        require('angular-route');
-        require('angular-animate');
-        require('angular-sanitize');
-        require('angular-files-drop');
-        require('angular-modal-service');
-        require('ng-tags-input');
-        require('../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
-
-        require('./renderer.js');
-        require('./app/contextMenu.js');
-
         require('./app/app.js');
-
-        // const remote = require('electron').remote;
-        // const BrowserWindow = remote.BrowserWindow; 
-
-        // var win = remote.getCurrentWindow();
-        // var dat = new Date().getTime(); 
-
-        // win.on('resize', function (e) {
-
-            // setTimeout(function () {
-            //     if ((new Date().getTime() - dat > 200)) {
-            //         console.log('resize');
-
-            //         dat = new Date().getTime();
-            //         var parentWin = BrowserWindow.getFocusedWindow();
-            //         var pos = parentWin.getPosition();
-            //         var size = parentWin.getSize();
-            //         var max = parentWin.isMaximized();
-
-            //         angular.forEach(BrowserWindow.getAllWindows(), win => {
-            //             if (win.isFocused() == false) {
-            //                 win.setPosition(pos[0], pos[1]);
-            //                 win.setSize(size[0], size[1]);
-            //                 if (max) {
-            //                     win.maximize();
-            //                 }
-            //             }
-            //         })
-            //     }
-            // }, 300);
-
-        // });
-
-        // win.on('maximize', function (e) {
-        //     console.log('maximize');
-        // });
-
-        // win.on('unmaximize', function (e) {
-        //     console.log('unmaximize');
-        // });
-
-        // win.on('move', function (e) {
-        //     console.log('move');
-        // });
     </script>
 </body>
 

@@ -1,6 +1,6 @@
 angular.module('myApp')
-  .controller('settingsController', ['$rootScope', '$scope', '$http', '$window', 'settingsService', 'dataSourcesService',
-    function ($rootScope, $scope, $http, $window, settingsService, dataSourcesService) {
+  .controller('settingsController', ['$rootScope', '$scope', '$http', '$window', 'SettingsService', 'dataSourcesService',
+    function ($rootScope, $scope, $http, $window, SettingsService, dataSourcesService) {
 
       $scope.settings = [];
       $scope.dataSources = [];
@@ -48,14 +48,14 @@ angular.module('myApp')
 
       // GET
       $scope.getSettings = function () {
-        settingsService.getSettings().then(settings => {
+        SettingsService.getSettings().then(settings => {
           $scope.settings = settings;
           $apply($scope);
         });
       };
 
       $scope.saveSettings = function () {
-        settingsService.saveSettings($scope.settings, function (data) {
+        SettingsService.saveSettings($scope.settings, function (data) {
 
         });
       };

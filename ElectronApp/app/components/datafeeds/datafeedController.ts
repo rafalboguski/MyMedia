@@ -1,13 +1,13 @@
 angular.module('myApp')
-    .controller('datafeedController', ['$rootScope', '$scope', '$q', 'datafeedsService', 'starsService', '$routeParams', 'Utils', '$http',
-        function ($rootScope, $scope, $q, datafeedsService, starsService, $routeParams, Utils, $http) {
+    .controller('datafeedController', ['$rootScope', '$scope', '$q', 'datafeedsService', 'StarsService', '$routeParams', 'Utils', '$http',
+        function ($rootScope, $scope, $q, datafeedsService, StarsService, $routeParams, Utils, $http) {
 
             var _datafeedId = null;
 
             $scope.datafeed = null;
             $scope.datafeedOryginal = null;
 
-            // ---------------------------------------------------------
+            // ------------------------------------------- --------------
 
             // Routing
             function getRouteParams() {
@@ -69,7 +69,7 @@ angular.module('myApp')
             // DATA Set
             $scope.addDatafeed = function () {
                 datafeedsService.addDatafeed($scope.datafeed).then(result => {
-                    data.datafeed_id = result;
+                    //data.datafeed_id = result;
                     //$window.location.reload();
                     init();
                 });
