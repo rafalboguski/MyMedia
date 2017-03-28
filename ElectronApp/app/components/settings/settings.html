@@ -54,13 +54,13 @@
                         <label>Global data path</label>
                         <div class="input-group form-group">
                             <input type="text" class="form-control" ng-model="settings.pathGlobalData">
-                            <div class="input-group-addon" ng-click="browseGlobalData()">Browse</div>
+                            <div class="input-group-addon" ng-click="setGlobalDataDialog()">Browse</div>
                         </div>
 
                         <label>Thumbnail generator path</label>
                         <div class="input-group form-group">
                             <input type="text" class="form-control" ng-model="settings.pathThumbnailGenerator">
-                            <div class="input-group-addon" ng-click="browseThumbnailGenerator()">Browse</div>
+                            <div class="input-group-addon" ng-click="setThumbnailGeneratorDialog()">Browse</div>
                         </div>
 
                         <button type="submit" class="btn large btn" ng-click="getSettings()">
