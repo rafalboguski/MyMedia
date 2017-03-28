@@ -1,76 +1,78 @@
+
+class Star implements IModel {
+
+    _id: string | number = null;
+    name: string = null;
+    hasCover: boolean = null;
+
+    // cleared
+    coverThumbnailPath: string = null;
+    coverFullPath: string = null;
+    newCoverPath: string = null; // userd to insert new image
+
+    getClear(): Star {
+        var clear = angular.copy(this)
+
+        delete clear.coverThumbnailPath;
+        delete clear.coverFullPath;
+        delete clear.newCoverPath;
+
+        return clear;
+    }
+}
+
+
 class StarsService {
 
-    private rootScope: RootScope;
+    private rootScope: IAppRootScope;
     private location: ng.ILocationService;
     private AlertsService: any;
     private q: ng.IQService;
-    private GenericService: GenericService;
+    private genericService: GenericService;
     private SettingsService: any;
 
     private collectionName: string = 'stars';
-    private $servive = this;
-    constructor($rootScope: RootScope, $location: ng.ILocationService, AlertsService: AlertsService, $q: ng.IQService, GenericService: GenericService, SettingsService: any) {
+    constructor($rootScope: IAppRootScope, $location: ng.ILocationService, AlertsService: AlertsService, $q: ng.IQService, GenericService: GenericService, SettingsService: any) {
 
         this.rootScope = $rootScope;
         this.location = $location;
         this.AlertsService = AlertsService;
         this.q = $q;
-        this.GenericService = GenericService;
+        this.genericService = GenericService;
         this.SettingsService = SettingsService;
 
     }
 
     // run after fetching from db
-    build(model: any) {
+    build(model): Star {
         var self = this;
 
-        model = self.GenericService.build(model, {
-            properties: {
-                _id: null,
-                name: null,
-                hasCover: false,
-            },
-            tmp: {
-                coverThumbnailPath: null,
-                coverFullPath: null,
-                newCoverPath: null // userd to insert new image
-            },
-            functions: {
+        let star: Star = self.genericService.buildNEW(model, new Star());
 
-            }
-        });
-
-        var coverThumbnailPath;
-        var coverFullPath;
         // set paths
-        if (model._id !== null && model.hasCover) {
-            coverThumbnailPath = self.rootScope.settings.paths.globalData + '\\covers\\' + self.collectionName + '\\thumbails\\' + model._id + ".jpg";
 
-            coverFullPath = self.rootScope.settings.paths.globalData + '\\covers\\' + self.collectionName + '\\full\\' + model._id + ".jpg";
+        let coverThumbnailPath: string;
+        let coverFullPath: string;
 
+        if (star._id !== null && star.hasCover) {
+            coverThumbnailPath = self.rootScope.settings.paths.globalData + '\\covers\\' + self.collectionName + '\\thumbails\\' + star._id + ".jpg";
+            coverFullPath = self.rootScope.settings.paths.globalData + '\\covers\\' + self.collectionName + '\\full\\' + star._id + ".jpg";
         }
         else {
             coverThumbnailPath = self.rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
             coverFullPath = self.rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
         }
-        model.tmp.coverThumbnailPath = coverThumbnailPath.split('\\').join('/') + '?' + new Date().getTime();
-        model.tmp.coverFullPath = coverFullPath.split('\\').join('/') + '?' + new Date().getTime();
+        star.coverThumbnailPath = coverThumbnailPath.split('\\').join('/') + '?' + new Date().getTime();
+        star.coverFullPath = coverFullPath.split('\\').join('/') + '?' + new Date().getTime();
 
-        return model;
-    };
-
-    // run before saving in db
-    clean(model) {
-        var self = this;
-
-        self.GenericService.clean(model);
+        return star;
     };
 
     // Get
-    getStar(id) {
+    getStar(id: number) {
         var self = this;
 
-        return self.GenericService.single(self.collectionName, id, self);
+        return self.genericService.single(self.collectionName, id, self);
     };
 
     getStars(search) {
@@ -78,36 +80,33 @@ class StarsService {
 
         if (!search)
             search = {};
-        return self.GenericService.many(self.collectionName, search, self);
+        return self.genericService.many(self.collectionName, search, self);
     };
 
     // Set
-    addStar(model) {
+    addStar(star: Star) {
         var self = this;
 
-        var tmp = angular.copy(model.tmp);
-        return self.GenericService.add(self.collectionName, model).then(id => {
-            model._id = id;
-            model.tmp = tmp;
-            return self.$servive.generateThumbnail(model).then(function () {
-                return self.$servive.saveStar(model).then(res => {
-                    return model._id;
-                })
-            });
+        return self.genericService.add(self.collectionName, star).then(id => {
+            star._id = id;
 
+            return self.saveStar(star).then(res => {
+                return star._id;
+            })
         });
     };
 
-    saveStar(model) {
+    saveStar(star: Star) {
         var self = this;
-        return self.generateThumbnail(model).then(function () {
-            return self.GenericService.save(self.collectionName, model);
+
+        return self.generateThumbnail(star).then(function () {
+            return self.genericService.save(self.collectionName, star);
         });
     };
 
     // Remove
     removeStar(star, callback) {
-        this.GenericService.mongo(function (db) {
+        this.genericService.mongo(function (db) {
             var collection = db.collection('stars');
 
             collection.deleteOne({ _id: star._id }, function (err, result) {
@@ -119,18 +118,18 @@ class StarsService {
         });
     };
 
-    generateThumbnail(star): any {
+    generateThumbnail(star: Star): any {
 
         var self = this;
         // variable is set ony whe new photo was picked
-        if (!star.tmp.newCoverPath) {
+        if (!star.newCoverPath) {
             console.log('No star.tmp.newCoverPath');
             return self.q.resolve();
         }
 
         star.hasCover = true;
 
-        var src = star.tmp.newCoverPath;
+        var src = star.newCoverPath;
 
         var pathThumbnail = self.rootScope.settings.paths.globalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
         var pathFull = self.rootScope.settings.paths.globalData + '\\covers\\stars\\full\\' + star._id + '.jpg';

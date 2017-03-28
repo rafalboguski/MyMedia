@@ -1,8 +1,8 @@
 class AlertsService {
 
-    rootScope: RootScope;
+    rootScope: IAppRootScope;
 
-    constructor($rootScope: RootScope) {
+    constructor($rootScope: IAppRootScope) {
         this.rootScope = $rootScope;
     }
 
@@ -28,3 +28,4 @@ class Alert {
     }
 }
 angular.module('myApp').service('AlertsService', ['$rootScope', AlertsService]);
+ 

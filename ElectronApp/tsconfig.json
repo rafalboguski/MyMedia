@@ -23,7 +23,8 @@
     "app/directives/enforceMaxTags.ts",
     "app/directives/starsAutocomplete.ts",
     //models
-    "app/models/RootScope.ts",
+    "app/models/IAppRootScope.ts",
+    "app/models/IModel.ts",
     //root
     "app/App.ts",
     "app/contextMenu.ts"

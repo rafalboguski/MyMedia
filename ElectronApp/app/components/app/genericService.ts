@@ -21,31 +21,17 @@ class GenericService {
     };
 
     // run after fetching from db
-    build(model: any, data: any) {
+    buildNEW(model, data) {
 
-        if (!model) { model = {}; }
-
-        // add fiels if they don't exist
-        _.defaults(model, data.properties);
-        // tmps are not saved in db
-        if (!model.tmp) {
-            model.tmp = {};
-            _.defaults(model.tmp, data.tmp);
-
+        if (!model) {
+            model = {};
         }
 
-        // add functions
-        model.functions = data.functions;
+        // add fiels if they don't exist
+        _.defaults(model, data);
 
         return model;
     };
-
-    // run before saving in db
-    clean(model: any) {
-        delete model.functions;
-        delete model.tmp;
-    };
-
 
     execute(fun) {
         return mongoClient.connect(_DB)
@@ -58,7 +44,7 @@ class GenericService {
     };
 
     // CRUD
-    single(collectionName: string, id: number | string, service: any) {
+    single(collectionName: string, id: number | string, service: any): Promise<IModel> {
         return this.execute(db => {
             return db.collection(collectionName).findOne({ _id: id })
                 .then(result => {
@@ -71,7 +57,7 @@ class GenericService {
         });
     };
 
-    many(collectionName: string, search: any, service: any) {
+    many(collectionName: string, search: any, service: any): Promise<IModel[]> {
         return this.execute(db => {
             return db.collection(collectionName).find(search).toArray()
                 .then(result => {
@@ -84,7 +70,7 @@ class GenericService {
         });
     };
 
-    any(collectionName: string, search) {
+    any(collectionName: string, search): Promise<boolean> {
         return this.execute(db => {
             return db.collection(collectionName).findOne(search)
                 .then(result => {
@@ -93,7 +79,7 @@ class GenericService {
                         return this.q.resolve(true);
                     }
                     else {
-                        return this.q.resolve(false);
+                        return this.q.resolve(false); 
                     }
                 })
         });
@@ -101,8 +87,10 @@ class GenericService {
 
     // todo get, if not add and get
 
-    add(collectionName: string, model) {
+    add(collectionName: string, model: IModel): Promise<string | number> {
         var self = this;
+
+        model = model.getClear();
 
         return self.execute(db => {
 
@@ -110,9 +98,7 @@ class GenericService {
 
             return this.getNext_Id(db, collectionName).then(autoIndex => {
 
-                model._id = autoIndex;
-
-                self.clean(model);
+                model._id = <number>autoIndex;
 
                 return collection.insert(model).then(result => {
                     db.close();
@@ -123,8 +109,9 @@ class GenericService {
         });
     };
 
-    save(collectionName, model) {
+    save(collectionName: string, model: IModel): Promise<IModel> {
         var self = this;
+        model = model.getClear();
 
         return self.execute(db => {
 
@@ -133,7 +120,6 @@ class GenericService {
                     throw 'Document doesn\'t exist in database';
                 }
                 else {
-                    self.clean(model);
 
                     return db.collection(collectionName).updateOne({ _id: model._id }, model).then(result => {
                         db.close();

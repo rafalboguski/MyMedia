@@ -1,8 +1,8 @@
 class Utils {
 
-    rootScope: RootScope;
+    rootScope: IAppRootScope;
 
-    constructor($rootScope: RootScope) {
+    constructor($rootScope: IAppRootScope) {
         this.rootScope = $rootScope;
     } 
 

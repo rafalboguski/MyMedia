@@ -1,3 +1,44 @@
+const opn = require('opn');
+
+
+class Datafeed implements IModel {
+
+    _id: number;
+
+    name: string;
+
+    stars_ids: number[];
+    tags_ids: number[];
+
+    linkFrom: string;
+    linkTo: string;
+    rangeFrom: number;
+    rangeTo: number;
+    dateFrom: Date;
+    dateTo: Date;
+    textFrom: string;
+    textTo: string;
+    text: string;
+    rank: number; // <0;5>
+
+    marked: boolean;
+    done: boolean;
+
+    timestamp: Date;
+
+    openLinkFrom(self) {
+        opn(self.linkFrom);
+    }
+
+    openLinkTo(self) {
+        opn(self.linkTo);
+    }
+
+    getClear(): Datafeed {
+        return angular.copy(this);
+    }
+}
+
 class DatefeedsService {
 
     private collectionName: string = 'datafeeds';
@@ -16,51 +57,9 @@ class DatefeedsService {
 
     // run after fetching from db
     build(model) {
-        model = this.GenericService.build(model, {
-            properties: {
-                _id: null,
-                name: null,
-
-                stars_ids: [],
-                tags_ids: [],
-
-                linkFrom: null,
-                linkTo: null,
-                rangeFrom: null,
-                rangeTo: null,
-                dateFrom: null,
-                dateTo: null,
-                textFrom: null,
-                textTo: null,
-                text: null,
-                rank: null, // <0;5>
-
-                marked: null,
-                done: null,
-
-                timestamp: null,
-            },
-            tmp: {
-            },
-            functions: {
-                openLinkFrom: function (self) {
-                    const opn = require('opn');
-                    opn(self.linkFrom);
-                },
-                openLinkTo: function (self) {
-                    const opn = require('opn');
-                    opn(self.linkTo);
-                }
-
-            }
-        });
+        model = this.GenericService.buildNEW(model, new Datafeed());
 
         return model;
-    };
-
-    // run before saving in db
-    clean(model) {
-        this.GenericService.clean(model);
     };
 
     // Get
