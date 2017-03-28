@@ -1,80 +1,97 @@
-angular.module('myApp')
-  .controller('settingsController', ['$rootScope', '$scope', '$http', '$window', 'SettingsService', 'dataSourcesService',
-    function ($rootScope, $scope, $http, $window, SettingsService, dataSourcesService) {
+interface ISettingsControllerScope extends ng.IScope {
 
-      $scope.settings = [];
-      $scope.dataSources = [];
+    settings: Settings;
+    datasources;
+}
 
-      // ADD / EDIT
-      $scope.addDataSourceDialog = function () {
-        dialog.selectFoldersDialog(function (res) {
-          angular.forEach(res, function (value, key) {
-            dataSourcesService.addDataSources({ path: value }, function () {
-              $scope.getDataSources();
+class SettingsController {
+    static $inject = ['$rootScope', '$scope', '$http', '$window', 'SettingsService', 'dataSourcesService'];
+
+    private rootScope: IAppRootScope;
+    private scope: ISettingsControllerScope;
+    private http: ng.IHttpService;
+    private window: ng.IWindowService;
+    private SettingsService: SettingsService;
+    private dataSourcesService
+
+    constructor($rootScope: IAppRootScope, $scope: ISettingsControllerScope, $http: ng.IHttpService, $window: ng.IWindowService, SettingsService: SettingsService, dataSourcesService) {
+        this.rootScope = $rootScope;
+        this.scope = $scope;
+        this.http = $http;
+        this.window = $window;
+        this.SettingsService = SettingsService;
+        this.dataSourcesService = dataSourcesService;
+
+        // ADD / EDIT
+        this.scope.addDataSourceDialog = () => {
+            dialog.selectFoldersDialog(function (res) {
+                angular.forEach(res, function (value, key) {
+                    dataSourcesService.addDataSources({ path: value }, function () {
+                        $scope.getDataSources();
+                    });
+                });
             });
-          });
-        });
-      };
+        };
 
+        this.scope.browseGlobalData = () => {
+            dialog.selectFoldersDialog(function (res) {
+                if (res)
+                    $scope.settings.pathGlobalData = res;
+                $apply($scope);
+            });
+        };
 
-      $scope.browseGlobalData = function () {
-        dialog.selectFoldersDialog(function (res) {
-          if (res)
-            $scope.settings.paths.globalData = res;
-          $apply($scope);
-        });
-      };
+        this.scope.browseThumbnailGenerator = () => {
+            dialog.selectFoldersDialog(function (res) {
+                if (res)
+                    $scope.settings.pathThumbnailGenerator = res;
+                $apply($scope);
+            });
+        };
 
-      $scope.browseThumbnailGenerator = function () {
-        dialog.selectFoldersDialog(function (res) {
-          if (res)
-            $scope.settings.paths.thumbnailGenerator = res;
-          $apply($scope);
-        });
-      };
+        // REMOVE
+        this.scope.removeDataSource = (ds) => {
+            dataSourcesService.removeDataSource(ds, function () {
+                $scope.getDataSources();
+            });
+        }
 
-      // REMOVE
-      $scope.removeDataSource = function (ds) {
-        dataSourcesService.removeDataSource(ds, function () {
-          $scope.getDataSources();
-        });
-      }
+        this.scope.removeAllDataSources = () => {
+            dataSourcesService.removeAllDataSources(function () {
+                $scope.getDataSources();
+            });
+        };
 
-      $scope.removeAllDataSources = function () {
-        dataSourcesService.removeAllDataSources(function () {
-          $scope.getDataSources();
-        });
-      };
+        // GET
+        this.scope.getSettings = () => {
+            SettingsService.getSettings().then(settings => {
+                $scope.settings = settings;
+                $apply($scope);
+            });
+        };
 
-      // GET
-      $scope.getSettings = function () {
-        SettingsService.getSettings().then(settings => {
-          $scope.settings = settings;
-          $apply($scope);
-        });
-      };
+        this.scope.saveSettings = () => {
+            this.SettingsService.saveSettings($scope.settings).then(() => {
 
-      $scope.saveSettings = function () {
-        SettingsService.saveSettings($scope.settings, function (data) {
+            });
+        }
 
-        });
-      };
+        this.scope.getDataSources = () => {
+            dataSourcesService.getDataSources(function (data) {
+                $scope.dataSources = data;
+                $apply($scope);
+            });
+        };
 
-      $scope.getDataSources = function () {
-        dataSourcesService.getDataSources(function (data) {
-          $scope.dataSources = data;
-          $apply($scope);
-        });
-      };
+        this.init();
+    }
 
-      // INIT
-      function init() {
+    // INIT
+    init() {
+        this.scope.getSettings();
+        this.scope.getDataSources();
+    };
 
-        $scope.getSettings();
-        $scope.getDataSources();
+}
 
-      };
-
-      init();
-
-    }]);
+angular.module('myApp').controller('settingsController', SettingsController);

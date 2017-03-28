@@ -13,74 +13,46 @@ class Settings implements IModel {
 class SettingsService {
 
     private collectionName: string = 'settings';
-    private rootScope: ng.IRootScopeService;
+    private rootScope: IAppRootScope;
     private location: ng.ILocationService;
     private alertsService: AlertsService;
-    private genericService: GenericService;
+    private DB: GenericService;
 
-    constructor($rootScope: ng.IRootScopeService, $location: ng.ILocationService, AlertsService: AlertsService, GenericService: GenericService) {
+    constructor($rootScope: IAppRootScope, $location: ng.ILocationService, AlertsService: AlertsService, GenericService: GenericService) {
         this.rootScope = $rootScope;
         this.location = $location;
         this.alertsService = AlertsService;
-        this.genericService = GenericService;
-    } 
+        this.DB = GenericService;
+    }
 
     build(model): Settings {
-        return this.genericService.buildNEW(model, new Settings())
+        return this.DB.buildNEW(model, new Settings())
     };
 
     getSettings(): Promise<Settings> {
         var self = this;
-        return self.genericService.any(self.collectionName, { _id: 'settings' }).then(found => {
+        return self.DB.any(self.collectionName, { _id: 'settings' }).then(found => {
 
             if (found) {
-                return self.genericService.single(self.collectionName, 'settings', self).then(settings => {
-                    self.rootScope.settings = settings;
+                return self.DB.single(self.collectionName, 'settings', self).then(settings => {
+                    self.rootScope.settings = settings as Settings;
                     return settings;
                 })
             } else {
-                return this.genericService.add(self.collectionName, self.build({})).then(id => {
-                    return this.genericService.single(self.collectionName, 'settings', self).then(settings => {
-                        self.rootScope.settings = settings;
+                return self.DB.add(self.collectionName, self.build({})).then(id => {
+                    return self.DB.single(self.collectionName, 'settings', self).then(settings => {
+                        self.rootScope.settings = settings as Settings;
                         return settings;
                     })
                 })
             }
-
         })
-
     };
 
-    saveSettings(settings, callback) {
-        this.genericService.mongo(function (db, self) {
-            var collection = db.collection(this.collectionName);
+    saveSettings(settings: Settings): Promise<Settings> {
+        var self = this;
 
-            collection.findOne({ _id: 'settings' }, function (err, document) {
-
-                if (document === null) {
-                    collection.insert(self, function (err, result) {
-                        self.Finish(err, result, db, callback);
-                    });
-                }
-                else if (settings) {
-                    collection.updateOne({ _id: 'settings' }, settings, function (err, result) {
-                        self.Finish(err, result, db, callback);
-                    });
-                }
-            });
-        }, this);
-    };
-
-    Finish(err, result, db, callback) {
-        db.close();
-
-        if (err) {
-            console.log(err);
-            alert(err);
-        }
-
-        if (angular.isFunction(callback))
-            callback(result);
+        return self.DB.save(self.collectionName, settings);
     };
 }
 

@@ -55,12 +55,12 @@ class StarsService {
         let coverFullPath: string;
 
         if (star._id !== null && star.hasCover) {
-            coverThumbnailPath = self.rootScope.settings.paths.globalData + '\\covers\\' + self.collectionName + '\\thumbails\\' + star._id + ".jpg";
-            coverFullPath = self.rootScope.settings.paths.globalData + '\\covers\\' + self.collectionName + '\\full\\' + star._id + ".jpg";
+            coverThumbnailPath = self.rootScope.settings.pathGlobalData + '\\covers\\' + self.collectionName + '\\thumbails\\' + star._id + ".jpg";
+            coverFullPath = self.rootScope.settings.pathGlobalData + '\\covers\\' + self.collectionName + '\\full\\' + star._id + ".jpg";
         }
         else {
-            coverThumbnailPath = self.rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
-            coverFullPath = self.rootScope.settings.paths.globalData + '\\covers\\placeholder.jpg';
+            coverThumbnailPath = self.rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
+            coverFullPath = self.rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
         }
         star.coverThumbnailPath = coverThumbnailPath.split('\\').join('/') + '?' + new Date().getTime();
         star.coverFullPath = coverFullPath.split('\\').join('/') + '?' + new Date().getTime();
@@ -131,12 +131,12 @@ class StarsService {
 
         var src = star.newCoverPath;
 
-        var pathThumbnail = self.rootScope.settings.paths.globalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
-        var pathFull = self.rootScope.settings.paths.globalData + '\\covers\\stars\\full\\' + star._id + '.jpg';
+        var pathThumbnail = self.rootScope.settings.pathGlobalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
+        var pathFull = self.rootScope.settings.pathGlobalData + '\\covers\\stars\\full\\' + star._id + '.jpg';
 
         require('fs-path').writeFile(pathFull, fs.readFileSync(src));
 
-        var command = '"' + self.rootScope.settings.paths.thumbnailGenerator + '\\tg.exe" ';
+        var command = '"' + self.rootScope.settings.pathThumbnailGenerator + '\\tg.exe" ';
         command += '"' + src + '" ';
         command += '"' + pathThumbnail + '" ';
         command += '300 300 false true';

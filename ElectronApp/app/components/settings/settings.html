@@ -11,7 +11,7 @@
                         <div class="row" ng-repeat="dataSource in dataSources | orderBy: 'path' track by $index" style="margin-bottom: 0px">
                             <div class="btn-group fill-width show">
                                 <button type="button" class="btn fill-width text-left" ng-class="dataSource.invalid ? 'btn-warning' : 'btn-secondary'"> 
-                               {{$index + 1}}. {{dataSource.path}}
+                               {{$index + 1  }}. {{dataSource.path}}
                                 </button>
                                 <button type="button" class="btn btn-secondary show-on-hover" ng-click="removeDataSource(dataSource)">
                                 <span >X</span>
@@ -53,13 +53,13 @@
                         </div>-->
                         <label>Global data path</label>
                         <div class="input-group form-group">
-                            <input type="text" class="form-control" ng-model="settings.paths.globalData">
+                            <input type="text" class="form-control" ng-model="settings.pathGlobalData">
                             <div class="input-group-addon" ng-click="browseGlobalData()">Browse</div>
                         </div>
 
                         <label>Thumbnail generator path</label>
                         <div class="input-group form-group">
-                            <input type="text" class="form-control" ng-model="settings.paths.thumbnailGenerator">
+                            <input type="text" class="form-control" ng-model="settings.pathThumbnailGenerator">
                             <div class="input-group-addon" ng-click="browseThumbnailGenerator()">Browse</div>
                         </div>
 
