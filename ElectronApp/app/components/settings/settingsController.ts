@@ -1,23 +1,27 @@
 class SettingsController {
-    static $inject = ['$rootScope', '$scope', '$http', '$window', 'SettingsService', 'dataSourcesService'];
+    static $inject = ['$rootScope', '$scope', '$http', '$window', '$location', 'Utils', 'SettingsService', 'dataSourcesService'];
 
     constructor(
         private $rootScope: IAppRootScope,
         private $scope,
         private $http: ng.IHttpService,
         private $window: ng.IWindowService,
+        private $location: ng.ILocationService,
+        private utils: Utils,
         private settingsService: SettingsService,
         private dataSourcesService
     ) {
 
-        var $ctrl = this;
-        var $scope = this.$scope;
+        var _C = this;
+        //-------------------------------------
+        $scope.settings = null;
+        $scope.dataSources = null;
 
         // ADD / EDIT
         $scope.addDataSourceDialog = () => {
             dialog.selectFoldersDialog((res: Array<string>) => {
                 for (let path of res) {
-                    $ctrl.dataSourcesService.addDataSources({ path: path }, () => {
+                    dataSourcesService.addDataSources({ path: path }, () => {
                         $scope.getDataSources();
                     });
                 }
@@ -44,31 +48,31 @@ class SettingsController {
 
         // REMOVE
         $scope.removeDataSource = (datasource) => {
-            $ctrl.dataSourcesService.removeDataSource(datasource, () => {
+            dataSourcesService.removeDataSource(datasource, () => {
                 $scope.getDataSources();
             });
         }
 
         $scope.removeAllDataSources = () => {
-            $ctrl.dataSourcesService.removeAllDataSources(() => {
+            dataSourcesService.removeAllDataSources(() => {
                 $scope.getDataSources();
             });
         };
 
         // GET
         $scope.getSettings = () => {
-            $ctrl.settingsService.getSettings().then(settings => {
+            settingsService.getSettings().then(settings => {
                 $scope.settings = settings;
                 $apply($scope);
             });
         };
 
         $scope.saveSettings = () => {
-            $ctrl.settingsService.saveSettings($scope.settings);
+            settingsService.saveSettings($scope.settings);
         }
 
         $scope.getDataSources = () => {
-            $ctrl.dataSourcesService.getDataSources((dataSources) => {
+            dataSourcesService.getDataSources((dataSources) => {
                 $scope.dataSources = dataSources;
                 $apply($scope);
             });
@@ -76,11 +80,32 @@ class SettingsController {
 
         // INIT
         $scope.init = () => {
+            _C.getRouteParams();
+            _C.configureShortcuts();
+
             this.$scope.getSettings();
             this.$scope.getDataSources();
         };
 
         $scope.init();
+    }
+
+    getRouteParams() {
+        this.$scope.view = 'List';
+        this.$rootScope.windowTitle = 'Stars List';
+    }
+
+    configureShortcuts() {
+        this.utils.registerShortcuts(this, [
+            { // CTRL + A - Add star
+                modyfier: 'ctrl',
+                key: 65,
+                action: () => {
+                    this.$location.path('/star/null');
+                    $apply(this.$scope);
+                }
+            },
+        ])
     }
 }
 

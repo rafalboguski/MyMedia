@@ -41,7 +41,7 @@ class Datafeed implements IModel {
 
 class DatefeedsService {
 
-    private collectionName: string = 'datafeeds';
+    private collection: string = 'datafeeds';
 
     private rootScope: ng.IRootScopeService;
     private location: ng.ILocationService;
@@ -64,20 +64,20 @@ class DatefeedsService {
 
     // Get
     getDatafeed(id) {
-        return this.GenericService.single(this.collectionName, id, this);
+        return this.GenericService.single(this.collection, id, this);
     };
 
     getDatafeeds() {
-        return this.GenericService.many(this.collectionName, {}, this);
+        return this.GenericService.many(this.collection, {}, this);
     };
 
     // Set
     addDatafeed(model) {
-        return this.GenericService.add(this.collectionName, model);
+        return this.GenericService.add(this.collection, model);
     };
 
     saveDatafeed(model) {
-        return this.GenericService.save(this.collectionName, model);
+        return this.GenericService.save(this.collection, model);
     };
 
     // Remove

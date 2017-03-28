@@ -5,7 +5,7 @@
 <script type="text/ng-template" id="tag-template">
     <div class="tag-template">
         <div class="left-panel" style="float:left; margin-right:21px;">
-            <img style="width:70px;height:70px;" ng-src="{{ data.tmp.coverThumbnailPath }}" />
+            <img style="width:70px;height:70px;" ng-src="{{ data.coverThumbnailPath }}" />
         </div>
         <div class="right-panel">
             <span>{{$getDisplayText()}}</span>
@@ -16,7 +16,7 @@
 
 <script type="text/ng-template" id="ac-stars-template">
     <div class="left-panel" style="float:left; margin-right:21px;">
-        <img style="width:70px;height:70px;" ng-src="{{ data.tmp.coverThumbnailPath }}" />
+        <img style="width:70px;height:70px;" ng-src="{{ data.coverThumbnailPath }}" />
     </div>
     <div class="right-panel">
         <span ng-bind-html="$highlight($getDisplayText())"></span>

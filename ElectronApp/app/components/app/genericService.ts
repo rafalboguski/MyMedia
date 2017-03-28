@@ -44,9 +44,9 @@ class GenericService {
     };
 
     // CRUD
-    single(collectionName: string, id: number | string, service: any): Promise<IModel> {
+    single(collection: string, id: number | string, service: any): Promise<IModel> {
         return this.execute(db => {
-            return db.collection(collectionName).findOne({ _id: id })
+            return db.collection(collection).findOne({ _id: id })
                 .then(result => {
 
                     if (result) { service.build(result); }
@@ -57,9 +57,9 @@ class GenericService {
         });
     };
 
-    many(collectionName: string, search: any, service: any): Promise<IModel[]> {
+    many(collection: string, search: any, service: any): Promise<IModel[]> {
         return this.execute(db => {
-            return db.collection(collectionName).find(search).toArray()
+            return db.collection(collection).find(search).toArray()
                 .then(result => {
 
                     angular.forEach(result, (value, key) => { service.build(value); });
@@ -70,9 +70,9 @@ class GenericService {
         });
     };
 
-    any(collectionName: string, search): Promise<boolean> {
+    any(collection: string, search): Promise<boolean> {
         return this.execute(db => {
-            return db.collection(collectionName).findOne(search)
+            return db.collection(collection).findOne(search)
                 .then(result => {
 
                     if (result) {
@@ -87,16 +87,16 @@ class GenericService {
 
     // todo get, if not add and get
 
-    add(collectionName: string, model: IModel): Promise<string | number> {
+    add(collection: string, model: IModel): Promise<string | number> {
         var self = this;
 
         model = model.getClear();
 
         return self.execute(db => {
 
-            var collection = db.collection(collectionName);
+            var collection = db.collection(collection);
 
-            return this.getNext_Id(db, collectionName).then(autoIndex => {
+            return this.getNext_Id(db, collection).then(autoIndex => {
 
                 model._id = <number>autoIndex;
 
@@ -109,19 +109,19 @@ class GenericService {
         });
     };
 
-    save(collectionName: string, model: IModel): Promise<IModel> {
+    save(collection: string, document: IModel): Promise<IModel> {
         var self = this;
-        model = model.getClear();
+        document = document.getClear();
 
         return self.execute(db => {
 
-            return self.any(collectionName, { _id: model._id }).then(result => {
+            return self.any(collection, { _id: document._id }).then(result => {
                 if (!result) {
                     throw 'Document doesn\'t exist in database';
                 }
                 else {
 
-                    return db.collection(collectionName).updateOne({ _id: model._id }, model).then(result => {
+                    return db.collection(collection).updateOne({ _id: document._id }, document).then(result => {
                         db.close();
                         return this.q.resolve(result);
                     });
@@ -145,10 +145,10 @@ class GenericService {
     };
 
     // Utils
-    getNext_Id(db: IDBDatabase, collectionName: string) {
+    getNext_Id(db: IDBDatabase, collection: string) {
 
         var d = $.Deferred();
-        autoIncrement.getNextSequence(db, collectionName, function (error, res) {
+        autoIncrement.getNextSequence(db, collection, function (error, res) {
 
             if (error) {
                 d.reject(error);

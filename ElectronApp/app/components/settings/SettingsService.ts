@@ -12,7 +12,7 @@ class Settings implements IModel {
 
 class SettingsService {
 
-    private collectionName: string = 'settings';
+    private collection: string = 'settings';
     private rootScope: IAppRootScope;
     private location: ng.ILocationService;
     private alertsService: AlertsService;
@@ -30,18 +30,17 @@ class SettingsService {
     };
 
     getSettings(): Promise<Settings> {
-        var self = this;
-        return self.DB.any(self.collectionName, { _id: 'settings' }).then(found => {
+        return this.DB.any(this.collection, { _id: 'settings' }).then((found) => {
 
             if (found) {
-                return self.DB.single(self.collectionName, 'settings', self).then(settings => {
-                    self.rootScope.settings = settings as Settings;
+                return this.DB.single(this.collection, 'settings', this).then((settings: Settings) => {
+                    this.rootScope.settings = settings as Settings;
                     return settings;
                 })
             } else {
-                return self.DB.add(self.collectionName, self.build({})).then(id => {
-                    return self.DB.single(self.collectionName, 'settings', self).then(settings => {
-                        self.rootScope.settings = settings as Settings;
+                return this.DB.add(this.collection, this.build({})).then((id) => {
+                    return this.DB.single(this.collection, 'settings', this).then((settings: Settings) => {
+                        this.rootScope.settings = settings;
                         return settings;
                     })
                 })
@@ -49,10 +48,29 @@ class SettingsService {
         })
     };
 
-    saveSettings(settings: Settings): Promise<Settings> {
-        var self = this;
+    // getSettings(): Promise<Settings> {
+    //     var self = this;
+    //     return self.DB.any(self.collection, { _id: 'settings' }).then(found => {
 
-        return self.DB.save(self.collectionName, settings);
+    //         if (found) {
+    //             return self.DB.single(self.collection, 'settings', self).then(settings => {
+    //                 self.rootScope.settings = settings as Settings;
+    //                 return settings;
+    //             })
+    //         } else {
+    //             return self.DB.add(self.collection, self.build({})).then(id => {
+    //                 return self.DB.single(self.collection, 'settings', self).then(settings => {
+    //                     self.rootScope.settings = settings as Settings;
+    //                     return settings;
+    //                 })
+    //             })
+    //         }
+    //     })
+    // };
+
+    saveSettings(settings: Settings): Promise<Settings> {
+
+        return this.DB.save(this.collection, settings);
     };
 }
 

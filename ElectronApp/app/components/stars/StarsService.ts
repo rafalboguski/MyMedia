@@ -1,4 +1,3 @@
-
 class Star implements IModel {
 
     _id: string | number = null;
@@ -24,43 +23,34 @@ class Star implements IModel {
 
 class StarsService {
 
-    private rootScope: IAppRootScope;
-    private location: ng.ILocationService;
-    private AlertsService: any;
-    private q: ng.IQService;
-    private genericService: GenericService;
-    private SettingsService: any;
+    private collection: string = 'stars';
 
-    private collectionName: string = 'stars';
-    constructor($rootScope: IAppRootScope, $location: ng.ILocationService, AlertsService: AlertsService, $q: ng.IQService, GenericService: GenericService, SettingsService: any) {
-
-        this.rootScope = $rootScope;
-        this.location = $location;
-        this.AlertsService = AlertsService;
-        this.q = $q;
-        this.genericService = GenericService;
-        this.SettingsService = SettingsService;
-
+    constructor(
+        private $rootScope: IAppRootScope,
+        private $location: ng.ILocationService,
+        private alertsService: AlertsService,
+        private $q: ng.IQService,
+        private DB: GenericService,
+        private settingsService: SettingsService) {
     }
 
     // run after fetching from db
     build(model): Star {
         var self = this;
 
-        let star: Star = self.genericService.buildNEW(model, new Star());
+        let star: Star = self.DB.buildNEW(model, new Star());
 
         // set paths
-
         let coverThumbnailPath: string;
         let coverFullPath: string;
 
         if (star._id !== null && star.hasCover) {
-            coverThumbnailPath = self.rootScope.settings.pathGlobalData + '\\covers\\' + self.collectionName + '\\thumbails\\' + star._id + ".jpg";
-            coverFullPath = self.rootScope.settings.pathGlobalData + '\\covers\\' + self.collectionName + '\\full\\' + star._id + ".jpg";
+            coverThumbnailPath = self.$rootScope.settings.pathGlobalData + '\\covers\\' + self.collection + '\\thumbails\\' + star._id + ".jpg";
+            coverFullPath = self.$rootScope.settings.pathGlobalData + '\\covers\\' + self.collection + '\\full\\' + star._id + ".jpg";
         }
         else {
-            coverThumbnailPath = self.rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
-            coverFullPath = self.rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
+            coverThumbnailPath = self.$rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
+            coverFullPath = self.$rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
         }
         star.coverThumbnailPath = coverThumbnailPath.split('\\').join('/') + '?' + new Date().getTime();
         star.coverFullPath = coverFullPath.split('\\').join('/') + '?' + new Date().getTime();
@@ -69,25 +59,23 @@ class StarsService {
     };
 
     // Get
-    getStar(id: number) {
+    getStar(id: number) : Promise<Star> {
         var self = this;
 
-        return self.genericService.single(self.collectionName, id, self);
+        return self.DB.single(self.collection, id, self);
     };
 
-    getStars(search) {
+    getStars(search = {}): Promise<Array<Star>> {
         var self = this;
 
-        if (!search)
-            search = {};
-        return self.genericService.many(self.collectionName, search, self);
+        return self.DB.many(self.collection, search, self);
     };
 
     // Set
     addStar(star: Star) {
         var self = this;
 
-        return self.genericService.add(self.collectionName, star).then(id => {
+        return self.DB.add(self.collection, star).then(id => {
             star._id = id;
 
             return self.saveStar(star).then(res => {
@@ -100,13 +88,13 @@ class StarsService {
         var self = this;
 
         return self.generateThumbnail(star).then(function () {
-            return self.genericService.save(self.collectionName, star);
+            return self.DB.save(self.collection, star);
         });
     };
 
     // Remove
     removeStar(star, callback) {
-        this.genericService.mongo(function (db) {
+        this.DB.mongo(function (db) {
             var collection = db.collection('stars');
 
             collection.deleteOne({ _id: star._id }, function (err, result) {
@@ -124,24 +112,24 @@ class StarsService {
         // variable is set ony whe new photo was picked
         if (!star.newCoverPath) {
             console.log('No star.tmp.newCoverPath');
-            return self.q.resolve();
+            return self.$q.resolve();
         }
 
         star.hasCover = true;
 
         var src = star.newCoverPath;
 
-        var pathThumbnail = self.rootScope.settings.pathGlobalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
-        var pathFull = self.rootScope.settings.pathGlobalData + '\\covers\\stars\\full\\' + star._id + '.jpg';
+        var pathThumbnail = self.$rootScope.settings.pathGlobalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
+        var pathFull = self.$rootScope.settings.pathGlobalData + '\\covers\\stars\\full\\' + star._id + '.jpg';
 
         require('fs-path').writeFile(pathFull, fs.readFileSync(src));
 
-        var command = '"' + self.rootScope.settings.pathThumbnailGenerator + '\\tg.exe" ';
+        var command = '"' + self.$rootScope.settings.pathThumbnailGenerator + '\\tg.exe" ';
         command += '"' + src + '" ';
         command += '"' + pathThumbnail + '" ';
         command += '300 300 false true';
 
-        var d = self.q.defer();
+        var d = self.$q.defer();
         require("cmd-exec").init().exec(command, function (err, res) {
             if (err) {
                 alert(err)

@@ -1,127 +1,130 @@
-angular.module('myApp')
-    .controller('starController', ['$window', '$scope', '$rootScope', '$http', '$q', 'StarsService', 'Utils', '$routeParams',
-        function ($window, $scope, $rootScope, $http, $q, StarsService, Utils, $routeParams) {
+class StarController {
+    static $inject = ['$rootScope', '$scope', '$q', '$http', '$window', '$location', '$routeParams', 'StarsService', 'Utils', 'myModalService'];
 
-            var _starId = null;
+    _starId: number;
 
-            $scope.star = null;
-            $scope.starOryginal = null;
+    constructor(
+        private $rootScope: IAppRootScope,
+        private $scope,
+        private $q: ng.IQProvider,
+        private $http: ng.IHttpService,
+        private $window: ng.IWindowService,
+        private $location: ng.ILocationService,
+        private $routeParams,
+        private starsService: StarsService,
+        private utils: Utils,
+        private myModalService
+    ) {
 
-            // ---------------------------------------------------------
+        var _C = this;
 
-            // Routing
-            function getRouteParams() {
+        $scope.star = null;
+        $scope.starOryginal = null;
 
-                _starId = parseInt($routeParams.starId);
+        // UI File Drop
+        $scope.onFilesDropped = ($files: Array<any>, $event: Event) => {
+            addCover($files[0].path);
+        };
 
-                if (_starId) {
-                    $scope.view = 'Edit';
-                    $rootScope.windowTitle = 'Star';
-
+        $scope.addCoverDialog = () => {
+            dialog.selectFileDialog((res: Array<string>) => {
+                if (res) {
+                    addCover(res[0]);
+                    $apply($scope);
                 }
-                else {
-                    $scope.view = 'Add';
-                    $rootScope.windowTitle = 'Add star';
+            });
+        };
 
-                }
+        var addCover = (path: string) => {
+            var path = path.split('\\').join('/');
+            let star = <Star>$scope.star;
 
-                console.log($scope.view + ' View');
-            };
+            star.newCoverPath = path;
+            star.coverThumbnailPath = path;
+            star.coverFullPath = path;
+        }
 
-            function configureShortcuts() {
+        // DATA Set
+        $scope.saveStar = () => {
+            let star = <Star>$scope.star;
 
-                Utils.registerShortcuts(this, [
-                    { // CTRL + S - Save
-                        modyfier: 'ctrl',
-                        key: 83,
-                        action: function () {
-                            alert('save');
-                        }
-                    },
-                    { // ESC
-                        modyfier: undefined,
-                        key: 27,
-                        action: function () {
-                            $scope.cancel();
-                        }
-                    },
-                ])
-
-            };
-
-            // Init
-            function init() {
-
-                getRouteParams();
-
-                configureShortcuts();
-
-                $scope.getStar();
-            };
-
-            // ---------------------------------------------------------
-
-            // UI
-
-            // ---------------------------------------------------------
-
-            // UI File Drop
-            $scope.onFilesDropped = function ($files, $event) {
-                addCover($files[0].path);
-            };
-
-            $scope.addCoverDialog = function () {
-                dialog.selectFileDialog(res => {
-                    if (res) {
-                        addCover(res[0]);
-                        $apply($scope);
-                    }
+            if (star._id) {
+                starsService.saveStar(star).then(result => {
+                    $scope.init();
                 });
-            };
-
-            var addCover = function (path) {
-                var path = path.split('\\').join('/');
-
-                $scope.star.tmp.newCoverPath = path;
-                $scope.star.tmp.coverThumbnailPath = path;
-                $scope.star.tmp.coverFullPath = path;
-            }
-
-            // DATA Set
-            $scope.addStar = function () {
-                StarsService.addStar($scope.star).then(result => {
+            } else {
+                starsService.addStar(star).then(result => {
                     $routeParams.starId = result;
-                    init();
+                    $scope.init();
                 });
-            };
+            }
+        };
 
-            $scope.saveStar = function () {
-                StarsService.saveStar($scope.star).then(result => {
-                    init();
+        // DATA Get
+        $scope.getStar = () => {
+            if ($scope.view == 'Edit') {
+                starsService.getStar(_C._starId).then(star => {
+                    $scope.star = star;
+                    $scope.starOryginal = angular.copy(star);
+                    $rootScope.windowTitle = 'Star "' + star.name + '"';
+                    $apply($scope);
                 });
-            };
 
+            }
+            else if ($scope.view == 'Add') {
+                $scope.star = new Star();
+                $rootScope.windowTitle = 'Add star';
+            }
+        };
 
-            // DATA Get
-            $scope.getStar = function () {
-                if ($scope.view == 'Edit') {
-                    StarsService.getStar(_starId).then(star => {
-                        $scope.star = star;
-                        $scope.starOryginal = angular.copy(star);
-                        $rootScope.windowTitle = 'Star "' + star.name + '"';
-                        $apply($scope);
-                    });
+        // Init
+        $scope.init = () => {
+            _C.getRouteParams();
+            _C.configureShortcuts();
 
+            $scope.getStar();
+        };
+
+        //-------------------------------------
+        $rootScope.settingsPromise.then(() => {
+            $scope.init();
+        })
+    }
+
+    getRouteParams() {
+        this._starId = parseInt(this.$routeParams.starId);
+
+        if (this._starId) {
+            this.$scope.view = 'Edit';
+            this.$rootScope.windowTitle = 'Star';
+
+        }
+        else {
+            this.$scope.view = 'Add';
+            this.$rootScope.windowTitle = 'Add star';
+        }
+
+        console.log(this.$scope.view + ' View');
+    }
+
+    configureShortcuts() {
+        this.utils.registerShortcuts(this, [
+            { // CTRL + S - Save
+                modyfier: 'ctrl',
+                key: 83,
+                action: () => {
+                    alert('save');
                 }
-                else if ($scope.view == 'Add') {
-                    $scope.star = StarsService.build();
-                    $rootScope.windowTitle = 'Add star';
-
+            },
+            { // ESC
+                modyfier: undefined,
+                key: 27,
+                action: () => {
+                    this.$scope.cancel();
                 }
-            };
+            },
+        ])
+    }
+}
 
-            $rootScope.settingsPromise.then(res => {
-                init();
-            })
-
-        }]);
+angular.module('myApp').controller('starController', StarController);

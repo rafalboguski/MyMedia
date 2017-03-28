@@ -1,6 +1,6 @@
 <!-- Cover -->
-<div class="parent-hover" style="background-color: black;padding: 0;position: fixed; width:29vw;height:calc(100vh);" ng-class="{modyfied: star.tmp.coverThumbnailPath !== starOryginal.tmp.coverThumbnailPath}">
-    <div class="crop border" files-drop="onFilesDropped($files, $event)" style="background-image: url('{{ star.tmp.coverFullPath }}');">
+<div class="parent-hover" style="background-color: black;padding: 0;position: fixed; width:29vw;height:calc(100vh);" ng-class="{modyfied: star.coverThumbnailPath !== starOryginal.coverThumbnailPath}">
+    <div class="crop border" files-drop="onFilesDropped($files, $event)" style="background-image: url('{{ star.coverFullPath }}');">
 
         <div class="child-hover">
             <button type="button" class="btn btn-secondary fill-width" ng-click="addCoverDialog()" style="height:50px; margin-top: calc(100vh - 50px); border-radius: 0;">Select cover</button>
@@ -65,9 +65,8 @@
         </div>
         <!-- Footer -->
         <div>
-            <button class="btn btn-success" ng-show="view === 'Add'" ng-click="addStar()">Add new star</button>
+            <button class="btn btn-success" ng-show="view === 'Add'" ng-click="saveStar()">Add new star</button>
             <button class="btn btn-success" ng-show="view === 'Edit'" ng-click="saveStar()">Save star</button>
-
         </div>
     </div>
 </div>

@@ -6,6 +6,7 @@
     "app/components/app/AlertsService.ts",
     "app/components/app/GenericService.ts",
     "app/components/app/MainController.ts",
+    "app/components/app/myModalService.ts",
     "app/components/app/Utils.ts",
     //datafeeds
     "app/components/datafeeds/datafeedController.ts",
