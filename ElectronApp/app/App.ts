@@ -1,14 +1,11 @@
-// declare function require(name: string);
-
-
 declare var $: JQueryStatic; $ = (<any>window).$ = require('jquery');
 declare var jQuery: JQueryStatic; jQuery = (<any>window).jQuery = require('jquery');
 declare var fs; fs = require('fs');
 declare var path; path = require('path');
 declare var Tether; Tether = require('tether');
 declare var remote; remote = require('electron').remote;
+declare var fs; fs = require('fs');
 
-require('mongodb')
 require('bootstrap');
 require("angular");
 require('angular-route');
@@ -24,17 +21,7 @@ require('./contextMenu.js');
 (<any>window)._ = require('lodash');
 require('lodash');
 
-
-
-declare var fs; fs = require('fs');
-// declare var mongoClient; mongoClient = require('mongodb').MongoClient;
-declare var autoIncrement; autoIncrement = require("mongodb-autoincrement");
-declare var _DB; _DB = 'mongodb://localhost:27017/media';
-
-
-declare var $apply;
-
-$apply = function (scope: ng.IScope) {
+declare var $apply; $apply = function (scope: ng.IScope) {
     _.defer(function () {
         scope.$apply();
     });
@@ -42,8 +29,7 @@ $apply = function (scope: ng.IScope) {
 
 // Dialogs
 // https://github.com/electron/electron/blob/master/docs/api/dialog.md
-declare var dialog;
-dialog = {
+declare var dialog; dialog = {
 
     selectFileDialog: function (callback, filters) {
         remote.dialog.showOpenDialog(
@@ -119,8 +105,6 @@ routeConfig.config(['$routeProvider',
                 redirectTo: '/stars'
             });
     }]);
-
-require("./components/app/appImports.js")
 
 // controllers
 require("./components/app/mainController.js")

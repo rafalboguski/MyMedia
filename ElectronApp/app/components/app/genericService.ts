@@ -1,6 +1,6 @@
-//import * as mongo from 'mongodb';
-
-declare var mongoClient: mongo.MongoClient; mongoClient = require('mongodb').MongoClient;
+declare var mongoClient: mongodb.MongoClient; mongoClient = require('mongodb').MongoClient;
+declare var autoIncrement; autoIncrement = require("mongodb-autoincrement");
+declare var _DB: string; _DB = 'mongodb://localhost:27017/media';
 
 class GenericService {
 
@@ -12,10 +12,10 @@ class GenericService {
         this.AlertsService = AlertsService;
     }
 
-    mongo(job, self?) {
+    // legacy
+    mongo(job: ((db: mongodb.Db, self) => any), self?) {
 
-
-        mongoClient.connect('mongodb://localhost:27017/media', (err, db) => {
+        mongoClient.connect('mongodb://localhost:27017/media', (err, db: mongodb.Db) => {
 
             if (err) {
                 return err;
@@ -26,7 +26,7 @@ class GenericService {
     };
 
     // run after fetching from db
-    buildNEW(model, data) {
+    buildNEW(model, data: IModel) {
 
         if (!model) {
             model = {};
@@ -38,7 +38,7 @@ class GenericService {
         return model;
     };
 
-    execute(fun) {
+    connect(fun: ((db: mongodb.Db) => any)) {
         return mongoClient.connect(_DB)
             .then(db => { return fun(db); })
             .catch(error => {
@@ -49,9 +49,9 @@ class GenericService {
     };
 
     // CRUD
-    single(collection: string, id: number | string, service: any): Promise<IModel> {
-        return this.execute(db => {
-            return db.collection(collection).findOne({ _id: id })
+    single(collectionName: string, id: number | string, service: any): Promise<IModel> {
+        return this.connect(db => {
+            return db.collection(collectionName).findOne({ _id: id })
                 .then(result => {
 
                     if (result) { service.build(result); }
@@ -59,12 +59,12 @@ class GenericService {
                     db.close();
                     return this.q.resolve(result);
                 })
-        });
+        })
     };
 
-    many(collection: string, search: any, service: any): Promise<IModel[]> {
-        return this.execute(db => {
-            return db.collection(collection).find(search).toArray()
+    many(collectionName: string, search: any, service: any): Promise<IModel[]> {
+        return this.connect(db => {
+            return db.collection(collectionName).find(search).toArray()
                 .then(result => {
 
                     angular.forEach(result, (value, key) => { service.build(value); });
@@ -75,9 +75,9 @@ class GenericService {
         });
     };
 
-    any(collection: string, search): Promise<boolean> {
-        return this.execute(db => {
-            return db.collection(collection).findOne(search)
+    any(collectionName: string, search): Promise<boolean> {
+        return this.connect(db => {
+            return db.collection(collectionName).findOne(search)
                 .then(result => {
 
                     if (result) {
@@ -96,7 +96,7 @@ class GenericService {
 
         model = model.getClear();
 
-        return this.execute(db => {
+        return this.connect(db => {
 
             var collection = db.collection(collectionName);
 
@@ -113,25 +113,18 @@ class GenericService {
         });
     };
 
-    save(collection: string, document: IModel): Promise<IModel> {
-        var self = this;
+    save(collectionName: string, document: IModel): Promise<IModel> {
         document = document.getClear();
 
-        return self.execute(db => {
+        return this.connect(db => {
+            return db.collection(collectionName).findOneAndUpdate({ _id: document._id }, document).then(res => {
+                db.close();
 
-            return self.any(collection, { _id: document._id }).then(result => {
-                if (!result) {
-                    throw 'Document doesn\'t exist in database';
+                if (res.lastErrorObject.n !== 1) {
+                    return this.q.reject('Document doesn\'t exist in database');
                 }
-                else {
-
-                    return db.collection(collection).updateOne({ _id: document._id }, document).then(result => {
-                        db.close();
-                        return this.q.resolve(result);
-                    });
-                }
-            })
-
+                return this.q.resolve(res);
+            });
         });
     };
 
@@ -149,7 +142,7 @@ class GenericService {
     };
 
     // Utils
-    getNext_Id(db: IDBDatabase, collectionName: string): Promise<number> {
+    getNext_Id(db: mongodb.Db, collectionName: string): Promise<number> {
         var d = this.q.defer<number>()
 
         autoIncrement.getNextSequence(db, collectionName, (err, autoIndex: number) => {
