@@ -1,4 +1,5 @@
-declare function require(name: string);
+// declare function require(name: string);
+
 
 declare var $: JQueryStatic; $ = (<any>window).$ = require('jquery');
 declare var jQuery: JQueryStatic; jQuery = (<any>window).jQuery = require('jquery');
@@ -7,6 +8,7 @@ declare var path; path = require('path');
 declare var Tether; Tether = require('tether');
 declare var remote; remote = require('electron').remote;
 
+require('mongodb')
 require('bootstrap');
 require("angular");
 require('angular-route');
@@ -22,8 +24,10 @@ require('./contextMenu.js');
 (<any>window)._ = require('lodash');
 require('lodash');
 
+
+
 declare var fs; fs = require('fs');
-declare var mongoClient; mongoClient = require('mongodb').MongoClient;
+// declare var mongoClient; mongoClient = require('mongodb').MongoClient;
 declare var autoIncrement; autoIncrement = require("mongodb-autoincrement");
 declare var _DB; _DB = 'mongodb://localhost:27017/media';
 
@@ -115,6 +119,8 @@ routeConfig.config(['$routeProvider',
                 redirectTo: '/stars'
             });
     }]);
+
+require("./components/app/appImports.js")
 
 // controllers
 require("./components/app/mainController.js")

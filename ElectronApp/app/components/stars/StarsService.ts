@@ -30,7 +30,7 @@ class StarsService {
         private $location: ng.ILocationService,
         private alertsService: AlertsService,
         private $q: ng.IQService,
-        private DB: GenericService,
+        private genericService: GenericService,
         private settingsService: SettingsService) {
     }
 
@@ -38,7 +38,7 @@ class StarsService {
     build(model): Star {
         var self = this;
 
-        let star: Star = self.DB.buildNEW(model, new Star());
+        let star: Star = self.genericService.buildNEW(model, new Star());
 
         // set paths
         let coverThumbnailPath: string;
@@ -59,45 +59,37 @@ class StarsService {
     };
 
     // Get
-    getStar(id: number) : Promise<Star> {
-        var self = this;
-
-        return self.DB.single(self.collection, id, self);
+    getStar(id: number): Promise<Star> {
+        return this.genericService.single(this.collection, id, this);
     };
 
     getStars(search = {}): Promise<Array<Star>> {
-        var self = this;
-
-        return self.DB.many(self.collection, search, self);
+        return this.genericService.many(this.collection, search, this);
     };
 
     // Set
     addStar(star: Star) {
-        var self = this;
-
-        return self.DB.add(self.collection, star).then(id => {
+        return this.genericService.add(this.collection, star).then(id => {
             star._id = id;
 
-            return self.saveStar(star).then(res => {
+            return this.saveStar(star).then(res => {
                 return star._id;
             })
         });
     };
 
     saveStar(star: Star) {
-        var self = this;
-
-        return self.generateThumbnail(star).then(function () {
-            return self.DB.save(self.collection, star);
+        return this.generateThumbnail(star).then(() => {
+            return this.genericService.save(this.collection, star);
         });
     };
 
     // Remove
     removeStar(star, callback) {
-        this.DB.mongo(function (db) {
+        this.genericService.mongo((db) => {
             var collection = db.collection('stars');
 
-            collection.deleteOne({ _id: star._id }, function (err, result) {
+            collection.deleteOne({ _id: star._id }, (err, result) => {
                 db.close()
 
                 if (angular.isFunction(callback))
@@ -108,29 +100,28 @@ class StarsService {
 
     generateThumbnail(star: Star): any {
 
-        var self = this;
         // variable is set ony whe new photo was picked
         if (!star.newCoverPath) {
             console.log('No star.tmp.newCoverPath');
-            return self.$q.resolve();
+            return this.$q.resolve();
         }
 
         star.hasCover = true;
 
         var src = star.newCoverPath;
 
-        var pathThumbnail = self.$rootScope.settings.pathGlobalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
-        var pathFull = self.$rootScope.settings.pathGlobalData + '\\covers\\stars\\full\\' + star._id + '.jpg';
+        var pathThumbnail = this.$rootScope.settings.pathGlobalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
+        var pathFull = this.$rootScope.settings.pathGlobalData + '\\covers\\stars\\full\\' + star._id + '.jpg';
 
         require('fs-path').writeFile(pathFull, fs.readFileSync(src));
 
-        var command = '"' + self.$rootScope.settings.pathThumbnailGenerator + '\\tg.exe" ';
+        var command = '"' + this.$rootScope.settings.pathThumbnailGenerator + '\\tg.exe" ';
         command += '"' + src + '" ';
         command += '"' + pathThumbnail + '" ';
         command += '300 300 false true';
 
-        var d = self.$q.defer();
-        require("cmd-exec").init().exec(command, function (err, res) {
+        var d = this.$q.defer();
+        require("cmd-exec").init().exec(command, (err, res) => {
             if (err) {
                 alert(err)
                 console.log(err.message);
@@ -140,8 +131,6 @@ class StarsService {
         });
         return d.promise;
     };
-
-
 }
 
 angular.module('myApp').service('StarsService', ['$rootScope', '$location', 'AlertsService', '$q', 'GenericService', 'SettingsService', StarsService]);

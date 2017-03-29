@@ -72,7 +72,7 @@ class StarController {
 
             }
             else if ($scope.view == 'Add') {
-                $scope.star = new Star();
+                $scope.star = starsService.build({});
                 $rootScope.windowTitle = 'Add star';
             }
         };

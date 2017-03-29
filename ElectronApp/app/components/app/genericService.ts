@@ -1,3 +1,7 @@
+//import * as mongo from 'mongodb';
+
+declare var mongoClient: mongo.MongoClient; mongoClient = require('mongodb').MongoClient;
+
 class GenericService {
 
     private q: ng.IQService;
@@ -9,6 +13,7 @@ class GenericService {
     }
 
     mongo(job, self?) {
+
 
         mongoClient.connect('mongodb://localhost:27017/media', (err, db) => {
 
@@ -79,7 +84,7 @@ class GenericService {
                         return this.q.resolve(true);
                     }
                     else {
-                        return this.q.resolve(false); 
+                        return this.q.resolve(false);
                     }
                 })
         });
@@ -87,18 +92,17 @@ class GenericService {
 
     // todo get, if not add and get
 
-    add(collection: string, model: IModel): Promise<string | number> {
-        var self = this;
+    add(collectionName: string, model: IModel): Promise<string | number> {
 
         model = model.getClear();
 
-        return self.execute(db => {
+        return this.execute(db => {
 
-            var collection = db.collection(collection);
+            var collection = db.collection(collectionName);
 
-            return this.getNext_Id(db, collection).then(autoIndex => {
+            return this.getNext_Id(db, collectionName).then((autoIndex: number) => {
 
-                model._id = <number>autoIndex;
+                model._id = autoIndex;
 
                 return collection.insert(model).then(result => {
                     db.close();
@@ -132,10 +136,10 @@ class GenericService {
     };
 
     remove(star, callback) {
-        this.mongo(function (db) {
+        this.mongo((db) => {
             var collection = db.collection('stars');
 
-            collection.deleteOne({ _id: star._id }, function (err, result) {
+            collection.deleteOne({ _id: star._id }, (err, result) => {
                 db.close()
 
                 if (angular.isFunction(callback))
@@ -145,18 +149,17 @@ class GenericService {
     };
 
     // Utils
-    getNext_Id(db: IDBDatabase, collection: string) {
+    getNext_Id(db: IDBDatabase, collectionName: string): Promise<number> {
+        var d = this.q.defer<number>()
 
-        var d = $.Deferred();
-        autoIncrement.getNextSequence(db, collection, function (error, res) {
-
-            if (error) {
-                d.reject(error);
+        autoIncrement.getNextSequence(db, collectionName, (err, autoIndex: number) => {
+            if (err) {
+                d.reject(err);
             }
-
-            d.resolve(res);
+            d.resolve(autoIndex);
         });
-        return d.promise();
+
+        return d.promise as Promise<number>;
     };
 
 }

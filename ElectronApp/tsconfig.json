@@ -3,6 +3,7 @@
     "main.js",
     "renderer.js",
     //app
+    "app/components/app/AppImports.ts",
     "app/components/app/AlertsService.ts",
     "app/components/app/GenericService.ts",
     "app/components/app/MainController.ts",

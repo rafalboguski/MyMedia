@@ -32,8 +32,11 @@
   },
   "dependencies": {
     "@types/angular": "^1.6.10",
+    "@types/core-js": "^0.9.39",
+    "@types/electron": "^1.4.35",
     "@types/jquery": "^2.0.41",
     "@types/lodash": "^4.14.58",
+    "@types/mongodb": "^2.1.41",
     "angular": "1.5.8",
     "angular-animate": "1.5.8",
     "angular-files-drop": "^1.0.0",
