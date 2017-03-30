@@ -1,5 +1,7 @@
 declare var mongoClient: mongodb.MongoClient; mongoClient = require('mongodb').MongoClient;
 declare var autoIncrement; autoIncrement = require("mongodb-autoincrement");
+declare var opn; opn = require('opn');
+
 declare var _DB: string; _DB = 'mongodb://localhost:27017/media';
 
 class GenericService {

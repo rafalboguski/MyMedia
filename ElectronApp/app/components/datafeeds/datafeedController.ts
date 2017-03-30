@@ -1,106 +1,111 @@
-angular.module('myApp')
-    .controller('datafeedController', ['$rootScope', '$scope', '$q', 'datafeedsService', 'StarsService', '$routeParams', 'Utils', '$http',
-        function ($rootScope, $scope, $q, datafeedsService, StarsService, $routeParams, Utils, $http) {
+class DatafeedController {
 
-            var _datafeedId = null;
+    static $inject = ['$rootScope', '$scope', '$q', 'datafeedsService', 'StarsService', '$routeParams', 'Utils', '$http'];
 
-            $scope.datafeed = null;
-            $scope.datafeedOryginal = null;
+    _datafeedId: number = null;
 
-            // ------------------------------------------- --------------
+    constructor(
+        private $rootScope: IAppRootScope,
+        private $scope,
+        private $q: ng.IQService,
+        private datafeedsService: DatafeedsService,
+        private StarsService: StarsService,
+        private $routeParams,
+        private Utils: Utils,
+        private $http: ng.IHttpService
+    ) {
 
-            // Routing
-            function getRouteParams() {
-                _datafeedId = parseInt($routeParams.datafeedId);
+        var _C = this;
+        //-------------------------------------
+        $scope.view = null;
+        $scope.datafeed = null;
+        $scope.datafeedOryginal = null;
 
-                if (_datafeedId) {
-                    $scope.view = 'Edit';
-                    $rootScope.windowTitle = 'Datafeed';
-                }
-                else {
-                    $scope.view = 'Add';
-                    $rootScope.windowTitle = 'Add datafeed';
-                }
-                console.log($scope.view + ' View');
-            };
+        // UI
+        $scope.today = () => {
+            return new Date();
+        };
 
-            function configureShortcuts() {
+        // DATA Set
+        $scope.saveDatafeed = () => {
+            let datafeed = <Datafeed>$scope.datafeed;
 
-                Utils.registerShortcuts(this, [
-                    { // CTRL + S
-                        modyfier: 'ctrl',
-                        key: 83,
-                        action: function () {
-                            alert('save');
-                        }
-                    },
-                    { // ESC
-                        modyfier: undefined,
-                        key: 27,
-                        action: function () {
-                            $scope.cancel();
-                        }
-                    },
-                ])
-
-            };
-
-            // Init
-            function init() {
-
-                getRouteParams();
-
-                configureShortcuts();
-
-                $scope.getDatafeed();
-            };
-
-            // ---------------------------------------------------------
-
-            // UI
-
-            $scope.today = function () {
-                return new Date();
-            };
-
-            // ---------------------------------------------------------
-
-
-            // DATA Set
-            $scope.addDatafeed = function () {
-                datafeedsService.addDatafeed($scope.datafeed).then(result => {
-                    //data.datafeed_id = result;
-                    //$window.location.reload();
+            if (datafeed._id) {
+                datafeedsService.saveDatafeed($scope.datafeed).then(datafeed => {
                     init();
                 });
-            };
-
-            $scope.saveDatafeed = function () {
-                datafeedsService.saveDatafeed($scope.datafeed).then(result => {
+            } else {
+                datafeedsService.addDatafeed($scope.datafeed).then(id => {
+                    $routeParams.datafeedId = id;
                     init();
                 });
-            };
+            }
+        };
 
-            // DATA Get
-            $scope.getDatafeed = function () {
+        // DATA Get
+        $scope.getDatafeed = () => {
+            if ($scope.view == 'Edit') {
+                datafeedsService.getDatafeed(_C._datafeedId).then(datafeed => {
+                    $scope.datafeed = datafeed;
+                    $scope.datafeedOryginal = angular.copy(datafeed);
+                    $rootScope.windowTitle = 'Datafeed "' + datafeed.name + '"';
+                    $apply($scope);
+                });
+            }
+            else if ($scope.view == 'Add') {
+                $scope.datafeed = datafeedsService.build();
+                $rootScope.windowTitle = 'Add datafeed';
+            }
+        };
 
-                if ($scope.view == 'Edit') {
-                    datafeedsService.getDatafeed(_datafeedId).then(data => {
-                        $scope.datafeed = data;
-                        $scope.datafeedOryginal = angular.copy(data);
-                        $rootScope.windowTitle = 'Datafeed "' + data.name + '"';
-                        $apply($scope);
-                    });
+        // Init
+        function init() {
+            _C.getRouteParams();
+            _C.configureShortcuts();
 
+            $scope.getDatafeed();
+        };
+
+        //-------------------------------------
+        $rootScope.settingsPromise.then(res => {
+            init();
+        })
+    }
+
+    // ---------------------------------------------------------
+
+    getRouteParams() {
+        this._datafeedId = parseInt(this.$routeParams.datafeedId);
+
+        if (this._datafeedId) {
+            this.$scope.view = 'Edit';
+            this.$rootScope.windowTitle = 'Datafeed';
+        }
+        else {
+            this.$scope.view = 'Add';
+            this.$rootScope.windowTitle = 'Add datafeed';
+        }
+        console.log(this.$scope.view + ' View');
+    }
+
+    configureShortcuts() {
+        this.Utils.registerShortcuts(this, [
+            { // CTRL + S
+                modyfier: 'ctrl',
+                key: 83,
+                action: () => {
+                    alert('save');
                 }
-                else if ($scope.view == 'Add') {
-                    $scope.datafeed = datafeedsService.build();
-                    $rootScope.windowTitle = 'Add datafeed';
+            },
+            { // ESC
+                modyfier: undefined,
+                key: 27,
+                action: () => {
+                    this.$scope.cancel();
                 }
-            };
+            },
+        ])
+    }
+}
 
-            $rootScope.settingsPromise.then(res => {
-                init();
-            })
-
-        }]);
+angular.module('myApp').controller('datafeedController', DatafeedController);

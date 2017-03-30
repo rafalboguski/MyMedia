@@ -1,4 +1,5 @@
-class StarsController {
+class StarsController  {
+
     static $inject = ['$rootScope', '$scope', '$http', '$location', 'StarsService', 'Utils', 'myModalService'];
 
     constructor(
@@ -13,6 +14,7 @@ class StarsController {
 
         var _C = this;
         //-------------------------------------
+        $scope.view = null;
         $scope.stars = [];
 
         // DATA Get
@@ -35,6 +37,8 @@ class StarsController {
             $scope.init();
         })
     }
+
+    // ---------------------------------------------------------
 
     getRouteParams() {
         this.$scope.view = 'List';

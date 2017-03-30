@@ -1,30 +1,30 @@
-const opn = require('opn');
-
-
 class Datafeed implements IModel {
 
     _id: number;
 
-    name: string;
+    name: string = null;
 
-    stars_ids: number[];
-    tags_ids: number[];
+    stars_ids: Array<number> = [];
+    tags_ids: Array<number> = [];
 
-    linkFrom: string;
-    linkTo: string;
-    rangeFrom: number;
-    rangeTo: number;
-    dateFrom: Date;
-    dateTo: Date;
-    textFrom: string;
-    textTo: string;
-    text: string;
-    rank: number; // <0;5>
+    linkFrom: string = null;
+    linkTo: string = null;
+    rangeFrom: number = null;
+    rangeTo: number = null;
+    dateFrom: Date = null;
+    dateTo: Date = null;
+    textFrom: string = null;
+    textTo: string = null;
+    text: string = null;
+    rank: number = null; // <0;5>
 
-    marked: boolean;
-    done: boolean;
+    marked: boolean = null;
+    done: boolean = null;
 
-    timestamp: Date;
+    timestamp: Date = null;
+
+    //tmp
+    stars: Array<Star> = [];
 
     openLinkFrom(self) {
         opn(self.linkFrom);
@@ -35,48 +35,72 @@ class Datafeed implements IModel {
     }
 
     getClear(): Datafeed {
-        return angular.copy(this);
+        var clear = angular.copy(this)
+        delete clear.stars;
+
+        return clear;
     }
 }
+interface IDatafeedIncludes {
+    includeStar?: boolean;
+}
 
-class DatefeedsService {
+class DatafeedsService {
+
+
 
     private collection: string = 'datafeeds';
 
-    private rootScope: ng.IRootScopeService;
-    private location: ng.ILocationService;
-    private AlertsService: AlertsService;
-    private GenericService: GenericService;
-
-    constructor($rootScope: ng.IRootScopeService, $location: ng.ILocationService, AlertsService: AlertsService, GenericService: GenericService) {
-        this.rootScope = $rootScope;
-        this.location = $location;
-        this.AlertsService = AlertsService;
-        this.GenericService = GenericService;
+    constructor(
+        private $rootScope: ng.IRootScopeService,
+        private $location: ng.ILocationService,
+        private $q: ng.IQService,
+        private AlertsService: AlertsService,
+        private GenericService: GenericService,
+        private starsService: StarsService) {
     }
 
     // run after fetching from db
-    build(model) {
-        model = this.GenericService.buildNEW(model, new Datafeed());
+    build(model?: Object): Datafeed {
+        let datafeed: Datafeed = this.GenericService.buildNEW(model, new Datafeed());
 
-        return model;
+        return datafeed;
     };
 
     // Get
-    getDatafeed(id) {
+    getDatafeed(id: number): Promise<Datafeed> {
         return this.GenericService.single(this.collection, id, this);
     };
 
-    getDatafeeds() {
-        return this.GenericService.many(this.collection, {}, this);
+    getDatafeeds(search: object = {}, includes?: IDatafeedIncludes): Promise<Array<Datafeed>> {
+        return this.GenericService.many(this.collection, search, this).then((list: Datafeed[]) => {
+
+            if (includes && includes.includeStar) {
+                let starPromises = [];
+
+                for (let datafeed of list) {
+                    for (let id of datafeed.stars_ids) {
+                        starPromises.push(this.starsService.getStar(id).then(star => {
+                            datafeed.stars.push(star)
+                        }));
+                    }
+                }
+
+                this.$q.all(starPromises).then(() => {
+                    return list;
+                })
+            }
+
+            return list;
+        });
     };
 
     // Set
-    addDatafeed(model) {
+    addDatafeed(model: Datafeed): Promise<number> {
         return this.GenericService.add(this.collection, model);
     };
 
-    saveDatafeed(model) {
+    saveDatafeed(model: Datafeed): Promise<Datafeed> {
         return this.GenericService.save(this.collection, model);
     };
 
@@ -95,6 +119,6 @@ class DatefeedsService {
     };
 }
 
-angular.module('myApp').service('datafeedsService', ['$rootScope', '$location', 'AlertsService', 'GenericService', DatefeedsService]);
+angular.module('myApp').service('datafeedsService', ['$rootScope', '$location', '$q', 'AlertsService', 'GenericService', 'StarsService', DatafeedsService]);
 
 

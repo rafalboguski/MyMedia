@@ -35,22 +35,21 @@ class StarsService {
     }
 
     // run after fetching from db
-    build(model): Star {
-        var self = this;
+    build(model?: Object): Star {
 
-        let star: Star = self.genericService.buildNEW(model, new Star());
+        let star: Star = this.genericService.buildNEW(model, new Star());
 
         // set paths
         let coverThumbnailPath: string;
         let coverFullPath: string;
 
         if (star._id !== null && star.hasCover) {
-            coverThumbnailPath = self.$rootScope.settings.pathGlobalData + '\\covers\\' + self.collection + '\\thumbails\\' + star._id + ".jpg";
-            coverFullPath = self.$rootScope.settings.pathGlobalData + '\\covers\\' + self.collection + '\\full\\' + star._id + ".jpg";
+            coverThumbnailPath = this.$rootScope.settings.pathGlobalData + '\\covers\\' + this.collection + '\\thumbails\\' + star._id + ".jpg";
+            coverFullPath = this.$rootScope.settings.pathGlobalData + '\\covers\\' + this.collection + '\\full\\' + star._id + ".jpg";
         }
         else {
-            coverThumbnailPath = self.$rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
-            coverFullPath = self.$rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
+            coverThumbnailPath = this.$rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
+            coverFullPath = this.$rootScope.settings.pathGlobalData + '\\covers\\placeholder.jpg';
         }
         star.coverThumbnailPath = coverThumbnailPath.split('\\').join('/') + '?' + new Date().getTime();
         star.coverFullPath = coverFullPath.split('\\').join('/') + '?' + new Date().getTime();
@@ -68,7 +67,7 @@ class StarsService {
     };
 
     // Set
-    addStar(star: Star) {
+    addStar(star: Star): Promise<number> {
         return this.genericService.add(this.collection, star).then(id => {
             star._id = id;
 
@@ -78,7 +77,7 @@ class StarsService {
         });
     };
 
-    saveStar(star: Star) {
+    saveStar(star: Star): Promise<Star> {
         return this.generateThumbnail(star).then(() => {
             return this.genericService.save(this.collection, star);
         });
@@ -98,17 +97,19 @@ class StarsService {
         });
     };
 
-    generateThumbnail(star: Star): any {
+    generateThumbnail(star: Star): Promise<string> {
+        var d = this.$q.defer();
 
-        // variable is set ony whe new photo was picked
+        // variable is set only when new photo was picked
         if (!star.newCoverPath) {
             console.log('No star.tmp.newCoverPath');
-            return this.$q.resolve();
+            d.resolve();
+            return d.promise;
         }
 
         star.hasCover = true;
 
-        var src = star.newCoverPath;
+        let src = star.newCoverPath;
 
         var pathThumbnail = this.$rootScope.settings.pathGlobalData + '\\covers\\stars\\thumbails\\' + star._id + ".jpg";
         var pathFull = this.$rootScope.settings.pathGlobalData + '\\covers\\stars\\full\\' + star._id + '.jpg';
@@ -120,7 +121,6 @@ class StarsService {
         command += '"' + pathThumbnail + '" ';
         command += '300 300 false true';
 
-        var d = this.$q.defer();
         require("cmd-exec").init().exec(command, (err, res) => {
             if (err) {
                 alert(err)

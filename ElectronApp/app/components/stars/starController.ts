@@ -17,7 +17,8 @@ class StarController {
     ) {
 
         var _C = this;
-
+        //-------------------------------------
+        $scope.view = null;
         $scope.star = null;
         $scope.starOryginal = null;
 
@@ -36,7 +37,7 @@ class StarController {
         };
 
         var addCover = (path: string) => {
-            var path = path.split('\\').join('/');
+            path = path.split('\\').join('/');
             let star = <Star>$scope.star;
 
             star.newCoverPath = path;
@@ -72,7 +73,7 @@ class StarController {
 
             }
             else if ($scope.view == 'Add') {
-                $scope.star = starsService.build({});
+                $scope.star = starsService.build();
                 $rootScope.windowTitle = 'Add star';
             }
         };
@@ -90,6 +91,8 @@ class StarController {
             $scope.init();
         })
     }
+
+    // ---------------------------------------------------------
 
     getRouteParams() {
         this._starId = parseInt(this.$routeParams.starId);

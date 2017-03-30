@@ -81,6 +81,7 @@ var routeConfig = angular.module('routeConfig', []);
 routeConfig.config(['$routeProvider',
     function ($routeProvider) {
         $routeProvider.
+            // Stars
             when('/stars', {
                 templateUrl: './app/components/stars/stars.html',
                 controller: 'starsController'
@@ -89,6 +90,7 @@ routeConfig.config(['$routeProvider',
                 templateUrl: './app/components/stars/star.html',
                 controller: 'starController'
             }).
+            // Datafeeds
             when('/datafeeds', {
                 templateUrl: './app/components/datafeeds/datafeeds.html',
                 controller: 'datafeedsController'
@@ -97,6 +99,7 @@ routeConfig.config(['$routeProvider',
                 templateUrl: './app/components/datafeeds/datafeed.html',
                 controller: 'datafeedController'
             }).
+            // Settings
             when('/settings', {
                 templateUrl: './app/components/settings/settings.html',
                 controller: 'settingsController'
@@ -125,4 +128,5 @@ require("./components/app/utils.js")
 require("./components/app/myModalService.js")
 
 // directives
+require("./directives/enforceMaxTags.js")
 require("./directives/starsAutocomplete.js")
