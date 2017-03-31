@@ -1,3 +1,27 @@
+class Popovers {
+
+    constructor(
+        private $sce: ng.ISCEService
+    ) {
+
+    }
+
+    getStarImagePopover(star: Star, scope) {
+
+        if (!scope.popovers) {
+            scope.popovers = {};
+        }
+
+        if (star && star.coverFullPath && scope) {
+            scope.popovers.starImage = this.$sce.trustAsHtml("<div style=\"width:200px; height:200px;\"><div class=\"crop\" style=\"background-image: url('" + star.coverFullPath + "');\"></div></div>")
+        }
+        else {
+            scope.popovers.starImage = '';
+        }
+    }
+}
+
+
 interface IShortcut {
     modyfier: string;
     key: number;
@@ -6,8 +30,14 @@ interface IShortcut {
 
 class Utils {
 
+    popovers: Popovers;
+
     constructor(
-        private $rootScope: IAppRootScope) {
+        private $rootScope: IAppRootScope,
+        private $sce: ng.ISCEService
+    ) {
+
+        this.popovers = new Popovers($sce);
     }
 
     // stores paths to settings and minor ui shit
@@ -29,4 +59,4 @@ class Utils {
 
 }
 
-angular.module('myApp').service('Utils', ['$rootScope', Utils]);
+angular.module('myApp').service('Utils', ['$rootScope', '$sce', Utils]);

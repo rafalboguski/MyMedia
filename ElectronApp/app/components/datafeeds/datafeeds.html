@@ -61,7 +61,7 @@
                     </td>
                     <!-- Range -->
                     <td>Range</td>
-                    <!-- Links --> 
+                    <!-- Links -->
                     <td>
                         <a ng-show="datafeed.linkFrom && !datafeed.linkTo" ng-click="datafeed.functions.openLinkFrom(datafeed)">link</a>
                         <a ng-show="!datafeed.linkFrom && datafeed.linkTo" ng-click="datafeed.functions.openLinkTo(datafeed)">link</a>
@@ -73,9 +73,11 @@
                     <!-- Star -->
 
                     <!--ng-href="#/star/{{datafeed.stars._id}}" -->
-                    <td ng-mouseenter="createStarImagePopover(datafeed.stars[0], scope)">
-                        <a ng-mouseover="datafeed.stars[0].popover=true" ng-mouseleave="datafeed.stars[0].popover=false" uib-popover-html="starImagePopover"
-                            popover-placement="left" popover-trigger="none" popover-is-open="starImagePopover != '' && datafeed.stars[0].popover">{{datafeed.stars[0].name}}</a></td>
+                    <td ng-mouseenter="_C.utils.popovers.getStarImagePopover(datafeed.stars[0], scope)">
+                        <a ng-mouseover="datafeed.stars[0].popover=true" ng-mouseleave="datafeed.stars[0].popover=false" uib-popover-html="popovers.starImage"
+                            popover-placement="left" popover-trigger="none" popover-is-open="popovers.starImage != '' && datafeed.stars[0].popover">
+                        {{datafeed.stars[0].name}}
+                        </a></td>
                     <!-- Tags -->
                     <td>#swag</td>
                     <!-- Timestamp -->

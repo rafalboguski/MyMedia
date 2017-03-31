@@ -1,4 +1,5 @@
 class StarController {
+   
     static $inject = ['$rootScope', '$scope', '$q', '$http', '$window', '$location', '$routeParams', 'StarsService', 'Utils', 'myModalService'];
 
     _starId: number;

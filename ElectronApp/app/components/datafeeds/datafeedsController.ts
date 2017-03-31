@@ -5,7 +5,7 @@ class DatafeedsController {
 
     constructor(
         private $window: ng.IWindowService,
-        private ModalService,
+        private modalService,
         private $routeParams,
         private $scope,
         private $rootScope: IAppRootScope,
@@ -13,13 +13,14 @@ class DatafeedsController {
         private $location: ng.ILocationService,
         private $q: ng.IQService,
         private datafeedsService: DatafeedsService,
-        private StarsService: StarsService,
-        private Utils: Utils,
+        private starsService: StarsService,
+        private utils: Utils,
         private myModalService,
         private $sce: ng.ISCEProvider
     ) {
 
         var _C = this;
+        $scope._C = this;
         //-------------------------------------
         $scope.scope = $scope;
         $scope.datafeeds = null;
@@ -57,7 +58,7 @@ class DatafeedsController {
 
     configureShortcuts() {
 
-        this.Utils.registerShortcuts(this, [
+        this.utils.registerShortcuts(this, [
             { // CTRL + A - add datafeed
                 modyfier: 'ctrl',
                 key: 65,
