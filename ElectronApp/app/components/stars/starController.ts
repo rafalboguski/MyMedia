@@ -1,6 +1,6 @@
 class StarController {
-   
-    static $inject = ['$rootScope', '$scope', '$q', '$http', '$window', '$location', '$routeParams', 'StarsService', 'Utils', 'myModalService'];
+
+    static $inject = ['$rootScope', '$scope', '$q', '$location', '$routeParams', 'StarsService', 'Utils'];
 
     _starId: number;
 
@@ -8,13 +8,10 @@ class StarController {
         private $rootScope: IAppRootScope,
         private $scope,
         private $q: ng.IQProvider,
-        private $http: ng.IHttpService,
-        private $window: ng.IWindowService,
         private $location: ng.ILocationService,
         private $routeParams,
         private starsService: StarsService,
-        private utils: Utils,
-        private myModalService
+        private utils: Utils
     ) {
 
         var _C = this;

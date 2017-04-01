@@ -1,18 +1,16 @@
 class AlertsService {
 
-    rootScope: IAppRootScope;
 
-    constructor($rootScope: IAppRootScope) {
-        this.rootScope = $rootScope;
+    constructor(private $rootScope: IAppRootScope) {
     }
 
     showWarning(message: string) {
 
-        if (!this.rootScope.alerts) {
-            this.rootScope.alerts = [];
+        if (!this.$rootScope.alerts) {
+            this.$rootScope.alerts = [];
         }
 
-        this.rootScope.alerts.push(new Alert('warning', message))
+        this.$rootScope.alerts.push(new Alert('warning', message))
     }
 
 }
@@ -28,4 +26,3 @@ class Alert {
     }
 }
 angular.module('myApp').service('AlertsService', ['$rootScope', AlertsService]);
- 

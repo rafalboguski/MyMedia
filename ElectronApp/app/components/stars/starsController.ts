@@ -1,15 +1,13 @@
-class StarsController  {
+class StarsController {
 
-    static $inject = ['$rootScope', '$scope', '$http', '$location', 'StarsService', 'Utils', 'myModalService'];
+    static $inject = ['$rootScope', '$scope', '$location', 'StarsService', 'Utils'];
 
     constructor(
         private $rootScope: IAppRootScope,
         private $scope,
-        private $http: ng.IHttpService,
         private $location: ng.ILocationService,
         private starsService: StarsService,
         private utils: Utils,
-        private myModalService
     ) {
 
         var _C = this;
@@ -19,8 +17,8 @@ class StarsController  {
 
         // DATA Get
         $scope.getStars = () => {
-            starsService.getStars().then(stars => {
-                $scope.stars = stars;
+            starsService.getStars().then(res => {
+                $scope.stars = res.items;
                 $apply($scope);
             })
         };

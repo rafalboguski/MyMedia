@@ -1,6 +1,6 @@
 class DatafeedController {
 
-    static $inject = ['$rootScope', '$scope', '$q', 'datafeedsService', 'StarsService', '$routeParams', 'Utils', '$http'];
+    static $inject = ['$rootScope', '$scope', '$q', 'datafeedsService', 'StarsService', '$routeParams', 'Utils'];
 
     _datafeedId: number = null;
 
@@ -11,8 +11,7 @@ class DatafeedController {
         private datafeedsService: DatafeedsService,
         private StarsService: StarsService,
         private $routeParams,
-        private Utils: Utils,
-        private $http: ng.IHttpService
+        private Utils: Utils
     ) {
 
         var _C = this;

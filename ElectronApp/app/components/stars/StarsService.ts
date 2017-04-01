@@ -27,7 +27,6 @@ class StarsService {
 
     constructor(
         private $rootScope: IAppRootScope,
-        private $location: ng.ILocationService,
         private alertsService: AlertsService,
         private $q: ng.IQService,
         private genericService: GenericService,
@@ -62,7 +61,7 @@ class StarsService {
         return this.genericService.single(this.collection, id, this);
     };
 
-    getStars(search = {}): Promise<Array<Star>> {
+    getStars(search = {}): Promise<{ items: Array<Star>, count: number }> {
         return this.genericService.many(this.collection, search, this);
     };
 
@@ -133,4 +132,4 @@ class StarsService {
     };
 }
 
-angular.module('myApp').service('StarsService', ['$rootScope', '$location', 'AlertsService', '$q', 'GenericService', 'SettingsService', StarsService]);
+angular.module('myApp').service('StarsService', ['$rootScope', 'AlertsService', '$q', 'GenericService', 'SettingsService', StarsService]);

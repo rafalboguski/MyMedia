@@ -22,6 +22,7 @@
     "app/components/stars/StarsService.ts",
     //directives
     "app/directives/enforceMaxTags.ts",
+    "app/directives/pagination.ts",
     "app/directives/starsAutocomplete.ts",
     //models
     "app/models/IAppRootScope.ts",

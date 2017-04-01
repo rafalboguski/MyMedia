@@ -86,5 +86,48 @@
                 </tr>
             </tbody>
         </table>
+
     </div>
+
+    <pagination-controlls pagination="pagination" load-items-fn="getDatafeeds"></pagination-controlls>
+    <!--<div class="text-center">
+        <nav ng-show="pagination.pages() > 1">
+            <button ng-click="getDatafeeds()">Load</button>
+            <ul class="pagination">
+
+                <li ng-class="{disabled: pagination.page <= 1}">
+                    <a ng-click="pagination.page = 1">
+                        <span aria-hidden="true">first</span>
+                    </a>
+                </li>
+                <li ng-class="{disabled: pagination.page <= 1}">
+                    <a ng-click="pagination.page = pagination.page - 1">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li ng-repeat="i in range(1, pagination.page)">
+                    <a ng-click="pagination.page = i">{{i}}</a>
+                </li>
+
+                <li class="active">
+                    <a href="">{{pagination.page}}</a>
+                </li>
+
+                <li ng-repeat="i in range(pagination.page + 1, pagination.pages() + 1)">
+                    <a ng-click="pagination.page = i">{{i}}</a>
+                </li>
+
+                <li ng-class="{disabled: pagination.page >= pagination.pages()}">
+                    <a ng-click="pagination.page = pagination.page + 1">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+                <li ng-class="{disabled: pagination.page >= pagination.pages()}">
+                    <a ng-click="pagination.page = pagination.pages()">
+                        <span aria-hidden="true">last</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>-->
 </div>

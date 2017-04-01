@@ -1,22 +1,19 @@
+
+
+
 class DatafeedsController {
 
-    static $inject = ['$window', 'ModalService', '$routeParams', '$scope', '$rootScope', '$http', '$location', '$q',
-        'datafeedsService', 'StarsService', 'Utils', 'myModalService', '$sce'];
+    static $inject = ['$routeParams', '$scope', '$rootScope', '$location', '$q', 'datafeedsService', 'StarsService', 'Utils'];
 
     constructor(
-        private $window: ng.IWindowService,
-        private modalService,
         private $routeParams,
         private $scope,
         private $rootScope: IAppRootScope,
-        private $http: ng.IHttpService,
         private $location: ng.ILocationService,
         private $q: ng.IQService,
         private datafeedsService: DatafeedsService,
         private starsService: StarsService,
-        private utils: Utils,
-        private myModalService,
-        private $sce: ng.ISCEProvider
+        private utils: Utils
     ) {
 
         var _C = this;
@@ -27,10 +24,12 @@ class DatafeedsController {
 
         $scope.filter = {};
 
+        $scope.pagination = new (<any>window).Models.Pagination();
+
         // DATA Get
         $scope.getDatafeeds = () => {
-            datafeedsService.getDatafeeds({}, { includeStar: true }).then((list) => {
-                $scope.datafeeds = list;
+            datafeedsService.getDatafeeds({}, { includeStar: true }, $scope.pagination).then((res) => {
+                $scope.datafeeds = res.items;
                 $apply($scope);
             });
         };

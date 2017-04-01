@@ -4,14 +4,14 @@ declare var opn; opn = require('opn');
 
 declare var _DB: string; _DB = 'mongodb://localhost:27017/media';
 
+
 class GenericService {
 
-    private q: ng.IQService;
-    private AlertsService: AlertsService;
+    constructor(
+        private $q: ng.IQService,
+        private AlertsService: AlertsService
+    ) {
 
-    constructor($q: ng.IQService, AlertsService: AlertsService) {
-        this.q = $q;
-        this.AlertsService = AlertsService;
     }
 
     // legacy
@@ -46,7 +46,7 @@ class GenericService {
             .catch(error => {
                 alert(error);
                 console.error(error);
-                return this.q.reject(error);
+                return this.$q.reject(error);
             });
     };
 
@@ -59,21 +59,44 @@ class GenericService {
                     if (result) { service.build(result); }
 
                     db.close();
-                    return this.q.resolve(result);
+                    return this.$q.resolve(result);
                 })
         })
     };
 
-    many(collectionName: string, search: any, service: any): Promise<IModel[]> {
+    many(collectionName: string, fields: any, service: any, sort?: Models.Pagination): Promise<{ items: IModel[], count: number }> {
         return this.connect(db => {
-            return db.collection(collectionName).find(search).toArray()
-                .then(result => {
 
-                    angular.forEach(result, (value, key) => { service.build(value); });
 
-                    db.close();
-                    return this.q.resolve(result);
-                });
+            var promises = [];
+            promises.push(db.collection(collectionName).find(
+                fields,
+                sort ? {
+                    "sort": sort.sortBy,
+                    "skip": sort.skip(),
+                    "limit": sort.limit()
+                } : {}
+            ).toArray());
+
+            promises.push(db.collection(collectionName).count(fields));
+
+            return this.$q.all(promises).then(result => {
+                db.close();
+
+                // data
+                var items = result[0] as IModel[];
+
+                for (var item of items) {
+                    service.build(item);
+                }
+                // count
+                var itemsCount = result[1] as number
+
+                // combine
+                return this.$q.resolve({ items: items, count: itemsCount });
+            });
+
+
         });
     };
 
@@ -83,10 +106,10 @@ class GenericService {
                 .then(result => {
 
                     if (result) {
-                        return this.q.resolve(true);
+                        return this.$q.resolve(true);
                     }
                     else {
-                        return this.q.resolve(false);
+                        return this.$q.resolve(false);
                     }
                 })
         });
@@ -108,7 +131,7 @@ class GenericService {
 
                 return collection.insert(model).then(result => {
                     db.close();
-                    return this.q.resolve(model._id);
+                    return this.$q.resolve(model._id);
                 });
             });
 
@@ -123,9 +146,9 @@ class GenericService {
                 db.close();
 
                 if (res.lastErrorObject.n !== 1) {
-                    return this.q.reject('Document doesn\'t exist in database');
+                    return this.$q.reject('Document doesn\'t exist in database');
                 }
-                return this.q.resolve(res);
+                return this.$q.resolve(res);
             });
         });
     };
@@ -145,7 +168,7 @@ class GenericService {
 
     // Utils
     getNext_Id(db: mongodb.Db, collectionName: string): Promise<number> {
-        var d = this.q.defer<number>()
+        var d = this.$q.defer<number>()
 
         autoIncrement.getNextSequence(db, collectionName, (err, autoIndex: number) => {
             if (err) {
@@ -158,5 +181,36 @@ class GenericService {
     };
 
 }
+
+
+module Models {
+    export class Pagination {
+
+        sortBy: Array<Array<string>> = [['_id', 'desc']];
+
+        page: number = 1;
+        items: number;
+        pageSize: number = 5;
+
+        skip(): number {
+            return (this.page - 1) * this.pageSize;
+        }
+
+        limit(): number {
+            return this.pageSize;
+        }
+
+        pages(): number { 
+            var x = Math.floor(this.items / this.pageSize);
+
+            if (x == (this.items / this.pageSize))
+                return x;
+            else
+                return x + 1;
+        }
+
+    }
+}
+(<any>window).Models = Models;
 
 angular.module('myApp').service('GenericService', ['$q', 'AlertsService', GenericService]);

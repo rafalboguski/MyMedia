@@ -1,11 +1,9 @@
 class SettingsController {
-    static $inject = ['$rootScope', '$scope', '$http', '$window', '$location', 'Utils', 'SettingsService', 'dataSourcesService'];
+    static $inject = ['$rootScope', '$scope', '$location', 'Utils', 'SettingsService', 'dataSourcesService'];
 
     constructor(
         private $rootScope: IAppRootScope,
         private $scope,
-        private $http: ng.IHttpService,
-        private $window: ng.IWindowService,
         private $location: ng.ILocationService,
         private utils: Utils,
         private settingsService: SettingsService,

@@ -47,13 +47,10 @@ interface IDatafeedIncludes {
 
 class DatafeedsService {
 
-
-
     private collection: string = 'datafeeds';
 
     constructor(
         private $rootScope: ng.IRootScopeService,
-        private $location: ng.ILocationService,
         private $q: ng.IQService,
         private AlertsService: AlertsService,
         private GenericService: GenericService,
@@ -72,13 +69,15 @@ class DatafeedsService {
         return this.GenericService.single(this.collection, id, this);
     };
 
-    getDatafeeds(search: object = {}, includes?: IDatafeedIncludes): Promise<Array<Datafeed>> {
-        return this.GenericService.many(this.collection, search, this).then((list: Datafeed[]) => {
+    getDatafeeds(search: object = {}, includes?: IDatafeedIncludes, pagination?: Models.Pagination): Promise<{ items: Datafeed[], count: number }> {
+        return this.GenericService.many(this.collection, search, this, pagination).then((res) => {
+
+            pagination.items = res.count;
 
             if (includes && includes.includeStar) {
                 let starPromises = [];
 
-                for (let datafeed of list) {
+                for (let datafeed of res.items as Datafeed[]) {
                     for (let id of datafeed.stars_ids) {
                         starPromises.push(this.starsService.getStar(id).then(star => {
                             datafeed.stars.push(star)
@@ -87,11 +86,11 @@ class DatafeedsService {
                 }
 
                 this.$q.all(starPromises).then(() => {
-                    return list;
+                    return res;
                 })
             }
 
-            return list;
+            return res;
         });
     };
 
@@ -119,6 +118,6 @@ class DatafeedsService {
     };
 }
 
-angular.module('myApp').service('datafeedsService', ['$rootScope', '$location', '$q', 'AlertsService', 'GenericService', 'StarsService', DatafeedsService]);
+angular.module('myApp').service('datafeedsService', ['$rootScope', '$q', 'AlertsService', 'GenericService', 'StarsService', DatafeedsService]);
 
 

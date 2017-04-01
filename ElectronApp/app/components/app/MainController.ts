@@ -1,15 +1,15 @@
 class MainController {
 
-    static $inject = ['$rootScope', '$scope', '$http', '$window', '$location', 'SettingsService', '$sce'];
+    static $inject = ['$rootScope', '$scope', '$window', 'SettingsService', '$sce'];
 
     constructor(
         private $rootScope: IAppRootScope,
         private $scope,
-        private $http: ng.IHttpService,
         private $window: ng.IWindowService,
-        private $location: ng.ILocationService,
         private SettingsService: SettingsService
     ) {
+        var _C = this;
+        //-------------------------------------
 
         // Routing
         $scope.navigateBack = () => {
@@ -45,7 +45,7 @@ class MainController {
         }
 
         //-------------------------------------
-        this.appInit();
+        _C.appInit();
     }
 
     // ---------------------------------------------------------
@@ -68,6 +68,26 @@ class MainController {
             event.preventDefault();
             return false;
         }, false);
+
+        //
+        this.$rootScope.range = function (min, max, step) {
+            // parameters validation for method overloading
+            if (max == undefined) {
+                max = min;
+                min = 0;
+            }
+            step = Math.abs(step) || 1;
+            if (min > max) {
+                step = -step;
+            }
+            // building the array
+            var output = [];
+            for (var value = min; value < max; value += step) {
+                output.push(value);
+            }
+            // returning the generated array
+            return output;
+        };
     }
 
     // Keyboard

@@ -71,7 +71,6 @@ declare var dialog; dialog = {
             callback
         );
     }
-
 };
 
 var myApp = angular.module('myApp', ['ngRoute', 'routeConfig', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angular-files-drop', 'angularModalService', 'ngTagsInput']);
@@ -109,14 +108,9 @@ routeConfig.config(['$routeProvider',
             });
     }]);
 
-// controllers
-require("./components/app/mainController.js")
-require("./components/stars/starsController.js")
-require("./components/stars/starController.js")
-require("./components/datafeeds/datafeedsController.js")
-require("./components/datafeeds/datafeedController.js")
-require("./components/settings/settingsController.js")
-
+// models
+require("./models/IAppRootScope.js")
+require("./models/IModel.js")
 // services
 require("./components/app/alertsService.js")
 require("./components/app/genericService.js")
@@ -127,6 +121,15 @@ require("./components/settings/settingsService.js")
 require("./components/app/utils.js")
 require("./components/app/myModalService.js")
 
+// controllers
+require("./components/app/mainController.js")
+require("./components/stars/starsController.js")
+require("./components/stars/starController.js")
+require("./components/datafeeds/datafeedsController.js") 
+require("./components/datafeeds/datafeedController.js")
+require("./components/settings/settingsController.js")
+
 // directives
 require("./directives/enforceMaxTags.js")
+require("./directives/pagination.js")
 require("./directives/starsAutocomplete.js")
