@@ -1,5 +1,13 @@
-<div class="text-center">
+<hr />
 
+<form class="form-inline" style="position: absolute; right: 10px;">
+    <label for="pagesize" style="color: grey">
+        Page size
+    </label>
+    <input name="pagesize" type="number" class="form-control" style="width: 80px" ng-blur="changePage(1)" ng-model="pagination.pageSize" />
+</form>
+
+<div class="text-center">
     <nav ng-show="pagination.pages() > 1">
         <ul class="pagination">
 

@@ -16,6 +16,11 @@ class PaginationDirective implements ng.IDirective {
         $scope.$rootScope = this.$rootScope;
 
         $scope.changePage = (i: number) => {
+
+            if ($scope.pagination.pageSize < 1) {
+                $scope.pagination.pageSize = 1;
+            }
+
             $scope.pagination.page = i;
             $scope.loadItemsFn()();
         }

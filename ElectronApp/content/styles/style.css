@@ -254,3 +254,13 @@ ti-autocomplete-match em {
 .parent-hover:hover .child-hover{
       opacity: 1;
 }
+
+
+/*Pagination Controlls*/
+.pagination{
+    margin: 0;
+}
+
+.pagination  a {
+    cursor: pointer;
+}
