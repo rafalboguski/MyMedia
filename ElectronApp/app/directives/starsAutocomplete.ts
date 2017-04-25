@@ -15,8 +15,8 @@ class StarsAutocompleteDirective implements ng.IDirective {
 
         $scope.maxa = parseInt($scope.max);
         $scope.load = ($query) => {
-            return this.starsService.getStars().then(stars => {
-                return _.filter<any>(stars, star => {
+            return this.starsService.getStars().then(result => {
+                return _.filter<any>(result.items, star => {
                     if (star.name)
                         return star.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
                 });
@@ -31,12 +31,26 @@ class StarsAutocompleteDirective implements ng.IDirective {
 
         $scope.$watchCollection('ids', (newValue, oldValue) => {
             if (!$scope.initialized && $scope.ids && newValue !== oldValue)
-                this.starsService.getStars({ _id: { $in: $scope.ids } }).then(stars => {
-                    $scope.stars = stars;
+                this.starsService.getStars({ _id: { $in: $scope.ids } }).then(result => {
+                    $scope.stars = result.items;
                     $scope.initialized = true;
                     $scope.$apply();
                 })
         });
+
+        $scope.i = 0;
+
+        $scope.elClick = () => {
+            element.find('auto-complete').css('display', 'none');
+
+            if ($scope.i === 0) {
+                $scope.i++;
+                element.find('.tags').click(function () {
+                    $('auto-complete').css('display', 'block');
+                })
+            }
+
+        };
 
     }
 

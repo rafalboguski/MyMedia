@@ -64,17 +64,20 @@ class GenericService {
         })
     };
 
-    many(collectionName: string, fields: any, service: any, sort?: Models.Pagination): Promise<{ items: IModel[], count: number }> {
+
+    // to create index db.fruit.createIndex( { field: 1}, { collation: { locale: 'en', strength: 2 } } )
+    many(collectionName: string, fields: any, service: any, pagination?: Models.Pagination): Promise<{ items: IModel[], count: number }> {
         return this.connect(db => {
 
 
             var promises = [];
             promises.push(db.collection(collectionName).find(
                 fields,
-                sort ? {
-                    "sort": sort.sortBy,
-                    "skip": sort.skip(),
-                    "limit": sort.limit()
+                pagination ? {
+                    "sort": pagination.sortBy,
+                    "skip": pagination.skip(),
+                    "limit": pagination.limit(),
+                    "collation": { locale: 'en', strength: 2 }
                 } : {}
             ).toArray());
 
@@ -190,7 +193,7 @@ module Models {
 
         page: number = 1;
         items: number;
-        pageSize: number = 5;
+        pageSize: number = 25;
 
         skip(): number {
             return (this.page - 1) * this.pageSize;

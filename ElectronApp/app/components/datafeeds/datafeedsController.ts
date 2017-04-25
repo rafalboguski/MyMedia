@@ -26,6 +26,9 @@ class DatafeedsController {
 
         $scope.pagination = new (<any>window).Models.Pagination();
 
+
+        $scope.pagination.sortBy = [['name', 'asc']];
+
         // DATA Get
         $scope.getDatafeeds = () => {
             datafeedsService.getDatafeeds({}, { includeStar: true }, $scope.pagination).then((res) => {

@@ -1,4 +1,5 @@
-<tags-input enforce-max-tags max-tags="{{maxa}}" only-from-list="true" ng-model="stars" display-property="name" replace-spaces-with-dashes="false" template="tag-template">
+<tags-input enforce-max-tags max-tags="{{maxa}}" only-from-list="true" ng-model="stars" display-property="name" replace-spaces-with-dashes="false"
+    template="tag-template" on-tag-added="elClick()">
     <auto-complete source="load($query)" min-length="0" load-on-focus="true" load-on-empty="true" max-results-to-show="32" template="ac-stars-template"></auto-complete>
 </tags-input>
 
