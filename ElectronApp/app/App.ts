@@ -1,135 +1,104 @@
-declare var $: JQueryStatic; $ = (<any>window).$ = require('jquery');
-declare var jQuery: JQueryStatic; jQuery = (<any>window).jQuery = require('jquery');
-declare var fs; fs = require('fs');
-declare var path; path = require('path');
-declare var Tether; Tether = require('tether');
-declare var remote; remote = require('electron').remote;
-declare var fs; fs = require('fs');
+import * as $ from 'jquery';
+import * as _ from 'lodash';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as Tether from 'tether';
+import * as angular from 'angular';
+import { module } from 'angular';
+import { remote } from 'electron';
 
-require('bootstrap');
-require("angular");
+import * as bootstrap from 'bootstrap';
 require('angular-route');
 require('angular-animate');
 require('angular-sanitize');
 require('angular-files-drop');
-require('angular-modal-service');
 require('ng-tags-input');
 require('../../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
-require('../renderer.js');
+
 require('./contextMenu.js');
 
-(<any>window)._ = require('lodash');
-require('lodash');
+import * as Models from './Models/_models';
+import * as Dto from './Models/Dto/_dto';
+import * as Repositories from './Repositories/_repositories';
+import * as Services from './Services/_services';
+import * as Controllers from './Controllers/_controllers';
 
-declare var $apply; $apply = function (scope: ng.IScope) {
-    _.defer(function () {
-        scope.$apply();
-    });
-};
+export { Models, Dto, Repositories, Services, Controllers }
 
-// Dialogs
-// https://github.com/electron/electron/blob/master/docs/api/dialog.md
-declare var dialog; dialog = {
-
-    selectFileDialog: function (callback, filters) {
-        remote.dialog.showOpenDialog(
-            {
-                title: "Select file",
-                properties: ['openFile'],
-                filters: filters
-            },
-            callback
-        );
-    },
-    selectFilesDialog: function (callback, filters) {
-        remote.dialog.showOpenDialog(
-            {
-                title: "Select files",
-                properties: ['openFile', 'multiSelections'],
-                filters: filters
-            },
-            callback
-        );
-    },
-    selectFolderDialog: function (callback, filters) {
-        remote.dialog.showOpenDialog(
-            {
-                title: "Select folder",
-                properties: ['openDirectory'],
-                filters: filters
-            },
-            callback
-        );
-    },
-    selectFoldersDialog: function (callback, filters) {
-        remote.dialog.showOpenDialog(
-            {
-                title: "Select folders",
-                properties: ['openDirectory', 'multiSelections'],
-                filters: filters
-            },
-            callback
-        );
-    }
-};
-
-var myApp = angular.module('myApp', ['ngRoute', 'routeConfig', 'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'angular-files-drop', 'angularModalService', 'ngTagsInput']);
-
-var routeConfig = angular.module('routeConfig', []);
-
-routeConfig.config(['$routeProvider',
-    function ($routeProvider) {
-        $routeProvider.
-            // Stars
-            when('/stars', {
-                templateUrl: './app/components/stars/stars.html',
-                controller: 'starsController'
-            }).
-            when('/star/:starId', {
-                templateUrl: './app/components/stars/star.html',
-                controller: 'starController'
-            }).
+export let myApp = module('myApp', [
+    'ngRoute',
+    'ngAnimate',
+    'ngSanitize',
+    'ui.bootstrap',
+    'angular-files-drop',
+    'ngTagsInput'
+])
+    .config(['$routeProvider', $routeProvider => {
+        $routeProvider
+            //Stars
+            .when('/stars', {
+                templateUrl: './app/Views/stars.html',
+                controller: Controllers.StarsController,
+                controllerAs: 'Ctrl'
+            })
+            .when('/star/:starId', {
+                templateUrl: './app/Views/star.html',
+                controller: Controllers.StarController,
+                controllerAs: 'Ctrl'
+            })
             // Datafeeds
-            when('/datafeeds', {
-                templateUrl: './app/components/datafeeds/datafeeds.html',
-                controller: 'datafeedsController'
-            }).
-            when('/datafeed/:datafeedId', {
-                templateUrl: './app/components/datafeeds/datafeed.html',
-                controller: 'datafeedController'
-            }).
+            .when('/datafeeds', {
+                templateUrl: './app/Views/datafeeds.html',
+                controller: Controllers.DatafeedsController,
+                controllerAs: 'Ctrl'
+            })
+            .when('/datafeed/:datafeedId', {
+                templateUrl: './app/Views/datafeed.html',
+                controller: Controllers.DatafeedController,
+                controllerAs: 'Ctrl'
+            })
+            // Keywords
+            .when('/keywords', {
+                templateUrl: './app/Views/keywords.html',
+                controller: Controllers.KeywordsController,
+                controllerAs: 'Ctrl'
+            })
             // Settings
-            when('/settings', {
-                templateUrl: './app/components/settings/settings.html',
-                controller: 'settingsController'
-            }).
-            otherwise({
+            .when('/settings', {
+                templateUrl: './app/Views/settings.html',
+                controller: Controllers.SettingsController,
+                controllerAs: 'Ctrl'
+            })
+            .otherwise({
                 redirectTo: '/stars'
             });
     }]);
 
-// models
-require("./models/IAppRootScope.js")
-require("./models/IModel.js")
-// services
-require("./components/app/alertsService.js")
-require("./components/app/genericService.js")
-require("./components/stars/starsService.js")
-require("./components/datafeeds/datafeedsService.js")
-require("./components/settings/dataSourcesService.js")
-require("./components/settings/settingsService.js")
-require("./components/app/utils.js")
-require("./components/app/myModalService.js")
 
-// controllers
-require("./components/app/mainController.js")
-require("./components/stars/starsController.js")
-require("./components/stars/starController.js")
-require("./components/datafeeds/datafeedsController.js") 
-require("./components/datafeeds/datafeedController.js")
-require("./components/settings/settingsController.js")
+myApp.service('GenericRepository', Repositories.GenericRepository);
+myApp.service('DatafeedsRepository', Repositories.DatafeedsRepository);
+myApp.service('DatasourcesRepository', Repositories.DatasourcesRepository);
+myApp.service('KeywordsRepository', Repositories.KeywordsRepository);
+myApp.service('SettingsRepository', Repositories.SettingsRepository);
+myApp.service('StarsRepository', Repositories.StarsRepository);
 
-// directives
-require("./directives/enforceMaxTags.js")
-require("./directives/pagination.js")
-require("./directives/starsAutocomplete.js")
+myApp.service('DialogsService', Services.DialogsService);
+myApp.service('PopoversService', Services.PopoversService);
+myApp.service('ShortcutsService', Services.ShortcutsService);
+myApp.service('UtilsService', Services.UtilsService);
+
+myApp.controller('DatafeedController', Controllers.DatafeedController);
+myApp.controller('datafeedsController', Controllers.DatafeedsController);
+myApp.controller('KeywordsController', Controllers.KeywordsController);
+myApp.controller('MainController', Controllers.MainController);
+myApp.controller('SettingsController', Controllers.SettingsController);
+myApp.controller('StarController', Controllers.StarController);
+myApp.controller('StarsController', Controllers.StarsController);
+
+
+
+
+
+
+
+

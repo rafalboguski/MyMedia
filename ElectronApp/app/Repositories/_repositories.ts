@@ -1,0 +1,6 @@
+ export { DatafeedsRepository } from './Datafeeds.Repository'
+export { DatasourcesRepository } from './DataSources.Repository'
+export { GenericRepository } from './Generic.Repository'
+export { KeywordsRepository } from './Keywords.Repository'
+export { SettingsRepository } from './Settings.Repository'
+export { StarsRepository } from './Stars.Repository'

@@ -1,3 +1,5 @@
+ import { remote } from 'electron';
+ 
  //Context menu
     const Menu = remote.Menu;
     const MenuItem = remote.MenuItem;

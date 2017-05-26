@@ -12,13 +12,13 @@
     <link rel="stylesheet" href="../content/styles/style.css" />
 </head>
 
-<body ng-controller="MainController" id="bootstrap-overrides" class="">
+<body ng-controller="MainController as Ctrl" id="bootstrap-overrides" class="">
     <div class="supreme-container">
         <nav class="navigation-bar">
             <div class="form-inline">
                 <div class="btn-group">
-                    <a class="btn btn-default" ng-click="navigateBack()">&lt;</a>
-                    <a class="btn btn-default" ng-click="navigateForward()">&gt;</a>
+                    <a class="btn btn-default" ng-click="Ctrl.navigateBack()">&lt;</a>
+                    <a class="btn btn-default" ng-click="Ctrl.navigateForward()">&gt;</a>
                 </div>
 
                 <div class="btn-group">
@@ -28,7 +28,10 @@
                     <a class="btn btn-default" href="#/datafeeds">
                         <i class="fa fa-cloud" aria-hidden="true"></i> Data feeds
                     </a>
-                    <a class="btn btn-default" ng-click="mergeWindows()">Windows</a>
+                      <a class="btn btn-default" href="#/keywords">
+                        <i class="fa fa-key" aria-hidden="true"></i> Keywords
+                    </a>
+                    <a class="btn btn-default" ng-click="Ctrl.mergeWindows()">Windows</a>
                 </div>
 
                 <input type="text" class="form-control" placeholder="Search">
@@ -39,7 +42,7 @@
         </nav>
 
         <div>
-            <div uib-alert ng-repeat="alert in alerts" ng-class="'alert-' + (alert.type || 'warning')" close="alerts.splice($index, 1)">{{alert.message}}</div>
+            <div uib-alert ng-repeat="alert in Ctrl.alerts" ng-class="'alert-' + (alert.type || 'warning')" close="alerts.splice($index, 1)">{{alert.message}}</div>
         </div>
         <div class="myview" ng-view></div>
     </div>
