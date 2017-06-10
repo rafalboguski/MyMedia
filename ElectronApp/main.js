@@ -1,5 +1,9 @@
+
+
 const electron = require('electron')
 const app = electron.app
+app.commandLine.appendSwitch('disable-smooth-scrolling');
+
 const BrowserWindow = electron.BrowserWindow
 
 let mainWindow
