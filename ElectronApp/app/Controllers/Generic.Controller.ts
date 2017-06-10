@@ -10,6 +10,7 @@ export interface IController {
 export class GenericController {
 
     shortcuts: Dto.IShortcut[];
+    initialized: boolean;
 
     static $inject = ['ShortcutsService'];
 
