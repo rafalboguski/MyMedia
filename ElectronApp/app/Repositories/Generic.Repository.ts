@@ -4,7 +4,7 @@ import * as mysql from 'mysql';
 
 export class GenericRepository {
 
-    protected _connection: mysql.IConnection;
+    private _connection: mysql.IConnection;
 
     static $inject = ['$q'];
 
@@ -14,27 +14,20 @@ export class GenericRepository {
     private createConnection(): Promise<mysql.IConnection> {
 
         return this.$q((resolve, reject) => {
-            var connection = mysql.createConnection({
-                host: 'localhost',
-                user: 'root',
-                password: '27BauzzerAb123456',
-                database: 'library'
-            });
-            /*
-            connection.config.queryFormat = function (query, values) {
-                if (!values) return query;
-                return query.replace(/\:(\w+)/g, function (txt, key) {
-                    if (values.hasOwnProperty(key)) {
-                        return this.escape(values[key]);
-                    }
-                    return txt;
-                }.bind(this));
-            };
-            */
-            connection.connect();
+            if (!this._connection) {
+                let connection = mysql.createConnection({
+                    host: '127.0.0.1',
+                    user: 'root',
+                    password: '27BauzzerAb123456',
+                    database: 'library'
+                });
 
-            this._connection = connection;
-            resolve(connection);
+                connection.connect();
+
+                this._connection = connection;
+
+            }
+            resolve(this._connection);
         })
     }
 
@@ -42,7 +35,7 @@ export class GenericRepository {
         return this.createConnection()
             .then(fun)
             .then(data => {
-                this._connection.end();
+                //this._connection.end();
                 return data;
             });
     };
