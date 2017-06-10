@@ -82,6 +82,7 @@ myApp.service('KeywordsRepository', Repositories.KeywordsRepository);
 myApp.service('SettingsRepository', Repositories.SettingsRepository);
 myApp.service('StarsRepository', Repositories.StarsRepository);
 
+myApp.service('AlertsService', Services.AlertsService);
 myApp.service('DialogsService', Services.DialogsService);
 myApp.service('PopoversService', Services.PopoversService);
 myApp.service('ShortcutsService', Services.ShortcutsService);

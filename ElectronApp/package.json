@@ -37,6 +37,7 @@
     "@types/jquery": "^2.0.41",
     "@types/lodash": "^4.14.58",
     "@types/mysql": "0.0.33",
+    "alertify.js": "^1.0.12",
     "angular": "1.5.8",
     "angular-animate": "1.5.8",
     "angular-files-drop": "^1.0.0",
