@@ -18,6 +18,14 @@ body {
     cursor: default;
 }
 
+nav{
+    background-color: black
+}
+
+nav .btn{
+    background-color: black;
+}
+
 .click{
 cursor: pointer;
 }
@@ -44,7 +52,7 @@ cursor: pointer;
 
 ::-webkit-scrollbar-thumb
 {
-  background: rgba(15,15,15, 100);
+  background: rgba(44,44,44, 100);
 }
 
 .ng-hide.ng-hide-animate {
@@ -101,31 +109,25 @@ nav input:focus {
 
 /*forms*/
 
-input, textarea{
-    border-radius: 0 !important;
-}
-
-input.green{
-    background-color: rgb(210,255,210);
-}
-
-input.red{
-    background-color: rgb(255,210,210);
-}
-
+ 
 /*buttons*/
-
-a, button{
-    border-radius: 0 !important;
-}
+ 
 
 .fill-width{
     width: 100%;
 }
 
-.row{
-    margin-left: 0;
-    margin-right: 0;
+ .full-width {
+  width: 100%;
+  -webkit-border-top-right-radius: 0;
+  -webkit-border-bottom-right-radius: 0;
+  -moz-border-radius-topright: 0;
+  -moz-border-radius-bottomright: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+.full-width span i {
+  margin-right: 10px;
 }
 
 #bootstrap-overrides .btn, .btn:focus{

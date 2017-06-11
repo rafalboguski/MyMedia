@@ -1,47 +1,51 @@
 <div class="keywords-view" ng-show="Ctrl.initialized">
-    <div class="row">
-
-        <div class="col-sm-12 ">
-            <!-- Search -->
-            <input id="search-input" class="form-control" ng-show="Ctrl.multipleCollapsed" ng-class="{red: Ctrl.keywords.length === 0, green: Ctrl.keywords.length === 1}"
-                ng-model="Ctrl.value">
-
-            <textarea ng-model="Ctrl.valueMultiple" id="search-textarea" class="form-control" rows="30" ng-hide="Ctrl.multipleCollapsed"></textarea>
-
-            <button class="btn btn-success" ng-click="Ctrl.addKeyword(Ctrl.value)">
-                Add
-            </button>
-            <button class="btn btn-default" ng-click="Ctrl.multipleCollapsed = !Ctrl.multipleCollapsed">
-              {{ Ctrl.multipleCollapsed ? 'Expand': 'Collapse'}}
-            </button>
+     
+    <!-- Search -->
+    <div class="col-xs-12">
+        <div class="input-group">
+            <input id="search-input" class="form-control full-width" ng-show="Ctrl.multipleCollapsed" ng-class="{red: Ctrl.keywords.length === 0, green: Ctrl.keywords.length === 1}"
+                ng-model="Ctrl.value" style="height:41px" placeholder="Search">
+            <textarea id="search-textarea" class="form-control full-width" rows="30" ng-hide="Ctrl.multipleCollapsed" ng-model="Ctrl.valueMultiple"></textarea>
+            <!--<button class="btn btn-default full-width"><span class="pull-left"><i class="fa fa-sitemap"></i> Fills remaining width</span></button>-->
+            <div class="input-group-btn" style="vertical-align: top">
+                <button class="btn btn-success" ng-click="Ctrl.addKeyword(Ctrl.value)"><i class="fa fa-pencil"></i> Add</button>
+                <button class="btn btn-default" ng-click="Ctrl.multipleCollapsed = !Ctrl.multipleCollapsed"><i class="fa fa-trash-o"></i> {{ Ctrl.multipleCollapsed ? 'Expand': 'Collapse'}}</button>
+            </div>
         </div>
     </div>
+
 
     <!--Table-->
-    <div class="row" ng-show="Ctrl.multipleCollapsed" >
-        <div class="col-sm-12 ">
-            <table class="table table-hover table-sm">
-                <thead class="thead-inverse">
-                    <tr>
-                        <th>#</th>
-                        <th>Value</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="keyword in Ctrl.keywords">
-                        <td>{{$index + 1}}</td>
-                        <!-- Value -->
-                        <td>
-                            <a>{{keyword.value}}</a>
-                        </td>
-                        <td>
-                            <a class="click" ng-click="Ctrl.copyText(keyword.value)">Copy</a>
-                            <a class="click pull-right">Delete</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="col-xs-12">
+        <div class="row" ng-show="Ctrl.multipleCollapsed">
+            <div class="col-sm-12 ">
+                <table class="table table-condensed table-hover">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>#</th>
+                            <th>Value</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="keyword in Ctrl.keywords">
+                            <td style="color:rgb(110,110,110)">{{$index + 1}}</td>
+                            <!-- Value -->
+                            <td>
+                                <span>{{keyword.value}}</span>
+                            </td>
+                            <td>
+                                <div class="pull-right">
+                                    <a class="click" style="margin-right: 20px">Open</a>
+                                    <a class="click" ng-click="Ctrl.copyText(keyword.value)" style="margin-right: 20px">Copy</a>
+                                    <a class="click">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
+
 </div>
