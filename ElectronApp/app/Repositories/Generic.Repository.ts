@@ -53,4 +53,37 @@ export class GenericRepository {
         });
 
     };
+
+    protected sqlFilter(sql: string, filter: Models.ModelFilter): string {
+        for (var key in filter.exact) {
+            let value = filter.exact[key];
+            if ((value != null && value != '') && filter.exact.hasOwnProperty(key)) {
+                sql += `AND ${key} = '${value}'`;
+            }
+        }
+
+        for (var key in filter.pattern) {
+            let value = filter.pattern[key];
+            if ((value != null && value != '') && filter.pattern.hasOwnProperty(key)) {
+                sql += `AND ${key} like '%${value}'%`;
+            }
+        }
+
+        for (var key in filter.exists) {
+            let value = filter.exists[key];
+            if (value != null && filter.exists.hasOwnProperty(key)) {
+                if (value == false) // show that has empty column
+                    sql += `AND ${key} > ' '`;
+                else // show that has data in column
+                    sql += `AND ${key} <= ' '`;
+            }
+        }
+
+        return sql;
+    }
+
+    protected sqlOrderBy(sql: string, filter: Models.ModelFilter): string {
+        sql += ` ORDER BY ${filter.orderBy} ${filter.ascending ? 'ASC' : 'DESC'}`;
+        return sql;
+    }
 }

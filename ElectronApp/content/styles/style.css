@@ -27,7 +27,7 @@ nav .btn{
 }
 
 .click{
-cursor: pointer;
+    cursor: pointer;
 }
 
 .right {
@@ -112,6 +112,12 @@ nav input:focus {
  
 /*buttons*/
  
+ .btn-tight{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
+ }
 
 .fill-width{
     width: 100%;
@@ -149,7 +155,6 @@ nav input:focus {
 
 
 /* File drop directive */
-
 .filesDrop--dragover{
     border: solid 1px blue;
     filter: blur(15px);
@@ -201,7 +206,12 @@ body.modal-open .supreme-container{
     transform: translate3d(0, 0, 0);
 }
 
-/* table */
+/*----------- table -------------------------------------------- */
+
+/* stripped table */
+.table-striped > tbody > tr:nth-of-type(odd) {
+    background-color: rgb(30,30,30);
+}
 
 /* icons */
 .fa.fa-star{

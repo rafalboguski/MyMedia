@@ -10,6 +10,8 @@ export class KeywordsController extends GenericController implements IController
     private view: string;
     private value: string = '';
     private valueMultiple: string = '';
+
+    private keywordFilter: Models.KeywordFilter = new Models.KeywordFilter();
     private keywords: Models.Keyword[] = [];
 
     private multipleCollapsed: boolean = true;
@@ -21,48 +23,50 @@ export class KeywordsController extends GenericController implements IController
         private $routeParams,
         private $location: ng.ILocationService,
         private $q: ng.IQService,
-        private AlertsService: Services.AlertsService,
+        private _alertsService: Services.AlertsService,
         private _keywordsRepository: Repositories.KeywordsRepository,
         shortcutsService: Services.ShortcutsService
     ) {
         super(shortcutsService);
         this.init()
-            .then(() => { return this.$q((r, rr) => { setTimeout(() => { r() }, 1); }) })
+            .then(() => { return this.$q((resolve, reject) => { setTimeout(() => { resolve() }, 1); }) })
             .then(() => { this.initialized = true });
     }
 
+    // --------------------------------------------------------------------------------------------------
+
     init(): Promise<any> {
-        return this.search(this.value)
+        return this.getKeywords()
             .then(() => {
                 // set watches
-                this.$scope.$watch('Ctrl.value', (newValue: string) => {
-                    this.search(newValue)
+                this.$scope.$watch('Ctrl.keywordFilter.exact.value', (newValue: string) => {
+                    this.getKeywords()
                 });
             })
     }
 
-    search(valaue: string = null): Promise<Models.Keyword[]> {
-        return this._keywordsRepository.search(valaue)
+    getKeywords(): Promise<Models.Keyword[]> {
+        return this._keywordsRepository.getKeywords(this.keywordFilter)
             .then((keywords) => {
                 return this.keywords = keywords;
             });
     }
 
     addKeyword() {
-        this.AlertsService.confirm("Add keyword").then(data => {
+        this._alertsService.confirm("Add keyword").then(data => {
             if (data) {
                 // create cingle
                 if (this.multipleCollapsed) {
                     this._keywordsRepository
                         .create(new Models.Keyword(this.value))
                         .then((data) => {
-                            this.search(this.value).then(() => {
+                            this.getKeywords().then(() => {
                                 this.value = '';
                                 $('.keywords-view #search-input').focus();
                             });
                         })
                         .catch((error) => {
-                            this.AlertsService.error(error.message);
+                            this._alertsService.error(error.message);
                         });
                 }
                 // create many
@@ -75,7 +79,7 @@ export class KeywordsController extends GenericController implements IController
                     this._keywordsRepository.createMany(keywords)
                         .then(data => {
                             if (data.failed.length > 0) {
-                                this.AlertsService.error('Only ' + data.created.length + ' created, ' + data.failed.length + ' failed');
+                                this._alertsService.error('Only ' + data.created.length + ' created, ' + data.failed.length + ' failed');
                                 this.valueMultiple = '__Created___________________';
                                 for (let created of data.created) {
                                     this.valueMultiple += '\n' + created.value;
@@ -86,7 +90,7 @@ export class KeywordsController extends GenericController implements IController
                                     this.valueMultiple += '\n' + failed.value;
                                 }
                             } else {
-                                this.AlertsService.success('All ' + data.created.length + 'created');
+                                this._alertsService.success('All ' + data.created.length + 'created');
                                 this.valueMultiple = '';
                             }
                         });
@@ -99,7 +103,7 @@ export class KeywordsController extends GenericController implements IController
         require('electron').clipboard.writeText(text, 'selection');
     }
 
-    // Routing  
+    // Routing ------------------------------------------------------------------------------------------
     getRouteParams() {
         this.view = 'List';
     };

@@ -9,20 +9,16 @@ export class KeywordsRepository extends Repositories.GenericRepository {
         super($q);
     }
 
-    public getAll(): Promise<Models.Keyword[]> {
-        return this.execute(() => {
-            return this.query('select * from keywords');
-        });
-    }
+    public getKeywords(filter: Models.KeywordFilter): Promise<Models.Keyword[]> {
 
-    public search(value: string): Promise<Models.Keyword[]> {
-        if (!value) {
-            return this.getAll();
+        let sql = "SELECT * FROM keywords WHERE 1=1 ";
+
+        if (filter) {
+            sql = this.sqlFilter(sql, filter);
+            sql = this.sqlOrderBy(sql, filter);
         }
 
-        return this.execute(() => {
-            return this.query("SELECT * FROM keywords WHERE value = ?", [value]);
-        });
+        return this.execute(() => { return this.query(sql) });
     }
 
     public create(keyword: Models.Keyword): Promise<{ insertId: number }> {

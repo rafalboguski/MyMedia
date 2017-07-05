@@ -1,14 +1,14 @@
 <div class="keywords-view" ng-show="Ctrl.initialized">
-     
+
     <!-- Search -->
     <div class="col-xs-12">
         <div class="input-group">
             <input id="search-input" class="form-control full-width" ng-show="Ctrl.multipleCollapsed" ng-class="{red: Ctrl.keywords.length === 0, green: Ctrl.keywords.length === 1}"
-                ng-model="Ctrl.value" style="height:41px" placeholder="Search">
+                ng-model="Ctrl.keywordFilter.exact.value" style="height:41px" placeholder="Search">
             <textarea id="search-textarea" class="form-control full-width" rows="30" ng-hide="Ctrl.multipleCollapsed" ng-model="Ctrl.valueMultiple"></textarea>
             <!--<button class="btn btn-default full-width"><span class="pull-left"><i class="fa fa-sitemap"></i> Fills remaining width</span></button>-->
             <div class="input-group-btn" style="vertical-align: top">
-                <button class="btn btn-success" ng-click="Ctrl.addKeyword(Ctrl.value)"><i class="fa fa-pencil"></i> Add</button>
+                <button class="btn btn-success" ng-click="Ctrl.addKeyword(Ctrl.keywordFilter.exact.value)"><i class="fa fa-pencil"></i> Add</button>
                 <button class="btn btn-default" ng-click="Ctrl.multipleCollapsed = !Ctrl.multipleCollapsed"><i class="fa fa-trash-o"></i> {{ Ctrl.multipleCollapsed ? 'Expand': 'Collapse'}}</button>
             </div>
         </div>
@@ -19,21 +19,23 @@
     <div class="col-xs-12">
         <div class="row" ng-show="Ctrl.multipleCollapsed">
             <div class="col-sm-12 ">
-                <table class="table table-condensed table-hover">
+                <table class="table table-condensed table-striped">
                     <thead class="thead-inverse">
                         <tr>
                             <th>#</th>
-                            <th>Value</th>
+                            <th th-extended text="Values" filter="Ctrl.keywordFilter" property="value" source="Ctrl.getKeywords()"/>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="keyword in Ctrl.keywords">
-                            <td style="color:rgb(110,110,110)">{{$index + 1}}</td>
+                        <tr ng-repeat="keyword in Ctrl.keywords" style="color: rgb(230,230,230)">
+                            <!-- Idx -->
+                            <td style="color:rgb(90,90,90)">{{$index + 1}}</td>
                             <!-- Value -->
-                            <td>
+                            <td style="font-family: monospace">
                                 <span>{{keyword.value}}</span>
                             </td>
+                            <!-- Open / Copy / Delte -->
                             <td>
                                 <div class="pull-right">
                                     <a class="click" style="margin-right: 20px">Open</a>

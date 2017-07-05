@@ -1,4 +1,3 @@
-
 export class Keyword {
 
     constructor(value: string) {

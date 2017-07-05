@@ -18,10 +18,11 @@ require('../../node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js');
 require('./contextMenu.js');
 
 import * as Models from './Models/_models';
-import * as Dto from './Models/Dto/_dto';
+import * as Dto from './Dto/_dto';
 import * as Repositories from './Repositories/_repositories';
 import * as Services from './Services/_services';
 import * as Controllers from './Controllers/_controllers';
+import * as Directives from './Directives/_directives';
 
 export { Models, Dto, Repositories, Services, Controllers }
 
@@ -97,6 +98,7 @@ myApp.controller('StarController', Controllers.StarController);
 myApp.controller('StarsController', Controllers.StarsController);
 
 
+myApp.directive('thExtended', [Directives.TableHeaderDirective.factory()]);
 
 
 

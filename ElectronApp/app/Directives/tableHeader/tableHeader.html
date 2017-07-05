@@ -1,0 +1,22 @@
+<!--<div>
+    <th class="asds">
+        <th class="asds">
+            <span>{{ text }}</span>
+            <div style="display: inline; margin: 20px">
+                <i class="fa fa-sort-desc click"></i>
+                <i class="fa fa-sort-asc click"></i>
+            </div>
+            <i class="fa fa-search click"></i>
+
+        </th>
+    </th>
+</div>-->
+
+<th>
+    <span>{{ text }}</span>
+    <div style="display: inline; margin: 20px">
+        <i class="fa fa-arrow-down click" ng-show="filter.ascending" ng-click="reverseOrder()"></i>
+        <i class="fa fa-arrow-up click" ng-hide="filter.ascending" ng-click="reverseOrder()"></i>
+    </div>
+    <i class="fa fa-search click" />
+</th>
