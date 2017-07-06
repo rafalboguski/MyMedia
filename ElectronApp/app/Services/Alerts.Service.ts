@@ -31,6 +31,22 @@ export class AlertsService {
             })
         });
     }
+
+    public toastInfo(message: string) {
+        this.alertify.message(message);
+    }
+
+    public toastSuccess(message: string) {
+        this.alertify.success(message);
+    }
+
+    public toastError(message: string) {
+        this.alertify.error(message);
+    }
+
+    public toastWarning(message: string) {
+        this.alertify.toastWarning(message);
+    }
 }
 
 

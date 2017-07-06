@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 export class KeywordsController extends GenericController implements IController {
 
     private view: string;
+
+    // value in search/add bar
     private value: string = '';
     private valueMultiple: string = '';
 
@@ -39,7 +41,8 @@ export class KeywordsController extends GenericController implements IController
         return this.getKeywords()
             .then(() => {
                 // set watches
-                this.$scope.$watch('Ctrl.keywordFilter.exact.value', (newValue: string) => {
+                this.$scope.$watch('Ctrl.value', (newValue: string) => {
+                    this.keywordFilter.exact.value = newValue;
                     this.getKeywords()
                 });
             })
@@ -55,7 +58,7 @@ export class KeywordsController extends GenericController implements IController
     addKeyword() {
         this._alertsService.confirm("Add keyword").then(data => {
             if (data) {
-                // create cingle
+                // create single
                 if (this.multipleCollapsed) {
                     this._keywordsRepository
                         .create(new Models.Keyword(this.value))
@@ -63,6 +66,7 @@ export class KeywordsController extends GenericController implements IController
                             this.getKeywords().then(() => {
                                 this.value = '';
                                 $('.keywords-view #search-input').focus();
+                                this._alertsService.toastSuccess('keyword created');
                             });
                         })
                         .catch((error) => {
@@ -99,6 +103,14 @@ export class KeywordsController extends GenericController implements IController
         });
     }
 
+    deleteKeyword(keyword) {
+        this._keywordsRepository.delete(keyword.id)
+            .then(() => {
+                this.keywords.splice(this.keywords.indexOf(keyword), 1);
+                this._alertsService.toastSuccess('keyword deleted');
+            })
+    }
+
     copyText(text) {
         require('electron').clipboard.writeText(text, 'selection');
     }
@@ -109,8 +121,8 @@ export class KeywordsController extends GenericController implements IController
     };
 
     shortcuts = [
-        // CTRL + A - add new keyword from search/add box value
-        { modyfier: 'ctrl', key: 13, action: () => { this.addKeyword() } },
+        // CTRL + S - add new keyword from search/add box value
+        { modyfier: 'ctrl', key: 83, action: () => { this.addKeyword() } },
         // CTRL + F - focus on search/add box 
         { modyfier: 'ctrl', key: 70, action: () => { $('.keywords-view #search-input').focus(); } },
     ];

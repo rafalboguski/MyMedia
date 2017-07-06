@@ -291,3 +291,37 @@ ti-autocomplete-match em {
 .pagination  a {
     cursor: pointer;
 }
+
+
+/*Alertify*/
+
+.alertify > .dialog > div {
+    background-color: rgb(40,40,40);
+    color: #ffffff;
+    border: rgb(100,100,100) solid 2px;
+}
+
+.alertify nav  {
+    background-color: transparent;
+}
+
+.alertify button  {
+    color: #ffffff !important;
+    background-color: rgb(60,60,60) !important;
+}
+
+.alertify button.ok  {
+    background-color: #449d44 !important;
+}
+
+.alertify button.ok:hover  {
+    background-color: #275828 !important;
+}
+
+.highlight i{
+    color: orange !important;
+}
+
+.shortcut{
+    opacity: 0.6;
+}

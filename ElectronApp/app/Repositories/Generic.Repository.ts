@@ -65,7 +65,7 @@ export class GenericRepository {
         for (var key in filter.pattern) {
             let value = filter.pattern[key];
             if ((value != null && value != '') && filter.pattern.hasOwnProperty(key)) {
-                sql += `AND ${key} like '%${value}'%`;
+                sql += `AND ${key} LIKE '%${value}%'`;
             }
         }
 
