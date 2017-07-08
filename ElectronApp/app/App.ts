@@ -8,6 +8,7 @@ import { module } from 'angular';
 import { remote } from 'electron';
 
 import * as bootstrap from 'bootstrap';
+(window as any).$ = require('jquery');
 require('angular-route');
 require('angular-animate');
 require('angular-sanitize');
