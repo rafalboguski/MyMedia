@@ -22,18 +22,21 @@
                 <table class="table table-condensed table-striped">
                     <thead class="thead-inverse">
                         <tr>
-                            <th th-extended label="#" filter="Ctrl.keywordFilter" property="id" show-search="false" source="Ctrl.getKeywords()"/>
-                            <th th-extended label="Values" filter="Ctrl.keywordFilter" property="value" source="Ctrl.getKeywords()"/>
-                            <th></th>
+                            <th th-extended label="#" filter="Ctrl.keywordFilter" property="id" show-search="false" source="Ctrl.getKeywords()" />
+                            <th th-extended label="Values" filter="Ctrl.keywordFilter" property="value" source="Ctrl.getKeywords()" style="width: 80%;"
+                            />
+                            <th style="min-width: 200px"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="keyword in Ctrl.keywords" style="color: rgb(230,230,230)">
+                        <tr ng-repeat="keyword in Ctrl.keywords" style="color: rgb(240,240,240)">
                             <!-- Idx -->
                             <td style="color:rgb(90,90,90)">{{$index + 1}}</td>
                             <!-- Value -->
-                            <td style="font-family: monospace">
-                                <span>{{keyword.value}}</span>
+                            <td class="ellipsis_cell">
+                                <div>
+                                    <span>{{keyword.value}}</span>
+                                </div>
                             </td>
                             <!-- Open / Copy / Delte -->
                             <td>

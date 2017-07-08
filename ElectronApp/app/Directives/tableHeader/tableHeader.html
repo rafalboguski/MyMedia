@@ -1,11 +1,12 @@
-<th class="th-extended">
+<div class="th-extended">
     <span>{{ label }}</span>
-    <div style="display: inline; margin: 20px" ng-show="showOrder" ng-class="{highlight: filter.orderBy == property}">
+    <div style="display: inline; margin: 20px" ng-show="showOrder" ng-class="{ highlight: filter.orderBy == property }">
         <i class="fa fa-arrow-down click" ng-show="filter.ascending" ng-click="reverseOrder()"></i>
         <i class="fa fa-arrow-up click" ng-hide="filter.ascending" ng-click="reverseOrder()"></i>
     </div>
-    <div ng-show="showSearch" style="display: inline; margin: 20px">
-        <i class="fa fa-search click" ng-click="showSearchInput = !showSearchInput"></i>
-        <input type="text" class="form-control" placeholder="Search" ng-show="showSearchInput" style="width: 200px" ng-model="searchText"></input>
+    <div ng-show="showSearch" style="display: inline; margin: 20px" ng-class="{ highlight: (filter.pattern[property] && filter.pattern[property].length > 0) }">
+        <i class="fa fa-search click" ng-click="toggleSearchInput()"></i>
+        <input type="text" class="th-search-input form-control" placeholder="Search" ng-show="showSearchInput" ng-model="searchText"
+            ng-model-options="{ debounce: 300 }"></input>
     </div>
-</th>
+</div>

@@ -13,6 +13,7 @@ interface ITableHeaderScope extends ng.IScope {
 
     source(): any
     reverseOrder();
+    toggleSearchInput();
 }
 
 export class TableHeaderDirective implements ng.IDirective {
@@ -20,8 +21,7 @@ export class TableHeaderDirective implements ng.IDirective {
     restrict = 'A';
     replace: true;
     templateUrl = './app/Directives/tableHeader/tableHeader.html';
-    scope = {
-        //@ reads the attribute value, = provides two-way binding, & works with functions
+    scope = { //@ reads the attribute value, = provides two-way binding, & works with functions
         showSearch: '=?',
         showOrder: '=?',
         label: '@',
@@ -29,6 +29,10 @@ export class TableHeaderDirective implements ng.IDirective {
         property: '@',
         source: '&'
     };
+
+    constructor() {
+
+    }
 
     link = ($scope: ITableHeaderScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
 
@@ -40,7 +44,7 @@ export class TableHeaderDirective implements ng.IDirective {
             $scope.showOrder = true;
         }
 
-        $scope.showSearchInput = false;
+        $scope.showSearchInput = true;
 
         $scope.reverseOrder = () => {
             $scope.filter.orderBy = $scope.property;
@@ -48,10 +52,15 @@ export class TableHeaderDirective implements ng.IDirective {
             $scope.source();
         }
 
-        $scope.$watch('searchText', (newValue) => {
+        $scope.toggleSearchInput = () => {
+            // $scope.showSearchInput = !$scope.showSearchInput
+            // if ($scope.showSearchInput) {
+            //     setTimeout(() => { (element[0].querySelector('.th-search-input') as any).focus(); }, 50);
+            // }
+        }
 
+        $scope.$watch('searchText', (newValue) => {
             $scope.filter.pattern[$scope.property] = newValue;
-            // todo: wait before firing request after each keypress
             $scope.source();
         });
     }
