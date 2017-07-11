@@ -1,4 +1,4 @@
-export { ModelFilter } from './ModelFilter'
+export { ModelFilter, PaginationFilter, PaginationMode } from './ModelFilter'
 
 export { Datafeed } from './Datafeed'
 export { DataSource } from './DataSource'

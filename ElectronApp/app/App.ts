@@ -99,6 +99,7 @@ myApp.controller('StarController', Controllers.StarController);
 myApp.controller('StarsController', Controllers.StarsController);
 
 
+myApp.directive('paginationControlls', ['$rootScope', Directives.PaginationDirective.factory()]);
 myApp.directive('thExtended', [Directives.TableHeaderDirective.factory()]);
 
 

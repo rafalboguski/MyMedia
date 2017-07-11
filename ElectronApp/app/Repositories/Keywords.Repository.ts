@@ -11,14 +11,20 @@ export class KeywordsRepository extends Repositories.GenericRepository {
 
     public getKeywords(filter: Models.KeywordFilter): Promise<Models.Keyword[]> {
 
-        let sql = "SELECT * FROM keywords WHERE 1=1 ";
+        let sql = "SELECT * FROM keywords WHERE 1=1 ", where = '', order = '', limit = '';
 
         if (filter) {
-            sql = this.sqlFilter(sql, filter);
-            sql = this.sqlOrderBy(sql, filter);
+            where = this.sqlFilter(filter);
+            order = this.sqlOrderBy(filter);
+
+            if (filter.pagination && (filter.pagination.mode == Models.PaginationMode.Enabled || filter.pagination.mode == Models.PaginationMode.Scroll)) {
+                this.execute(() => { return this.query(sql + where).then((data: any[]) => filter.pagination.ItemsCount = data.length) });
+
+                limit = this.sqlPaginate(filter);
+            }
         }
 
-        return this.execute(() => { return this.query(sql) });
+        return this.execute(() => { return this.query(sql + where + order + limit) });
     }
 
     public create(keyword: Models.Keyword): Promise<{ insertId: number }> {

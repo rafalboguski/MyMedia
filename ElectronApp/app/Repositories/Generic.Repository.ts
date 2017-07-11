@@ -54,7 +54,8 @@ export class GenericRepository {
 
     };
 
-    protected sqlFilter(sql: string, filter: Models.ModelFilter): string {
+    protected sqlFilter(filter: Models.ModelFilter<any>): string {
+        let sql = '';
         for (var key in filter.exact) {
             let value = filter.exact[key];
             if ((value != null && value != '') && filter.exact.hasOwnProperty(key)) {
@@ -82,8 +83,11 @@ export class GenericRepository {
         return sql;
     }
 
-    protected sqlOrderBy(sql: string, filter: Models.ModelFilter): string {
-        sql += ` ORDER BY ${filter.orderBy} ${filter.ascending ? 'ASC' : 'DESC'}`;
-        return sql;
+    protected sqlOrderBy(filter: Models.ModelFilter<any>): string {
+        return ` ORDER BY ${filter.orderBy} ${filter.ascending ? 'ASC' : 'DESC'}`;
+    }
+
+    protected sqlPaginate(filter: Models.ModelFilter<any>): string {
+        return ` LIMIT ${(filter.pagination.page - 1) * filter.pagination.pageSize}, ${(filter.pagination.page) * filter.pagination.pageSize}`;
     }
 }

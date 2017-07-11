@@ -6,7 +6,7 @@ interface ITableHeaderScope extends ng.IScope {
 
     label: string;
     property: string;
-    filter: Models.ModelFilter;
+    filter: Models.ModelFilter<any>;
     showSearchInput: boolean;
 
     searchText: string;
@@ -47,8 +47,12 @@ export class TableHeaderDirective implements ng.IDirective {
         $scope.showSearchInput = true;
 
         $scope.reverseOrder = () => {
+
+            if ($scope.filter.orderBy == $scope.property) {
+                $scope.filter.ascending = !$scope.filter.ascending;
+            }
+
             $scope.filter.orderBy = $scope.property;
-            $scope.filter.ascending = !$scope.filter.ascending;
             $scope.source();
         }
 
@@ -71,5 +75,3 @@ export class TableHeaderDirective implements ng.IDirective {
         return directive;
     }
 }
-
-//  myApp.directive('thExtended', [TableHeaderDirective.factory()]);

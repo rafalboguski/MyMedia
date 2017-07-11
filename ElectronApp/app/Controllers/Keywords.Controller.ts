@@ -92,7 +92,7 @@ export class KeywordsController extends GenericController implements IController
                                 this.valueMultiple += '\n\n__Failed___________________';
                                 for (let failed of data.failed) {
                                     this.valueMultiple += '\n' + failed.value;
-                                }
+                                } 
                             } else {
                                 this._alertsService.success('All ' + data.created.length + 'created');
                                 this.valueMultiple = '';

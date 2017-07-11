@@ -1,58 +1,73 @@
-// class PaginationDirective implements ng.IDirective {
+import { myApp, Models, Dto, Repositories, Services } from '../../App'
 
-//     restrict = 'EA';
-//     replace: true;
-//     scope = {
-//         //@ reads the attribute value, = provides two-way binding, & works with functions
-//         loadItemsFn: '&',
-//         pagination: '='
-//     };
-//     templateUrl = 'app/directives/pagination.html';
+interface IPaginationScope extends ng.IScope {
+    filter: Models.ModelFilter<any>
+    source()
 
-//     constructor(private $rootScope: any) {
-//     }
+    pagination: Models.PaginationFilter
 
-//     link = ($scope: any, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
-//         $scope.$rootScope = this.$rootScope;
+    changePage(i: number)
 
-//         $scope.changePage = (i: number) => {
+    canPrevious()
+    previousPage()
+    canNext()
+    nextPage()
+}
 
-//             if ($scope.pagination.pageSize < 1) {
-//                 $scope.pagination.pageSize = 1;
-//             }
+export class PaginationDirective implements ng.IDirective {
 
-//             $scope.pagination.page = i;
-//             $scope.loadItemsFn()();
-//         }
+    restrict = 'EA';
+    replace: true;
+    templateUrl = 'app/directives/pagination.html';
+    scope = { //@ reads the attribute value, = provides two-way binding, & works with functions
+        filter: '=',
+        source: '&'
+    };
 
-//         $scope.canPrevious = () => {
-//             return $scope.pagination.page > 1;
-//         }
+    constructor(private $rootScope: any) {
+    }
 
-//         $scope.previousPage = () => {
+    link = ($scope: IPaginationScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
+        $scope.$rootScope = this.$rootScope;
 
-//             if ($scope.canPrevious()) {
-//                 $scope.changePage($scope.pagination.page - 1);
-//             }
-//         }
+        $scope.pagination = $scope.filter.pagination;
 
-//         $scope.canNext = () => {
-//             return !($scope.pagination.page >= $scope.pagination.pages());
-//         }
+        $scope.changePage = (i: number) => {
 
-//         $scope.nextPage = () => {
+            if ($scope.pagination.pageSize < 1) {
+                $scope.pagination.pageSize = 1;
+            }
 
-//             if ($scope.canNext()) {
-//                 $scope.changePage($scope.pagination.page + 1);
-//             }
-//         }
-//     }
+            $scope.pagination.page = i;
+            $scope.source()();
+        }
 
-//     static factory(): ng.IDirectiveFactory {
-//         const directive = ($rootScope: any) => new PaginationDirective($rootScope);
-//         directive.$inject = ['$rootScope'];
-//         return directive;
-//     }
-// }
+        $scope.canPrevious = () => {
+            return $scope.pagination.page > 1;
+        }
 
-// angular.module('myApp').directive('paginationControlls', ['$rootScope', PaginationDirective.factory()]);
+        $scope.previousPage = () => {
+
+            if ($scope.canPrevious()) {
+                $scope.changePage($scope.pagination.page - 1);
+            }
+        }
+
+        $scope.canNext = () => {
+            return !($scope.pagination.page >= $scope.pagination.pages());
+        }
+
+        $scope.nextPage = () => {
+
+            if ($scope.canNext()) {
+                $scope.changePage($scope.pagination.page + 1);
+            }
+        }
+    }
+
+    static factory(): ng.IDirectiveFactory {
+        const directive = ($rootScope: any) => new PaginationDirective($rootScope);
+        directive.$inject = ['$rootScope'];
+        return directive;
+    }
+}
