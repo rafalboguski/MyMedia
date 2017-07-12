@@ -1,45 +1,55 @@
 <hr />
 
+<pre>{{pagination | json}}</pre>
+
+<!-- Page size -->
 <form class="form-inline" style="position: absolute; right: 10px;">
     <label for="pagesize" style="color: grey">
         Page size
     </label>
-    <input name="pagesize" type="number" class="form-control" style="width: 80px" ng-blur="changePage(1)" ng-model="pagination.pageSize" />
+    <input type="number" class="form-control" style="width: 80px" ng-blur="changePage(1)" ng-model="pagination.pageSize" />
 </form>
 
+<!-- Pages picker -->
 <div class="text-center">
-    <nav ng-show="pagination.pages() > 1">
+    <nav>
         <ul class="pagination">
 
-            <li ng-class="{disabled: !canPrevious()}">
+            <!-- Go to first page -->
+            <li ng-class="{disabled: !pageExists(pagination.page - 1)}">
                 <a ng-click="changePage(1)">
                     <span aria-hidden="true">first</span>
                 </a>
             </li>
-            <li ng-class="{disabled: !canPrevious()}">
-                <a ng-click="previousPage()">
+
+            <!-- Go to previous page -->
+            <li ng-class="{disabled: !pageExists(pagination.page - 1)}">
+                <a ng-click="changePage(pagination.page - 1)">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
-            <li ng-repeat="i in $rootScope.range(1, pagination.page)">
+            <li ng-repeat="i in range(1, pagination.page)">
                 <a ng-click="changePage(i)">{{i}}</a>
             </li>
 
+            <!-- Current page -->
             <li class="active">
                 <a href="">{{pagination.page}}</a>
             </li>
 
-            <li ng-repeat="i in $rootScope.range(pagination.page + 1, pagination.pages() + 1)">
+            <li ng-repeat="i in range(pagination.page + 1, pagination.pages + 1)">
                 <a ng-click="changePage(i)">{{i}}</a>
             </li>
 
-            <li ng-class="{disabled: !canNext()}">
-                <a ng-click="nextPage()">
+            <!-- Go to next page -->
+            <li ng-class="{disabled: !pageExists(pagination.page + 1)}">
+                <a ng-click="changePage(pagination.page + 1)">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
-            <li ng-class="{disabled: !canNext()}">
-                <a ng-click="changePage(pagination.pages())">
+            <!-- Go to last page -->
+            <li ng-class="{disabled: !pageExists(pagination.page + 1)}">
+                <a ng-click="changePage(pagination.pages)">
                     <span aria-hidden="true">last</span>
                 </a>
             </li>

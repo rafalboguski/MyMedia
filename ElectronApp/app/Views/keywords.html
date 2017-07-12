@@ -14,7 +14,6 @@
         </div>
     </div>
 
-
     <!--Table-->
     <div class="col-xs-12">
         <div class="row" ng-show="Ctrl.multipleCollapsed">
@@ -50,6 +49,11 @@
                     </tbody>
                 </table>
             </div>
+        </div>
+
+        <!-- Pagination controlls -->
+        <div class="row">
+            <pagination-controlls filter="Ctrl.keywordFilter" source="Ctrl.getKeywords()" />
         </div>
     </div>
 

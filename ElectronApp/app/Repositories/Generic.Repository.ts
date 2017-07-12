@@ -94,10 +94,13 @@ export class GenericRepository {
         if (filter.pagination && (filter.pagination.mode == Models.PaginationMode.Enabled || filter.pagination.mode == Models.PaginationMode.Scroll)) {
             this.execute(() => {
                 return this.query(sql_with_where)
-                    .then((data: any[]) => filter.pagination.ItemsCount = data.length)
+                    .then((data: any[]) => {
+                        filter.pagination.ItemsCount = data.length;
+                        filter.pagination.calculatePages();
+                    })
             });
 
-            return ` LIMIT ${(filter.pagination.page - 1) * filter.pagination.pageSize}, ${(filter.pagination.page) * filter.pagination.pageSize}`;
+            return ` LIMIT ${(filter.pagination.page - 1) * filter.pagination.pageSize}, ${filter.pagination.pageSize}`;
         }
 
         return '';

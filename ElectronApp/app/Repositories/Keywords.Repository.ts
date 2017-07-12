@@ -16,7 +16,7 @@ export class KeywordsRepository extends Repositories.GenericRepository {
         if (filter) {
             where = this.sqlWhere(filter);
             order = this.sqlOrder(filter);
-            limit = this.sqlLimit(filter, sql + where);
+            limit = this.sqlLimit(filter, sql + where + order);
         }
 
         return this.execute(() => { return this.query(sql + where + order + limit) });

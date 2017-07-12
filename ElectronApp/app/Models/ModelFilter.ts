@@ -34,9 +34,11 @@ export class PaginationFilter {
     pageSize: number
 
     ItemsCount: number
+    pages: number
 
-    public pages(): number {
-        return Math.ceil(this.ItemsCount / this.pageSize);
+    public calculatePages(): number {
+        this.pages = Math.ceil(this.ItemsCount / this.pageSize);
+        return this.pages;
     }
 
     clear() {
