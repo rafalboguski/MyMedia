@@ -1,11 +1,11 @@
-import { myApp, Models, Repositories } from '../App'
+import { myApp, Models, Repositories, Services } from '../App'
 
 export class StarsRepository extends Repositories.GenericRepository {
 
-    static $inject = ['$q'];
+    static $inject = ['$q', 'AlertsService'];
 
-    constructor($q: ng.IQService) {
-        super($q);
+    constructor($q: ng.IQService, AlertsService: Services.AlertsService) {
+        super($q, AlertsService);
     }
 
     public getStar(id: number): Promise<Models.Star> {

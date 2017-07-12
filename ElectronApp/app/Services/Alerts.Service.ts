@@ -1,5 +1,3 @@
-import { myApp, Services, Dto } from '../App'
-
 export class AlertsService {
 
     private alertify = require('alertify.js')();
@@ -7,7 +5,6 @@ export class AlertsService {
     static $inject = ['$q'];
 
     constructor(private $q: ng.IQService) {
-
     }
 
     public info(message: string) {

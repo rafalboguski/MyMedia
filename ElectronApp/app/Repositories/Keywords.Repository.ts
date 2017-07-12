@@ -1,12 +1,12 @@
-import { myApp, Models, Repositories } from '../App'
+import { Models, Repositories, Services } from '../App'
 import * as _ from 'lodash'
 
 export class KeywordsRepository extends Repositories.GenericRepository {
 
-    static $inject = ['$q'];
+    static $inject = ['$q', 'AlertsService'];
 
-    constructor($q: ng.IQService) {
-        super($q);
+    constructor($q: ng.IQService, AlertsService: Services.AlertsService) {
+        super($q, AlertsService);
     }
 
     public getKeywords(filter: Models.KeywordFilter): Promise<Models.Keyword[]> {
@@ -14,14 +14,9 @@ export class KeywordsRepository extends Repositories.GenericRepository {
         let sql = "SELECT * FROM keywords WHERE 1=1 ", where = '', order = '', limit = '';
 
         if (filter) {
-            where = this.sqlFilter(filter);
-            order = this.sqlOrderBy(filter);
-
-            if (filter.pagination && (filter.pagination.mode == Models.PaginationMode.Enabled || filter.pagination.mode == Models.PaginationMode.Scroll)) {
-                this.execute(() => { return this.query(sql + where).then((data: any[]) => filter.pagination.ItemsCount = data.length) });
-
-                limit = this.sqlPaginate(filter);
-            }
+            where = this.sqlWhere(filter);
+            order = this.sqlOrder(filter);
+            limit = this.sqlLimit(filter, sql + where);
         }
 
         return this.execute(() => { return this.query(sql + where + order + limit) });
@@ -48,7 +43,7 @@ export class KeywordsRepository extends Repositories.GenericRepository {
         }
 
         return this.$q.all(promises)
-            .then((data) => {
+            .then((data: Models.Keyword[]) => {
                 return {
                     created: _.reject(data, { "id": null }),
                     failed: _.filter(data, { id: null })

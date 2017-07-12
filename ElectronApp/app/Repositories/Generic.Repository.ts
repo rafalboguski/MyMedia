@@ -1,14 +1,13 @@
-import { myApp, Models } from '../App';
-
+import { Models, Services } from '../App';
 import * as mysql from 'mysql';
 
 export class GenericRepository {
 
     private _connection: mysql.IConnection;
 
-    static $inject = ['$q'];
+    static $inject = ['$q', 'AlertsService'];
 
-    constructor(protected $q: ng.IQService) {
+    constructor(protected $q: ng.IQService, protected _AlertsService: Services.AlertsService) {
     }
 
     private createConnection(): Promise<mysql.IConnection> {
@@ -45,6 +44,9 @@ export class GenericRepository {
         return this.$q((resolve, reject) => {
             this._connection.query(sql, params, (err, rows, fields) => {
                 if (err) {
+                    if (err.code == 'ECONNREFUSED') {
+                        this._AlertsService.error('Could not connect to DB');
+                    }
                     console.error(err);
                     return reject(err);
                 }
@@ -54,7 +56,7 @@ export class GenericRepository {
 
     };
 
-    protected sqlFilter(filter: Models.ModelFilter<any>): string {
+    protected sqlWhere(filter: Models.ModelFilter<any>): string {
         let sql = '';
         for (var key in filter.exact) {
             let value = filter.exact[key];
@@ -83,11 +85,21 @@ export class GenericRepository {
         return sql;
     }
 
-    protected sqlOrderBy(filter: Models.ModelFilter<any>): string {
+    protected sqlOrder(filter: Models.ModelFilter<any>): string {
         return ` ORDER BY ${filter.orderBy} ${filter.ascending ? 'ASC' : 'DESC'}`;
     }
 
-    protected sqlPaginate(filter: Models.ModelFilter<any>): string {
-        return ` LIMIT ${(filter.pagination.page - 1) * filter.pagination.pageSize}, ${(filter.pagination.page) * filter.pagination.pageSize}`;
+    protected sqlLimit(filter: Models.ModelFilter<any>, sql_with_where: string): string {
+
+        if (filter.pagination && (filter.pagination.mode == Models.PaginationMode.Enabled || filter.pagination.mode == Models.PaginationMode.Scroll)) {
+            this.execute(() => {
+                return this.query(sql_with_where)
+                    .then((data: any[]) => filter.pagination.ItemsCount = data.length)
+            });
+
+            return ` LIMIT ${(filter.pagination.page - 1) * filter.pagination.pageSize}, ${(filter.pagination.page) * filter.pagination.pageSize}`;
+        }
+
+        return '';
     }
 }
