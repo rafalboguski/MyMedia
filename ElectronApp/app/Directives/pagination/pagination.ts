@@ -32,7 +32,7 @@ export class PaginationDirective implements ng.IDirective {
         $scope.pagination = $scope.filter.pagination;
 
         $scope.pageExists = (page: number): boolean => {
-            return page > 0 && page < $scope.pagination.pages;
+            return page > 0 && page <= $scope.pagination.pages;
         }
 
         $scope.range = (from: number, to: number): number[] => {

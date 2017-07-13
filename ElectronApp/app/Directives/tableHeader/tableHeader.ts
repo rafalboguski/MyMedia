@@ -65,6 +65,7 @@ export class TableHeaderDirective implements ng.IDirective {
 
         $scope.$watch('searchText', (newValue) => {
             $scope.filter.pattern[$scope.property] = newValue;
+            $scope.filter.pagination.page = 1;
             $scope.source();
         });
     }

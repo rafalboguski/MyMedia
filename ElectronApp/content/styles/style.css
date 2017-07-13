@@ -329,12 +329,32 @@ ti-autocomplete-match em {
 /*--------Pagination Controlls--------------------------------------------*/
 .pagination{
     margin: 0;
+    font-size: 15px;
 }
 
 .pagination  a {
     cursor: pointer;
 }
 
+.pagination li a {
+    min-width: 60px;
+}
+
+.pagination li a {
+    background-color: #303030;
+}
+
+.pagination .disabled a {
+    background-color: transparent;
+}
+
+.pagination .active a {
+    background-color:  #4E1E3C !important;
+}
+
+.pagination li a:hover {
+    background-color:   #752D5A;
+}
 
 /*------Alertify--------------------------------------------------------*/
 

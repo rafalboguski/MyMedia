@@ -43,6 +43,7 @@ export class KeywordsController extends GenericController implements IController
                 // set watches
                 this.$scope.$watch('Ctrl.value', (newValue: string) => {
                     this.keywordFilter.exact.value = newValue;
+                    this.keywordFilter.pagination.page = 1;
                     this.getKeywords()
                 });
             })
