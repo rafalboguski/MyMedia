@@ -63,7 +63,8 @@ export let myApp = module('myApp', [
             .when('/keywords', {
                 templateUrl: './app/Views/keywords.html',
                 controller: Controllers.KeywordsController,
-                controllerAs: 'Ctrl'
+                controllerAs: 'Ctrl',
+                reloadOnSearch: false,
             })
             // Settings
             .when('/settings', {
@@ -99,7 +100,7 @@ myApp.controller('StarController', Controllers.StarController);
 myApp.controller('StarsController', Controllers.StarsController);
 
 
-myApp.directive('paginationControlls', ['$rootScope', Directives.PaginationDirective.factory()]);
+myApp.directive('paginationControlls', ['$location', Directives.PaginationDirective.factory()]);
 myApp.directive('thExtended', [Directives.TableHeaderDirective.factory()]);
 
 

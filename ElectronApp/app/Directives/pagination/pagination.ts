@@ -25,7 +25,7 @@ export class PaginationDirective implements ng.IDirective {
         source: '&'
     };
 
-    constructor(private $rootScope: any) {
+    constructor(private $location: ng.ILocationService) {
     }
 
     link = ($scope: IPaginationScope, element: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
@@ -54,8 +54,8 @@ export class PaginationDirective implements ng.IDirective {
     }
 
     static factory(): ng.IDirectiveFactory {
-        const directive = ($rootScope: any) => new PaginationDirective($rootScope);
-        directive.$inject = ['$rootScope'];
+        const directive = ($location: ng.ILocationService) => new PaginationDirective($location);
+        directive.$inject = ['$location'];
         return directive;
     }
 }

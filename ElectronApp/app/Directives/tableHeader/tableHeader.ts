@@ -45,6 +45,7 @@ export class TableHeaderDirective implements ng.IDirective {
         }
 
         $scope.showSearchInput = true;
+        $scope.searchText = $scope.filter.pattern[$scope.property];
 
         $scope.reverseOrder = () => {
 
@@ -64,6 +65,12 @@ export class TableHeaderDirective implements ng.IDirective {
         }
 
         $scope.$watch('searchText', (newValue) => {
+
+            // prevent firing on page load
+            if (newValue == undefined || $scope.searchText == undefined) {
+                return
+            }
+
             $scope.filter.pattern[$scope.property] = newValue;
             $scope.filter.pagination.page = 1;
             $scope.source();

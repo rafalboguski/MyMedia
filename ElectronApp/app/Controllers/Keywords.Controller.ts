@@ -18,7 +18,7 @@ export class KeywordsController extends GenericController implements IController
 
     private multipleCollapsed: boolean = true;
 
-    static $inject = ['$scope', '$routeParams', '$location', '$q', 'AlertsService', 'KeywordsRepository', 'ShortcutsService'];
+    static $inject = ['$scope', '$routeParams', '$location', '$q', 'AlertsService', 'KeywordsRepository', 'ShortcutsService', 'UtilsService'];
 
     constructor(
         private $scope: ng.IScope,
@@ -27,7 +27,8 @@ export class KeywordsController extends GenericController implements IController
         private $q: ng.IQService,
         private _alertsService: Services.AlertsService,
         private _keywordsRepository: Repositories.KeywordsRepository,
-        shortcutsService: Services.ShortcutsService
+        shortcutsService: Services.ShortcutsService,
+        private UtilsService: Services.UtilsService
     ) {
         super(shortcutsService);
         this.init()
@@ -35,24 +36,33 @@ export class KeywordsController extends GenericController implements IController
             .then(() => { this.initialized = true });
     }
 
-    // --------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------
 
     init(): Promise<any> {
+
+        // parse filter from query string
+        if (this.$location.search().pagination) {
+            this.UtilsService.deepMerge(this.keywordFilter, JSON.parse(this.$location.search().pagination));
+        }
+
         return this.getKeywords()
             .then(() => {
                 // set watches
                 this.$scope.$watch('Ctrl.value', (newValue: string) => {
                     this.keywordFilter.exact.value = newValue;
-                    this.keywordFilter.pagination.page = 1;
+                    // this.keywordFilter.pagination.page = 1;
                     this.getKeywords()
                 });
             })
     }
 
-    getKeywords(): Promise<Models.Keyword[]> {
+    getKeywords(): Promise<any> {
         return this._keywordsRepository.getKeywords(this.keywordFilter)
             .then((keywords) => {
-                return this.keywords = keywords;
+                this.keywords = keywords;
+            })
+            .then(() => {
+                this.$location.search('pagination', JSON.stringify(this.keywordFilter));
             });
     }
 
@@ -93,7 +103,7 @@ export class KeywordsController extends GenericController implements IController
                                 this.valueMultiple += '\n\n__Failed___________________';
                                 for (let failed of data.failed) {
                                     this.valueMultiple += '\n' + failed.value;
-                                } 
+                                }
                             } else {
                                 this._alertsService.success('All ' + data.created.length + 'created');
                                 this.valueMultiple = '';
